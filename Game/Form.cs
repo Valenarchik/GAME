@@ -69,13 +69,17 @@ namespace Game
         private void OnPaint(object sender, PaintEventArgs e)
         {
             var graphics = e.Graphics;
-            Animation(graphics,ChefSprite,player,3);
+
+            if(player.IsMoving)
+                Animation(graphics, ChefSprite, player, 4, 1, player.Direction == Directions.Right ? 0 : 4);
+            else
+                Animation(graphics,ChefSprite,player,2,0, player.Direction == Directions.Right ? 0 : 2);
         }
 
-        private void Animation (Graphics g, Image sprite, Entity entity, int countFrames)
+        private void Animation (Graphics g, Image sprite, Entity entity, int countFrames,int row, int startFrame)
         {
             g.DrawImage(sprite, entity.Position,
-                new RectangleF(new PointF(entity.Size.Width * (time % countFrames), 0), entity.Size),
+                new RectangleF(new PointF(entity.Size.Width * (time % countFrames+startFrame), row*entity.Size.Height), entity.Size),
                 GraphicsUnit.Pixel);
         }
     }

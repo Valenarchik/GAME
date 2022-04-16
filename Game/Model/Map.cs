@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Game
 {
-    class GameModel
+    class Map
     {
-        public readonly char[] Map;
+        public readonly char[] GameMap;
     }
 }
