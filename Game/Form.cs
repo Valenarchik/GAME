@@ -15,16 +15,18 @@ namespace Game
     public sealed partial class MyForm : Form
     {
         private Player player;
-        private Image ChefSprite;
+        private DirectoryInfo currentDirectory = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.Parent.Parent;
         private int time;
         public MyForm()
         {
             DoubleBuffered = true;
             var timer = new Timer();
-            timer.Interval += 200;
+            timer.Interval += 100;
             timer.Tick += (sender, args) =>
             {
-                time++;
+                if (player.IsMoving)
+                    player.Move(player.Direction);
+                unchecked {time++;}
                 Invalidate();
             };
             timer.Start();
@@ -35,7 +37,7 @@ namespace Game
             Initialize();
         }
 
-        private void OnPressDown(object? sender, KeyEventArgs e)
+        private void OnPressDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
@@ -55,32 +57,60 @@ namespace Game
             Invalidate();
         }
 
-        private void OnPressUp(object? sender, KeyEventArgs e)
+        private void OnPressUp(object sender, KeyEventArgs e)
         {
             player.StopMove();
         }
-        public void Initialize()
+
+        private void Initialize()
         {
-            ChefSprite = new Bitmap(@"C:\Users\днс\source\repos\Game\Game\Sprites\Chef.png");
-            player = new Player(new Point(100, 100), new Size(12, 19));
+            player = new Player(new Point(100, 100),5, new Size(48, 64));
             Invalidate();
         }
-
+         
         private void OnPaint(object sender, PaintEventArgs e)
         {
-            var graphics = e.Graphics;
-
-            if(player.IsMoving)
-                Animation(graphics, ChefSprite, player, 4, 1, player.Direction == Directions.Right ? 0 : 4);
+            var g = e.Graphics;
+            if (player.IsMoving)
+                switch (player.Direction)
+                {
+                    case Directions.Up:
+                        DrawAnimation(g, player, Sprites.ChefMoveUp1, Sprites.ChefMoveUp2);
+                        break;
+                    case Directions.Right:
+                        DrawAnimation(g, player, Sprites.ChefMoveRight1, Sprites.ChefMoveRight2);
+                        break;
+                    case Directions.Down:
+                        DrawAnimation(g, player, Sprites.ChefMoveDown1, Sprites.ChefMoveDown2);
+                        break;
+                    case Directions.Left:
+                        DrawAnimation(g, player, Sprites.ChefMoveLeft1, Sprites.ChefMoveLeft2);
+                        break;
+                }
             else
-                Animation(graphics,ChefSprite,player,2,0, player.Direction == Directions.Right ? 0 : 2);
+            {
+                switch (player.Direction)
+                {
+                    case Directions.Up:
+                        DrawAnimation(g, player, Sprites.ChefStandUp);
+                        break;
+                    case Directions.Right:
+                        DrawAnimation(g, player, Sprites.ChefStandRight);
+                        break;
+                    case Directions.Down:
+                        DrawAnimation(g, player, Sprites.ChefStandDown);
+                        break;
+                    case Directions.Left:
+                        DrawAnimation(g, player, Sprites.ChefStandLeft);
+                        break;
+                } 
+            }
         }
 
-        private void Animation (Graphics g, Image sprite, Entity entity, int countFrames,int row, int startFrame)
+        private void DrawAnimation (Graphics g, Entity entity,params Image[] sprites)
         {
-            g.DrawImage(sprite, entity.Position,
-                new RectangleF(new PointF(entity.Size.Width * (time % countFrames+startFrame), row*entity.Size.Height), entity.Size),
-                GraphicsUnit.Pixel);
+            if (sprites is null) return;
+            g.DrawImage(sprites[time % sprites.Length], entity.Position);
         }
     }
 }

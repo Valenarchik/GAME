@@ -9,7 +9,7 @@ namespace Game.Model
 {
     class Player:Entity
     {
-        public Player(Point position, Size size) : base(position, size)
+        public Player(PointF position, float speed, Size size) : base(position, speed, size)
         {
         }
     }
