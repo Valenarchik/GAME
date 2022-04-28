@@ -1,45 +1,53 @@
 ﻿using System.Drawing;
+using System.Linq;
 
-namespace Game
+namespace Game.Model
 {
-    public abstract class Entity
+    public abstract class GameEntity : GameObject
     {
-        public float Speed { get; private set; }
+        public int Speed { get; set; }
         public Directions Direction { get; private set; }
-        public bool IsMoving { get;private set; }
-        public PointF Position { get; private set; }
-        public readonly Size Size;
+        public bool IsMoving { get; private set; }
 
-
-        protected Entity(PointF position, float speed, Size size)
+        protected GameEntity(GameLevel level, Point position, int speed, Size size)
+            : base(level, position, size)
         {
-            Size = size;
             Speed = speed;
-            Position = position;
         }
+
         public virtual void Move(Directions direction)
         {
+            var offset = new Size(0, 0);
             switch (direction)
             {
                 case Directions.Up:
-                    Position = new PointF(Position.X, Position.Y -Speed);
+                    offset = new Size(0, -Speed);
                     Direction = Directions.Up;
                     break;
                 case Directions.Down:
-                    Position = new PointF(Position.X, Position.Y + Speed);
+                    offset = new Size(0, Speed);
                     Direction = Directions.Down;
                     break;
                 case Directions.Right:
-                    Position = new PointF(Position.X + Speed, Position.Y );
+                    offset = new Size(Speed, 0);
                     Direction = Directions.Right;
                     break;
                 case Directions.Left:
-                    Position = new PointF(Position.X - Speed, Position.Y);
+                    offset = new Size(-Speed, 0);
                     Direction = Directions.Left;
                     break;
             }
+
+            Position += offset;
+            if (!IsInsideMap()
+                || Level.Objects
+                    .Any(x=> x.Value
+                        .Where(o=>!o.Equals(this))
+                        .Any(IsCollision)))
+                Position -= offset;
             IsMoving = true;
         }
+
         public void StopMove() => IsMoving = false;
     }
 }

@@ -1,17 +1,12 @@
-﻿
+﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
+using Game.Model;
 namespace Game
 {
     sealed partial class MyForm
     {
-        /// <summary>
-        ///  Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
-
-        /// <summary>
-        ///  Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,29 +15,29 @@ namespace Game
             }
             base.Dispose(disposing);
         }
-
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
-        /// </summary>
+        
         private void InitializeComponent()
         {
-            this.SuspendLayout();
-            // 
-            // MyForm
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Name = "MyForm";
-            this.Text = "MyForm";
-            this.ResumeLayout(false);
-
+            Name = "Pizza Master";
+            Text = "Pizza Master";
+            BackgroundImage = Sprites.Background.BackgroundImage;
+            game = new GameLevel(1000,500);
+            MaximizeBox = false;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            ClientSize = game.GameSize;
+            InitializateInterior();
+            
         }
 
-        #endregion
+        private void InitializateInterior()
+        {
+            game.Objects[Type.Furnace] = new List<GameObject>
+            {
+                new Furnace(game,new Point(200,100),new Size(32,2)), 
+                new Furnace(game,new Point(232,100),new Size(32,2)),
+                new Furnace(game,new Point(264,100),new Size(32,2))
+            };
+        }
     }
 }
 

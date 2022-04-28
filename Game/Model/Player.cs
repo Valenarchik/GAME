@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace Game.Model
 {
-    class Player:Entity
+    public class Player:GameEntity
     {
-        public Player(PointF position, float speed, Size size) : base(position, speed, size)
+        public Player(GameLevel level, Point position, int speed, Size size) : base(level, position, speed, size)
         {
         }
     }
