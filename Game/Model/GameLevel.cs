@@ -16,7 +16,7 @@ namespace Game.Model
         {
             GameSize = new Size(width, height);
             Objects = new Dictionary<Type, List<GameObject>>();
-            Player = new Player(this, new Point(100, 100), 3, new Size(32, 58));
+            Player = new Player(this, new Point(500, 230), 3, new Size(32, 20));
             Objects.Add(Type.Player,new List<GameObject>{Player});
         }
         public bool IsInsideMap(PointF p) => p.X >= 0 && p.Y >= 0 && p.X <= Width && p.Y <= Height;

@@ -10,6 +10,9 @@
     <Compile Update="PlayerAnimation.cs">
       <DependentUpon>Form.cs</DependentUpon>
     </Compile>
+    <Compile Update="Model\Furnace.cs">
+      <DependentUpon>Interior.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

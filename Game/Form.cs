@@ -53,19 +53,17 @@ namespace Game
             game.Player.StopMove();
         }
         private void OnPaint(object sender, PaintEventArgs e)
-        {
-            PaintInterior(e.Graphics);
+        { 
+            //PaintMatrix(e.Graphics);
             PlayerAnimation(e.Graphics);
         }
 
-        private void PaintInterior(Graphics g)
+        private void PaintMatrix(Graphics g)
         {
-            foreach (var e in game.Objects.Where(x=> x.Key is Type.Furnace))
+            foreach (var (key ,value) in game.Objects)
+            foreach (var e in value)
             {
-                foreach (var r in e.Value)
-                {
-                    if (e.Key == Type.Furnace) g.DrawImage(Sprites.Interior.Furnace,r.Position - new Size(0,14));
-                }
+                g.FillRectangle(Brushes.Chartreuse,new Rectangle(e.Position,e.Size));
             }
         }
     }

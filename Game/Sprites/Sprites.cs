@@ -53,16 +53,16 @@ namespace Game
                 new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Background", "Background.png")));
         }
         
-        public class Interior
-        {
-            public static readonly Bitmap Furnace =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Interior", "furnace.png")));
-            public static readonly Bitmap Crane =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Interior", "crane.png")));
-            public static readonly Bitmap Cups =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Interior", "cups.png")));
-            public static readonly Bitmap Table =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Interior", "table.png")));
-        }
+        // public class Interior
+        // {
+        //     public static readonly Bitmap Furnace =
+        //         new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Interior", "furnace.png")));
+        //     public static readonly Bitmap Crane =
+        //         new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Interior", "crane.png")));
+        //     public static readonly Bitmap Cups =
+        //         new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Interior", "cups.png")));
+        //     public static readonly Bitmap Table =
+        //         new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Interior", "table.png")));
+        // }
     }
 }

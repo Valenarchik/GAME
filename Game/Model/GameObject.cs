@@ -34,8 +34,6 @@ namespace Game.Model
     {
         Player,
         Furnace,
-        Crane,
-        Cups,
-        Table
+        Interior
     }
 }

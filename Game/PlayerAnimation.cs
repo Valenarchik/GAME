@@ -51,7 +51,7 @@ namespace Game
         private void DrawAnimation (Graphics g, GameEntity gameEntity,params Image[] sprites)
         {
             if (sprites is null) return;
-            g.DrawImage(sprites[time % sprites.Length], gameEntity.Position - new Size(2,2));
+            g.DrawImage(sprites[time % sprites.Length], gameEntity.Position + new Size(-2,-42));
         }
     }
 }
