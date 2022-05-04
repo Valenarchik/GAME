@@ -5,35 +5,29 @@ namespace Game.Model
 {
     public abstract class GameObject
     {
-        protected readonly GameLevel Level;
+        protected readonly Game Game;
         public Point Position { get; protected set; }
         public readonly Size Size;
+        public Point Centre => Position+Size/2;
+        
+        
+        public double Radius => Game.GetDistance(Centre, Position);
 
-        protected GameObject(GameLevel level, Point position, Size size)
+        protected GameObject(Game game, Point position, Size size)
         {
-            Level = level;
+            Game = game;
             Position = position;
             Size = size;
         }
 
         protected bool IsCollision(GameObject another)
         {
-            return SegmentsIntersected(Position.X, Position.X + Size.Width, another.Position.X,
+            return Game.SegmentsIntersected(Position.X, Position.X + Size.Width, another.Position.X,
                        another.Position.X + another.Size.Width)
-                   && SegmentsIntersected(Position.Y, Position.Y + Size.Height, another.Position.Y,
+                   && Game.SegmentsIntersected(Position.Y, Position.Y + Size.Height, another.Position.Y,
                        another.Position.Y + another.Size.Height);
         }
 
-        private static bool SegmentsIntersected(float r1Min, float r1Max, float r2Min, float r2Max) =>
-            Math.Min(r1Max, r2Max) >= Math.Max(r1Min, r2Min);
-
-        protected bool IsInsideMap() => Level.IsInsideMap(Position) && Level.IsInsideMap(Position + Size);
-    }
-
-    public enum Type
-    {
-        Player,
-        Furnace,
-        Interior
+        protected bool IsInsideMap() => Game.IsInsideMap(Position) && Game.IsInsideMap(Position + Size);
     }
 }

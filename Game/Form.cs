@@ -7,7 +7,7 @@ namespace Game
 {
     public sealed partial class MyForm : Form
     {
-        private GameLevel game;
+        private Model.Game game;
         private int time;
         public MyForm()
         {
@@ -54,16 +54,23 @@ namespace Game
         }
         private void OnPaint(object sender, PaintEventArgs e)
         { 
-            //PaintMatrix(e.Graphics);
+            PaintMatrix(e.Graphics);
             PlayerAnimation(e.Graphics);
+            PaintTabBar(e.Graphics);
         }
 
+        private void PaintTabBar(Graphics g)
+        {
+            g.DrawImage(Sprites.Other.TabBar,new Point(297,633));
+        }
         private void PaintMatrix(Graphics g)
         {
-            foreach (var (key ,value) in game.Objects)
-            foreach (var e in value)
+            var brushes = Brushes.Chartreuse;
+            if(game.Player.GetNeighbourInRadius(20,TypeInterior.Bench)!=null)
+                brushes = Brushes.Cyan;
+            foreach (var e in game.Objects)
             {
-                g.FillRectangle(Brushes.Chartreuse,new Rectangle(e.Position,e.Size));
+                g.FillRectangle(brushes,new Rectangle(e.Position,e.Size));
             }
         }
     }

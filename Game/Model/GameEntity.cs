@@ -9,8 +9,8 @@ namespace Game.Model
         public Directions Direction { get; private set; }
         public bool IsMoving { get; private set; }
 
-        protected GameEntity(GameLevel level, Point position, int speed, Size size)
-            : base(level, position, size)
+        protected GameEntity(Game game, Point position, int speed, Size size)
+            : base(game, position, size)
         {
             Speed = speed;
         }
@@ -39,11 +39,9 @@ namespace Game.Model
             }
 
             Position += offset;
-            if (!IsInsideMap()
-                || Level.Objects
-                    .Any(x=> x.Value
-                        .Where(o=>!o.Equals(this))
-                        .Any(IsCollision)))
+            if (!IsInsideMap() || Game.Objects
+                    .Where(x=>!x.Equals(this))
+                    .Any(IsCollision))
                 Position -= offset;
             IsMoving = true;
         }

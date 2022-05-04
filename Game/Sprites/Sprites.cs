@@ -47,22 +47,36 @@ namespace Game
                 new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Chef", "Stand", "Stand Right.png")));
         }
         
-        public class Background
+        public class Other
         {
             public static readonly Bitmap BackgroundImage =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Background", "Background.png")));
+                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Background and Interface", "Background.png")));
+            public static readonly Bitmap TabBar =
+                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Background and Interface", "tabbar.png")));
         }
         
-        // public class Interior
-        // {
-        //     public static readonly Bitmap Furnace =
-        //         new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Interior", "furnace.png")));
-        //     public static readonly Bitmap Crane =
-        //         new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Interior", "crane.png")));
-        //     public static readonly Bitmap Cups =
-        //         new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Interior", "cups.png")));
-        //     public static readonly Bitmap Table =
-        //         new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Interior", "table.png")));
-        // }
+        public class Meal
+        {
+            public static readonly Bitmap Cheese =
+                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Meal", "cheese.png")));
+            public static readonly Bitmap Dough =
+                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Meal", "dough.png")));
+            public static readonly Bitmap Peperoni =
+                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Meal", "pepperoni.png")));
+            public static readonly Bitmap Tomato =
+                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Meal", "tomato.png")));
+        }
+        
+        public class Interior
+        {
+            public static readonly Bitmap Furnace =
+                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Interior", "furnace.png")));
+            public static readonly Bitmap Crane =
+                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Interior", "crane.png")));
+            public static readonly Bitmap Cups =
+                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Interior", "cups.png")));
+            public static readonly Bitmap Table =
+                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Interior", "table.png")));
+        }
     }
 }

@@ -10,9 +10,13 @@
     <Compile Update="PlayerAnimation.cs">
       <DependentUpon>Form.cs</DependentUpon>
     </Compile>
-    <Compile Update="Model\Furnace.cs">
-      <DependentUpon>Interior.cs</DependentUpon>
+    <Compile Update="Model\Directions.cs">
+      <DependentUpon>GameEntity.cs</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Sprites\Meal" />
   </ItemGroup>
 
 </Project>
