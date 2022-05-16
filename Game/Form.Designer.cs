@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Game.Model;
@@ -15,7 +16,9 @@ namespace Game
             }
             base.Dispose(disposing);
         }
-        
+
+        private Panel menu;
+        private Button startButton;
         private void InitializeComponent()
         {
             Name = "Pizza Master";
@@ -25,6 +28,20 @@ namespace Game
             MaximizeBox = false;
             FormBorderStyle = FormBorderStyle.FixedDialog;
             ClientSize = game.GameSize;
+            KeyPreview = true;
+            //
+            menu = new Panel() {Location = new Point(0, 0),
+                Size = game.GameSize,
+                BackColor = Color.Black};
+            startButton = new Button(){Text = "Старт",
+                ForeColor = Color.White,
+                Size = game.GameSize/4,
+                Font = new Font(FontFamily.GenericMonospace,20 )};
+            startButton.Location = new Point(game.GameSize / 2 - startButton.Size / 2);
+            startButton.Click += new EventHandler(OnStartButtonClick);
+            menu.Controls.Add(startButton);
+            Controls.Add(menu);
+            
             InitializateInterior();
             
         }
@@ -49,6 +66,8 @@ namespace Game
                 new Interior(game, new Point(115, 528), new Size(63, 43),TypeInterior.Table),
                 new Interior(game, new Point(272, 528), new Size(63, 43),TypeInterior.Table),
                 new Interior(game, new Point(494, 528), new Size(63, 43),TypeInterior.Table),
+                new Interior(game, new Point(115+546, 528), new Size(63, 43),TypeInterior.Table),
+                new Interior(game, new Point(115+707, 528), new Size(63, 43),TypeInterior.Table),
                 //табуретки
                 new Interior(game, new Point(134, 505), new Size(25, 15),TypeInterior.Chair),
                 new Interior(game, new Point(87, 543), new Size(25, 15),TypeInterior.Chair),
@@ -64,11 +83,25 @@ namespace Game
                 new Interior(game, new Point(87 + 379, 543), new Size(25, 15),TypeInterior.Chair),
                 new Interior(game, new Point(134 + 379, 580), new Size(25, 15),TypeInterior.Chair),
                 new Interior(game, new Point(181 + 379, 543), new Size(25, 15),TypeInterior.Chair),
+                //
+                new Interior(game, new Point(134 + 546, 505), new Size(25, 15),TypeInterior.Chair),
+                new Interior(game, new Point(87 + 546, 543), new Size(25, 15),TypeInterior.Chair),
+                new Interior(game, new Point(134 + 546, 580), new Size(25, 15),TypeInterior.Chair),
+                new Interior(game, new Point(181 + 546, 543), new Size(25, 15),TypeInterior.Chair),
+                //
+                new Interior(game, new Point(134 + 707, 505), new Size(25, 15),TypeInterior.Chair),
+                new Interior(game, new Point(87 + 707, 543), new Size(25, 15),TypeInterior.Chair),
+                new Interior(game, new Point(134 + 707, 580), new Size(25, 15),TypeInterior.Chair),
+                new Interior(game, new Point(181 + 707, 543), new Size(25, 15),TypeInterior.Chair),
                 //стенки бара
                 new Interior(game, new Point(369, 215), new Size(24, 160),TypeInterior.Wall),
                 new Interior(game, new Point(369, 344), new Size(243, 30),TypeInterior.Wall),
                 new Interior(game, new Point(369, 108), new Size(24, 75),TypeInterior.Wall),
                 new Interior(game, new Point(394, 105), new Size(217, 33),TypeInterior.Wall),
+                //стенки кухни
+                new Interior(game, new Point(872, 112), new Size(92, 34),TypeInterior.Wall),
+                new Interior(game, new Point(964, 112), new Size(31, 125),TypeInterior.Wall),
+                new Interior(game, new Point(872, 203), new Size(92, 34),TypeInterior.Wall),
                 //табуретки у бара
                 new Interior(game, new Point(328, 146), new Size(31, 22),TypeInterior.Chair),
                 new Interior(game, new Point(328, 233), new Size(31, 22),TypeInterior.Chair),
@@ -81,22 +114,30 @@ namespace Game
                 //стены
                 new Interior(game, new Point(0, 0), new Size(36, 653),TypeInterior.Wall),
                 new Interior(game, new Point(0, 652), new Size(1040, 52),TypeInterior.Wall),
-                new Interior(game, new Point(0, 0), new Size(1040, 127),TypeInterior.Wall),
+                new Interior(game, new Point(0, 0), new Size(1040, 134),TypeInterior.Wall),
                 new Interior(game, new Point(995, 0), new Size(45, 704),TypeInterior.Wall),
-                new Interior(game, new Point(611, 315), new Size(64, 351),TypeInterior.Wall),
-                new Interior(game, new Point(611, 120), new Size(65, 118),TypeInterior.Wall),
+                new Interior(game, new Point(611, 120), new Size(65, 125),TypeInterior.Wall),
+                new Interior(game, new Point(611, 315), new Size(383, 100),TypeInterior.Wall),
                 //печки
-                new Interior(game, new Point(738, 107), new Size(64, 34),TypeInterior.Furnace),
-                new Interior(game, new Point(847, 107), new Size(64, 34),TypeInterior.Furnace),
+                new Interior(game, new Point(709, 107), new Size(64, 34),TypeInterior.Furnace),
+                new Interior(game, new Point(789, 107), new Size(64, 34),TypeInterior.Furnace),
                 //бочки
-                new Interior(game, new Point(39, 608), new Size(60, 44),TypeInterior.Barrels),
+                new Interior(game, new Point(41, 621), new Size(58, 31),TypeInterior.Barrels),
                 //пианино
                 new Interior(game, new Point(224, 108), new Size(64, 46),TypeInterior.Piano),
                 new Interior(game, new Point(245, 166), new Size(22, 6),TypeInterior.Chair),
-                //шкав в баре
-                new Interior(game, new Point(583, 447), new Size(24, 47),TypeInterior.Wardrobe),
-                //сундук
-                new Interior(game, new Point(577, 161), new Size(31, 52),TypeInterior.Chest),
+                //сундуки
+                new Interior(game, new Point(969, 413), new Size(24, 47),TypeInterior.Chest),
+                new Interior(game, new Point(969, 462), new Size(24, 47),TypeInterior.Chest),
+                new Interior(game, new Point(969, 512), new Size(24, 47),TypeInterior.Chest),
+                //шкаф в баре
+                new Interior(game, new Point(577, 161), new Size(31, 52),TypeInterior.Wardrobe),
+                //тумбочка
+                new Interior(game,new Point(643,401),new Size(64,28),TypeInterior.Wardrobe),
+                new Interior(game,new Point(717,401),new Size(64,28),TypeInterior.Wardrobe),
+                new Interior(game,new Point(792,401),new Size(64,28),TypeInterior.Wardrobe),
+                //шкафчик
+                new Interior(game,new Point(901,398),new Size(32,30),TypeInterior.Wardrobe)
             });
         }
     }

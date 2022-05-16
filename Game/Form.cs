@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Game.Model;
@@ -54,8 +55,18 @@ namespace Game
         }
         private void OnPaint(object sender, PaintEventArgs e)
         { 
-            PaintMatrix(e.Graphics);
+            PaintClock(e.Graphics);
+            //PaintMatrix(e.Graphics);
             PlayerAnimation(e.Graphics);
+            if(game.Player.Position.Y <=328)
+                e.Graphics.DrawImage(Sprites.Interior.Wall,new Point(611,278));
+            if(game.Player.Position.Y <=650)
+                e.Graphics.DrawImage(Sprites.Interior.Barrels,new Point(40,608));
+            if(game.Player.Position.Y <=161)
+                e.Graphics.DrawImage(Sprites.Interior.Wardrobe,new Point(577,127));
+            if(game.Player.Position.Y <=344)
+                e.Graphics.DrawImage(Sprites.Interior.Cup,new Point(424,336));
+
             PaintTabBar(e.Graphics);
         }
 
@@ -63,15 +74,36 @@ namespace Game
         {
             g.DrawImage(Sprites.Other.TabBar,new Point(297,633));
         }
+
+        private void PaintClock(Graphics g)
+        {
+            switch (time/3%4)
+            {
+                case 0:
+                    g.DrawImage(Sprites.Interior.Clock1,new Point(62,92));
+                    break;
+                case 1:
+                    g.DrawImage(Sprites.Interior.Clock2,new Point(62,92));
+                    break;
+                case 2:
+                    g.DrawImage(Sprites.Interior.Clock3,new Point(62,92));
+                    break;
+                case 3:
+                    g.DrawImage(Sprites.Interior.Clock2,new Point(62,92));
+                    break;
+            }
+        }
         private void PaintMatrix(Graphics g)
         {
-            var brushes = Brushes.Chartreuse;
-            if(game.Player.GetNeighbourInRadius(20,TypeInterior.Bench)!=null)
-                brushes = Brushes.Cyan;
             foreach (var e in game.Objects)
             {
-                g.FillRectangle(brushes,new Rectangle(e.Position,e.Size));
+                g.FillRectangle(Brushes.Lime, new Rectangle(e.Position,e.Size));
             }
+        }
+
+        private void OnStartButtonClick(object sender, EventArgs e)
+        {
+            menu.Hide();
         }
     }
 }

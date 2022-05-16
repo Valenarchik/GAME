@@ -48,10 +48,10 @@ namespace Game
             }
         }
         
-        private void DrawAnimation (Graphics g, GameEntity gameEntity,params Image[] sprites)
+        private void DrawAnimation (Graphics g, GameObject gameObject, params Image[] sprites)
         {
             if (sprites is null) return;
-            g.DrawImage(sprites[time % sprites.Length], gameEntity.Position + new Size(-4,-42));
+            g.DrawImage(sprites[time % sprites.Length], gameObject.Position + new Size(-4,-42));
         }
     }
 }
