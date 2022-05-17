@@ -7,11 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Update="PlayerAnimation.cs">
+    <Compile Update="Animation.cs">
       <DependentUpon>Form.cs</DependentUpon>
     </Compile>
-    <Compile Update="Model\Directions.cs">
+    <Compile Update="Model\Direction.cs">
       <DependentUpon>GameEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Model\MapSell.cs">
+      <DependentUpon>Game.cs</DependentUpon>
     </Compile>
   </ItemGroup>
 

@@ -6,7 +6,7 @@ namespace Game.Model
     public abstract class GameEntity : GameObject
     {
         public int Speed { get; set; }
-        public Directions Direction { get; private set; }
+        public Direction Direction { get; private set; }
         public bool IsMoving { get; private set; }
 
         protected GameEntity(Game game, Point position, int speed, Size size)
@@ -15,37 +15,37 @@ namespace Game.Model
             Speed = speed;
         }
 
-        public virtual void Move(Directions direction)
+        public virtual void Move(Direction direction)
         {
             var offset = new Size(0, 0);
             switch (direction)
             {
-                case Directions.Up:
+                case Direction.Up:
                     offset = new Size(0, -Speed);
-                    Direction = Directions.Up;
+                    Direction = Direction.Up;
                     break;
-                case Directions.Down:
+                case Direction.Down:
                     offset = new Size(0, Speed);
-                    Direction = Directions.Down;
+                    Direction = Direction.Down;
                     break;
-                case Directions.Right:
+                case Direction.Right:
                     offset = new Size(Speed, 0);
-                    Direction = Directions.Right;
+                    Direction = Direction.Right;
                     break;
-                case Directions.Left:
+                case Direction.Left:
                     offset = new Size(-Speed, 0);
-                    Direction = Directions.Left;
+                    Direction = Direction.Left;
                     break;
             }
 
             Position += offset;
-            if (!IsInsideMap() || Game.Objects
-                    .Where(x=>!x.Equals(this))
-                    .Any(IsCollision))
-                Position -= offset;
             IsMoving = true;
+            if (!IsInsideMap() || IsCollision())
+            {
+                Position -= offset;
+                IsMoving = false;
+            }
         }
-
         public void StopMove() => IsMoving = false;
     }
 }

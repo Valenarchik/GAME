@@ -1,6 +1,6 @@
 ﻿namespace Game.Model
 {
-    public enum Directions
+    public enum Direction
     {
         Up = 0,
         Right = 1,

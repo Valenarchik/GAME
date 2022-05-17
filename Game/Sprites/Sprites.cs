@@ -6,123 +6,103 @@ namespace Game
     public class Sprites
     {
         private static readonly string spritesFolder =
-            Path.Combine(
-                new DirectoryInfo(Directory.GetCurrentDirectory()).Parent?.Parent?.Parent?.FullName ?? string.Empty, "Sprites");
+            Path.Combine
+            (
+                new DirectoryInfo
+                (
+                    Directory.GetCurrentDirectory()
+                ).Parent?.Parent?.Parent?.FullName ?? string.Empty,
+                "Sprites"
+            );
 
-        public class Chef
+        public abstract class Entity
         {
-            public static readonly Bitmap MoveDown1 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Chef", "Move", "Move Down 1.png")));
+            protected Bitmap MoveDown1;
+            protected Bitmap MoveDown2;
+            protected Bitmap MoveLeft1;
+            protected Bitmap MoveLeft2;
+            protected Bitmap MoveRight1;
+            protected Bitmap MoveRight2;
+            protected Bitmap MoveUp1;
+            protected Bitmap MoveUp2;
+            protected Bitmap StandUp;
+            protected Bitmap StandDown;
+            protected Bitmap StandLeft;
+            protected Bitmap StandRight;
 
-            public static readonly Bitmap MoveDown2 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Chef", "Move", "Move Down 2.png")));
+            public Image[] MoveUpAnimation => new Image[] {MoveUp1, StandUp, MoveUp2, StandUp};
+            public Image[] MoveDownAnimation => new Image[] {MoveDown1, StandDown, MoveDown2, StandDown};
+            public Image[] MoveRightAnimation => new Image[] {MoveRight1, StandRight, MoveRight2, StandRight};
+            public Image[] MoveLeftAnimation => new Image[] {MoveLeft1, StandLeft, MoveLeft2, StandLeft};
 
-            public static readonly Bitmap MoveLeft1 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Chef", "Move", "Move Left 1.png")));
-
-            public static readonly Bitmap MoveLeft2 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Chef", "Move", "Move Left 2.png")));
-
-            public static readonly Bitmap MoveRight1 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Chef", "Move", "Move Right 1.png")));
-
-            public static readonly Bitmap MoveRight2 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Chef", "Move", "Move Right 2.png")));
-
-            public static readonly Bitmap MoveUp1 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Chef", "Move", "Move Up 1.png")));
-
-            public static readonly Bitmap MoveUp2 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Chef", "Move", "Move Up 2.png")));
-
-            public static readonly Bitmap StandUp =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Chef", "Stand", "Stand Up.png")));
-
-            public static readonly Bitmap StandDown =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Chef", "Stand", "Stand Down.png")));
-
-            public static readonly Bitmap StandLeft =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Chef", "Stand", "Stand Left.png")));
-
-            public static readonly Bitmap StandRight =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "Chef", "Stand", "Stand Right.png")));
+            public Image[] StandUpAnimation => new Image[] {StandUp};
+            public Image[] StandDownAnimation => new Image[] {StandDown};
+            public Image[] StandRightAnimation => new Image[] {StandRight};
+            public Image[] StandLeftAnimation => new Image[] {StandLeft};
+        }
+        public class Chef: Entity
+        {
+            public Chef()
+            {
+                var spritesFolder = Path.Combine(Sprites.spritesFolder, "Chef");
+                var move = Path.Combine(spritesFolder, "Move");
+                var stand = Path.Combine(spritesFolder, "Stand");
+                MoveDown1 = new Bitmap(Image.FromFile(Path.Combine(move, "Move Down 1.png")));
+                MoveDown2 = new Bitmap(Image.FromFile(Path.Combine(move, "Move Down 2.png")));
+                MoveLeft1 = new Bitmap(Image.FromFile(Path.Combine(move, "Move Left 1.png")));
+                MoveLeft2 = new Bitmap(Image.FromFile(Path.Combine(move, "Move Left 2.png")));
+                MoveRight1 = new Bitmap(Image.FromFile(Path.Combine(move, "Move Right 1.png")));
+                MoveRight2 = new Bitmap(Image.FromFile(Path.Combine(move, "Move Right 2.png")));
+                MoveUp1 = new Bitmap(Image.FromFile(Path.Combine(move, "Move Up 1.png")));
+                MoveUp2 = new Bitmap(Image.FromFile(Path.Combine(move, "Move Up 2.png")));
+                StandUp = new Bitmap(Image.FromFile(Path.Combine(stand, "Stand Up.png")));
+                StandDown = new Bitmap(Image.FromFile(Path.Combine(stand, "Stand Down.png")));
+                StandLeft = new Bitmap(Image.FromFile(Path.Combine(stand, "Stand Left.png")));
+                StandRight = new Bitmap(Image.FromFile(Path.Combine(stand, "Stand Right.png")));
+            }
         }
 
-        public class VisitorOne
+        public class VisitorOne : Entity
         {
-            public static readonly Bitmap MoveDown1 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor One", "Move", "Move Down 1.png")));
-
-            public static readonly Bitmap MoveDown2 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor One", "Move", "Move Down 2.png")));
-
-            public static readonly Bitmap MoveLeft1 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor One", "Move", "Move Left 1.png")));
-
-            public static readonly Bitmap MoveLeft2 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor One", "Move", "Move Left 2.png")));
-
-            public static readonly Bitmap MoveRight1 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor One", "Move", "Move Right 1.png")));
-
-            public static readonly Bitmap MoveRight2 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor One", "Move", "Move Right 2.png")));
-
-            public static readonly Bitmap MoveUp1 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor One", "Move", "Move Up 1.png")));
-
-            public static readonly Bitmap MoveUp2 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor One", "Move", "Move Up 2.png")));
-
-            public static readonly Bitmap StandUp =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor One", "Stand", "Stand Up.png")));
-
-            public static readonly Bitmap StandDown =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor One", "Stand", "Stand Down.png")));
-
-            public static readonly Bitmap StandLeft =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor One", "Stand", "Stand Left.png")));
-
-            public static readonly Bitmap StandRight =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor One", "Stand", "Stand Right.png")));
+            public VisitorOne()
+            {
+                var spritesFolder = Path.Combine(Sprites.spritesFolder, "NPS", "Visitor One");
+                var move = Path.Combine(spritesFolder, "Move");
+                var stand = Path.Combine(spritesFolder, "Stand");
+                MoveDown1 = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, move, "Move Down 1.png")));
+                MoveDown2 = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, move, "Move Down 2.png")));
+                MoveLeft1 = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, move, "Move Left 1.png")));
+                MoveLeft2 = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, move, "Move Left 2.png")));
+                MoveRight1 = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, move, "Move Right 1.png")));
+                MoveRight2 = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, move, "Move Right 2.png")));
+                MoveUp1 = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, move, "Move Up 1.png")));
+                MoveUp2 = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, move, "Move Up 2.png")));
+                StandUp = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, stand, "Stand Up.png")));
+                StandDown = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, stand, "Stand Down.png")));
+                StandLeft = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, stand, "Stand Left.png")));
+                StandRight = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, stand, "Stand Right.png")));
+            }
         }
-        public class VisitorTwo
+        public class VisitorTwo: Entity
         {
-            public static readonly Bitmap MoveDown1 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor Two", "Move", "Move Down 1.png")));
-
-            public static readonly Bitmap MoveDown2 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor Two", "Move", "Move Down 2.png")));
-
-            public static readonly Bitmap MoveLeft1 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor Two", "Move", "Move Left 1.png")));
-
-            public static readonly Bitmap MoveLeft2 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor Two", "Move", "Move Left 2.png")));
-
-            public static readonly Bitmap MoveRight1 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor Two", "Move", "Move Right 1.png")));
-
-            public static readonly Bitmap MoveRight2 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor Two", "Move", "Move Right 2.png")));
-
-            public static readonly Bitmap MoveUp1 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor Two", "Move", "Move Up 1.png")));
-
-            public static readonly Bitmap MoveUp2 =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor Two", "Move", "Move Up 2.png")));
-
-            public static readonly Bitmap StandUp =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor Two", "Stand", "Stand Up.png")));
-
-            public static readonly Bitmap StandDown =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor Two", "Stand", "Stand Down.png")));
-
-            public static readonly Bitmap StandLeft =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor Two", "Stand", "Stand Left.png")));
-
-            public static readonly Bitmap StandRight =
-                new Bitmap(Image.FromFile(Path.Combine(spritesFolder, "NPS", "Visitor Two", "Stand", "Stand Right.png")));
+            public VisitorTwo()
+            {
+                var spritesFolder = Path.Combine(Sprites.spritesFolder, "NPS", "Visitor Two");
+                var move = Path.Combine(spritesFolder, "Move");
+                var stand = Path.Combine(spritesFolder, "Stand");
+                MoveDown1 = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, move, "Move Down 1.png")));
+                MoveDown2 = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, move, "Move Down 2.png")));
+                MoveLeft1 = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, move, "Move Left 1.png")));
+                MoveLeft2 = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, move, "Move Left 2.png")));
+                MoveRight1 = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, move, "Move Right 1.png")));
+                MoveRight2 = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, move, "Move Right 2.png")));
+                MoveUp1 = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, move, "Move Up 1.png")));
+                MoveUp2 = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, move, "Move Up 2.png")));
+                StandUp = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, stand, "Stand Up.png")));
+                StandDown = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, stand, "Stand Down.png")));
+                StandLeft = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, stand, "Stand Left.png")));
+                StandRight = new Bitmap(Image.FromFile(Path.Combine(spritesFolder, stand, "Stand Right.png")));
+            }
         }
         
         public class Other

@@ -9,6 +9,7 @@ namespace Game.Model
         public Interior(Game game, Point position, Size size,TypeInterior type)
             : base(game, position, size)
         {
+            Sell = MapSell.Interior;
             Type = type;
         }
 

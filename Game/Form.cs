@@ -10,40 +10,54 @@ namespace Game
     {
         private Model.Game game;
         private int time;
+        private Sprites.Chef chefSprites = new Sprites.Chef();
+        private Sprites.VisitorOne visitorOneSprites = new Sprites.VisitorOne();
+        private Sprites.VisitorTwo visitorTwoSprites = new Sprites.VisitorTwo();
+        
+        private Timer timer = new Timer() {Interval = 200};
+        
         public MyForm()
         {
             InitializeComponent();
             DoubleBuffered = true;
-            var timer = new Timer();
-            timer.Interval += 50;
-            timer.Tick += (sender, args) =>
-            {
-                if (game.Player.IsMoving)
-                    game.Player.Move(game.Player.Direction);
-                unchecked {time++;}
-                Invalidate();
-            };
-            timer.Start();
+            timer.Tick += OnTick;
             Paint += OnPaint;
             KeyDown += OnPressDown;
             KeyUp += OnPressUp;
+            timer.Start();
         }
 
+        private void OnTick(object sender, EventArgs args)
+        {
+            if (game.Player.IsMoving)
+                game.Player.Move(game.Player.Direction);
+            unchecked {time++;}
+
+            foreach (var visitor in game.Visitors)
+            {
+                if(visitor.Way.Count != 0)
+                    visitor.Move(visitor.Way.First());
+                else
+                    visitor.StopMove();
+            }
+            Invalidate();
+        }
+        
         private void OnPressDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
                 case Keys.W:
-                    game.Player.Move(Directions.Up);
+                    game.Player.Move(Direction.Up);
                     break;
                 case Keys.A:
-                    game.Player.Move(Directions.Left);
+                    game.Player.Move(Direction.Left);
                     break;
                 case Keys.S:
-                    game.Player.Move(Directions.Down);
+                    game.Player.Move(Direction.Down);
                     break;
                 case Keys.D:
-                    game.Player.Move(Directions.Right);
+                    game.Player.Move(Direction.Right);
                     break;
             }
             Invalidate();
@@ -57,22 +71,17 @@ namespace Game
         { 
             PaintClock(e.Graphics);
             //PaintMatrix(e.Graphics);
-            PlayerAnimation(e.Graphics);
-            if(game.Player.Position.Y <=328)
-                e.Graphics.DrawImage(Sprites.Interior.Wall,new Point(611,278));
-            if(game.Player.Position.Y <=650)
-                e.Graphics.DrawImage(Sprites.Interior.Barrels,new Point(40,608));
-            if(game.Player.Position.Y <=161)
-                e.Graphics.DrawImage(Sprites.Interior.Wardrobe,new Point(577,127));
-            if(game.Player.Position.Y <=344)
-                e.Graphics.DrawImage(Sprites.Interior.Cup,new Point(424,336));
-
+            foreach (var visitor in game.Visitors.Where(x=>x.Position.Y <= game.Player.Position.Y))
+                EntityAnimation(e.Graphics,visitor,visitorOneSprites);
+            EntityAnimation(e.Graphics,game.Player, chefSprites);
+            foreach (var visitor in game.Visitors.Where(x=>x.Position.Y > game.Player.Position.Y))
+                EntityAnimation(e.Graphics,visitor,visitorOneSprites);
             PaintTabBar(e.Graphics);
         }
 
         private void PaintTabBar(Graphics g)
         {
-            g.DrawImage(Sprites.Other.TabBar,new Point(297,633));
+            g.DrawImage(Sprites.Other.TabBar,new Point(481,636));
         }
 
         private void PaintClock(Graphics g)
@@ -95,12 +104,21 @@ namespace Game
         }
         private void PaintMatrix(Graphics g)
         {
-            foreach (var e in game.Objects)
-            {
-                g.FillRectangle(Brushes.Lime, new Rectangle(e.Position,e.Size));
-            }
+            foreach (var o in game.Objects)
+                g.FillRectangle(Brushes.Chartreuse, new Rectangle(o.Position,o.Size));
         }
 
+        private void PaintInterior(Graphics g)
+        {
+            if(game.Player.Position.Y <=328)
+                g.DrawImage(Sprites.Interior.Wall,new Point(611,278));
+            if(game.Player.Position.Y <=650)
+                g.DrawImage(Sprites.Interior.Barrels,new Point(40,608));
+            if(game.Player.Position.Y <=161)
+                g.DrawImage(Sprites.Interior.Wardrobe,new Point(577,127));
+            if(game.Player.Position.Y <=344)
+                g.DrawImage(Sprites.Interior.Cup,new Point(424,336));
+        }
         private void OnStartButtonClick(object sender, EventArgs e)
         {
             menu.Hide();

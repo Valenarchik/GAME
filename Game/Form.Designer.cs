@@ -7,18 +7,10 @@ namespace Game
 {
     sealed partial class MyForm
     {
-        private System.ComponentModel.IContainer components = null;
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         private Panel menu;
         private Button startButton;
+        private Button addVisitorButton;
+        private Button deleteVisitorButton;
         private void InitializeComponent()
         {
             Name = "Pizza Master";
@@ -27,21 +19,47 @@ namespace Game
             game = new Model.Game(1040,704);
             MaximizeBox = false;
             FormBorderStyle = FormBorderStyle.FixedDialog;
-            ClientSize = game.GameSize;
+            ClientSize = new Size(game.Width,game.Height);
             KeyPreview = true;
-            //
             menu = new Panel() {Location = new Point(0, 0),
-                Size = game.GameSize,
+                Size = ClientSize,
                 BackColor = Color.Black};
             startButton = new Button(){Text = "Старт",
                 ForeColor = Color.White,
-                Size = game.GameSize/4,
+                Size = ClientSize/4,
                 Font = new Font(FontFamily.GenericMonospace,20 )};
-            startButton.Location = new Point(game.GameSize / 2 - startButton.Size / 2);
+            startButton.Location = new Point(ClientSize / 2 - startButton.Size / 2);
             startButton.Click += new EventHandler(OnStartButtonClick);
             menu.Controls.Add(startButton);
             Controls.Add(menu);
+
+            addVisitorButton = new Button()
+            {
+                Location = new Point(50, 50),
+                Size = new Size(120, 60),
+                Text = "Добавить посетителя",
+                BackColor = Color.Black,
+                ForeColor = Color.Azure,
+            };
+            addVisitorButton.Click += (_, _) =>
+            {
+                game.Add(new Visitor(game, new Point(415, 685), 6, new Size(28, 20)));
+            };
+            Controls.Add(addVisitorButton);
             
+            deleteVisitorButton = new Button()
+            {
+                Location = new Point(220, 50),
+                Size = new Size(120, 60),
+                Text = "Удалить посетителя",
+                BackColor = Color.Black,
+                ForeColor = Color.Azure,
+            };
+            deleteVisitorButton.Click += (_, _) =>
+            {
+                game.Objects.Remove(game.Visitors.Dequeue());
+            };
+            Controls.Add(deleteVisitorButton);
             InitializateInterior();
             
         }
@@ -49,6 +67,7 @@ namespace Game
         private void InitializateInterior()
         {
             game.Add(new Player(game, new Point(500, 230), 3, new Size(28, 20)));
+           
             game.AddRange(new[]
             {
                 //квадратные столы
@@ -113,7 +132,8 @@ namespace Game
                 new Interior(game, new Point(62, 148), new Size(19, 17),TypeInterior.Clock),
                 //стены
                 new Interior(game, new Point(0, 0), new Size(36, 653),TypeInterior.Wall),
-                new Interior(game, new Point(0, 652), new Size(1040, 52),TypeInterior.Wall),
+                new Interior(game, new Point(0, 652), new Size(376, 52),TypeInterior.Wall),
+                new Interior(game, new Point(450, 652), new Size(590, 52),TypeInterior.Wall),
                 new Interior(game, new Point(0, 0), new Size(1040, 134),TypeInterior.Wall),
                 new Interior(game, new Point(995, 0), new Size(45, 704),TypeInterior.Wall),
                 new Interior(game, new Point(611, 120), new Size(65, 125),TypeInterior.Wall),
