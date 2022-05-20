@@ -1,47 +1,61 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Linq;
 
 namespace Game.Model
 {
     public class Player:GameEntity
     {
-        public readonly Ingredients[] Inventory;
+        public readonly Pizza[] Inventory = new Pizza[10];
+        public const int ActivationRadius = 65;
 
         public Player(Game game, Point position, int speed, Size size) : base(game, position, speed, size)
         {
-            Inventory = new Ingredients[10];
-            Sell = MapSell.Player;
         }
         
 
-        public Interior GetNeighbourInRadius(double radius, params TypeInterior[] types)
+        public GameObject GetNeighbourInRadius(double radius, params Type[] types)
         {
-            if (types == null)
-                return null;
+            if (types == null) return null;
             var min = double.MaxValue;
-            Interior result = null;
+            GameObject result = null;
             foreach (var type in types)
-            foreach (var interior in Game.Interiors[type])
+            foreach (var obj in Game.Objects)
             {
-                if (Game.InZone(interior, this, radius))
-                {
-                    var distance = Game.GetDistance(interior.Centre, Centre);
-                    if (!(distance < min)) continue;
-                    min = distance;
-                    result = interior;
-                }
+                if(obj.GetType() != type) continue;
+                if (!Game.InZone(obj, this, radius)) continue;
+                var distance = Game.GetDistance(obj.Centre, Centre);
+                if (distance >= min) continue;
+                min = distance;
+                result = obj;
             }
-
             return result;
         }
-    }
+        
+        public void AcceptOrder()
+        {
+            var visitor = Game.Visitors.FirstOrDefault(x=>!x.OrderAccepted);
+            if(visitor is null || !visitor.OrderIsActivated) return;
+            if (Game.InZone(this,visitor,ActivationRadius))
+                visitor.OrderAccepted = true;
+        }
 
-    public enum Ingredients
-    {
-        Empty,
-        Dough,
-        Tomato,
-        Pepperoni,
-        Cheese 
+        public void CompleteOrder()
+        {
+            var visitor = Game.Visitors.FirstOrDefault(x => x.OrderAccepted && !x.OrderIsCompleted);
+            if(visitor is null) return;
+            // for (int i = 0; i < Inventory.Length; i++)
+            // {
+            //     if(i==Inventory.Length - 1) return;
+            //     if(Inventory[i] != visitor.WantPizza) continue;
+            //     Inventory[i] = Pizza.Empty;
+            //     break;
+            // }
+            if (Game.InZone(this,visitor,ActivationRadius))
+            {
+                visitor.OrderIsCompleted = true;
+                visitor.GoToExit();
+            }
+        }
     }
 }

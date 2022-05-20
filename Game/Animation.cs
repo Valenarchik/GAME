@@ -7,7 +7,9 @@ namespace Game
 {
     public partial class MyForm : Form
     {
-        private void EntityAnimation(Graphics g, GameEntity entity, Sprites.Entity sprites)
+        private readonly Size mixingEntityAnimations = new(Sprites.Sprites.EntitySpriteSize.Width*10/45,
+            Sprites.Sprites.EntitySpriteSize.Height*7/10);
+        private void EntityAnimation(Graphics g, GameEntity entity, Sprites.EntitySprites sprites)
         {
             if (entity.IsMoving)
                 switch (entity.Direction)
@@ -47,9 +49,8 @@ namespace Game
         private void DrawAnimation (Graphics g, GameObject gameObject, params Image[] sprites)
         {
             if (sprites is null) return;
-            var currentSprite = sprites[time % sprites.Length];
-            var size = new Size(currentSprite.Size.Width*10/45,currentSprite.Size.Height*7/10);
-            g.DrawImage(currentSprite, gameObject.Position-size);
+            var currentSprite = sprites[numberSprite % sprites.Length];
+            g.DrawImage(currentSprite, gameObject.Position-mixingEntityAnimations);
         }
     }
 }

@@ -1,29 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms.VisualStyles;
 
 namespace Game.Model
 {
     public class Game
-    { 
-        public List<GameObject> Objects => new();
-        public Dictionary<TypeInterior, List<Interior>> Interiors => new();
+    {
+        public readonly List<GameObject> Objects = new();
+        public readonly Dictionary<TypeInterior, List<Interior>> Interiors  = new();
         public Player Player { get; private set; }
-        
         public readonly Queue<Visitor> Visitors = new();
-        public readonly int MaxCountVisitors = 3;
-
-        public readonly Point MeetingPoint = new(486, 386);
-        
-        public readonly MapSell[,] Map;
+        public static readonly int MaxCountVisitors = 3;
+        public readonly Size GameSize;
+        public readonly Random Random = new();
             
-        public int Width => Map.GetLength(0);
-        public int Height => Map.GetLength(1);
+        public int Width => GameSize.Width;
+        public int Height => GameSize.Height;
 
         public Game(int width = 1000, int height = 500)
         {
-            Map = new MapSell[width, height];
+            GameSize = new Size(width,height);
         }
 
         public void Add(GameObject gameObject)
@@ -32,18 +28,15 @@ namespace Game.Model
             {
                 case Player player:
                     Player = player;
-                    //AddToMap(player,MapSell.Player);
                     break;
                 case Visitor visitor:
                     Visitors.Enqueue(visitor);
-                    //AddToMap(visitor,MapSell.Visitor);
                     break;
                 case Interior interior:
                 {
                     if (!Interiors.ContainsKey(interior.Type))
                         Interiors[interior.Type] = new List<Interior>();
                     Interiors[interior.Type].Add(interior);
-                    //AddToMap(gameObject,MapSell.Interior);
                     break;
                 }
             }
@@ -66,16 +59,6 @@ namespace Game.Model
         
         public static bool SegmentsIntersected(float r1Min, float r1Max, float r2Min, float r2Max) =>
             Math.Min(r1Max, r2Max) >= Math.Max(r1Min, r2Min);
-        public void AddToMap(GameObject gameObject, MapSell sell)
-        {
-            var right = Math.Max(gameObject.Position.X, 0);
-            var left = Math.Min(gameObject.Position.X + gameObject.Size.Width, Width);
-            var up = Math.Max(gameObject.Position.Y, 0);
-            var button = Math.Min(gameObject.Position.Y + gameObject.Size.Height, Height);
-            for (var i = right; i < left; i++)
-            for (var j = up; j < button; j++)
-                Map[i, j] = sell;
-        }
         public static Direction ConvertOffsetToDirection(Size offset)
         {
             return offset.Width switch
@@ -84,7 +67,7 @@ namespace Game.Model
                 > 0 when offset.Height == 0 => Direction.Right,
                 0 when offset.Height < 0 => Direction.Up,
                 0 when offset.Height > 0 => Direction.Down,
-                _ => throw new ArgumentException()
+                _ => throw new ArgumentOutOfRangeException()
             };
         }
     }

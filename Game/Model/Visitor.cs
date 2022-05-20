@@ -7,41 +7,74 @@ namespace Game.Model
 {
     public class Visitor : GameEntity
     {
-        public TypeVisitor TypeVisitor { get; set; }
-        public bool OrderAccepted { get; set; } = false;
-        public bool OrderIsCompleted { get; set; } = false;
-        public LinkedList<Direction> Way { get; private set; } = new();
+        public readonly TypeVisitor TypeVisitor;
+        public readonly Pizza WantPizza;
+        public bool OrderIsActivated { get; private set; }
+        public bool OrderAccepted { get; set; }
+        public bool OrderIsCompleted { get; set; }
+        private bool iGoToBar;
+        private bool iGoToExit;
+        public bool IOut { get; set; }
+
+        public readonly LinkedList<Direction> Track = new();
         public override void Move(Direction direction)
         {
             base.Move(direction);
             if(IsMoving)
-                Way.RemoveFirst();
+                Track.RemoveFirst();
+            if (Track.Count != 0) return;
+            if(iGoToBar)
+            {
+                OrderIsActivated = true;
+                iGoToBar = false;
+            };
+            if (iGoToExit)
+            {
+                IOut = true;
+                iGoToExit = false;
+            }
         }
 
         public Visitor(Game game, Point position, int speed, Size size) : base(game, position, speed, size)
         {
-            Sell = MapSell.Visitor;
-            var point1 = new Point(520, 475);
-            var point2 = new Point(520, 380);
-            FindWay(position,point1);
-            FindWay(point1,point2);
+            TypeVisitor = (TypeVisitor) Game.Random.Next(0, 2);
+            WantPizza = (Pizza) Game.Random.Next(0, 4);
         }
 
-        public void FindWay(Point start,Point end)
+        public void GoToBar()
         {
-            if (!Game.IsInsideMap(end))
+            FindTrack(Position, new Point(419, 460), new Point(515, 460), new Point(515, 380));
+            iGoToBar = true;
+        }
+
+        public void GoToExit()
+        {
+            FindTrack(new Point(515, 380), new Point(456, 380), new Point(456, 432), new Point(379, 432), new Point(379, 684));
+            iGoToExit = true;
+        }
+        
+        private void FindTrack(params Point[] track)
+        {
+            if(track is null || track.Length < 2)
                 return;
+            for (var i = 1; i < track.Length; i++)
+                FindTrack(track[i-1],track[i]);
+            
+        }
+        private void FindTrack(Point start,Point end)
+        {
+            if (!Game.IsInsideMap(end)) return;
             var currentY = start.Y;
             while (Math.Abs(currentY - end.Y) > Speed)
             {
                 if(currentY > end.Y)
                 {
-                    Way.AddLast(Direction.Up);
+                    Track.AddLast(Direction.Up);
                     currentY -= Speed;
                 }
                 else
                 {
-                    Way.AddLast(Direction.Down);
+                    Track.AddLast(Direction.Down);
                     currentY += Speed;
                 }
             }
@@ -51,21 +84,17 @@ namespace Game.Model
             {
                 if(currentX > end.X)
                 {
-                    Way.AddLast(Direction.Left);
+                    Track.AddLast(Direction.Left);
                     currentX -= Speed;
                 }
                 else
                 {
-                    Way.AddLast(Direction.Right);
+                    Track.AddLast(Direction.Right);
                     currentX += Speed;
                 }
             }
         }
     }
 
-    public enum TypeVisitor
-    {
-        Red,
-        Green
-    }
+
 }

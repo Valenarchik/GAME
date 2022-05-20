@@ -1,21 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using Game.Model;
+using Game.Sprites;
+using Interior = Game.Model.Interior;
+
 namespace Game
 {
     sealed partial class MyForm
     {
         private Panel menu;
-        private Button startButton;
-        private Button addVisitorButton;
-        private Button deleteVisitorButton;
+
+        private Button startButton = new Button()
+        {
+            Text = "Старт",
+            ForeColor = Color.White,
+            AutoSize = true,
+            Font = new Font(FontFamily.GenericMonospace, 20),
+        };
+        private Button addVisitorButton = new Button()
+        {
+            Location = new Point(50, 50),
+            Size = new Size(120, 60),
+            Text = "Добавить посетителя",
+            BackColor = Color.Black,
+            ForeColor = Color.Azure,
+        };
+        private Button deleteVisitorButton = new Button()
+        {
+            Location = new Point(220, 50),
+            Size = new Size(120, 60),
+            Text = "Удалить посетителя",
+            BackColor = Color.Black,
+            ForeColor = Color.Azure,
+        };
+        private Button wayBackButton = new Button()
+        {
+            Location = new Point(390, 50),
+            Size = new Size(120, 60),
+            Text = "Вернуть посетителя",
+            BackColor = Color.Black,
+            ForeColor = Color.Azure,
+        };
+        private PictureBox buttonE = new PictureBox()
+        {
+            Image = Interface.ButtonE,
+            Size = Interface.ButtonE.Size,
+            BackColor = Color.Transparent,
+        };
         private void InitializeComponent()
         {
             Name = "Pizza Master";
             Text = "Pizza Master";
-            BackgroundImage = Sprites.Other.BackgroundImage;
+            BackgroundImage = Sprites.Interface.BackgroundImage;
             game = new Model.Game(1040,704);
             MaximizeBox = false;
             FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -24,46 +63,46 @@ namespace Game
             menu = new Panel() {Location = new Point(0, 0),
                 Size = ClientSize,
                 BackColor = Color.Black};
-            startButton = new Button(){Text = "Старт",
-                ForeColor = Color.White,
-                Size = ClientSize/4,
-                Font = new Font(FontFamily.GenericMonospace,20 )};
-            startButton.Location = new Point(ClientSize / 2 - startButton.Size / 2);
-            startButton.Click += new EventHandler(OnStartButtonClick);
+ 
+            startButton.Click += (sender, args) =>
+            {
+                menu.Hide();
+                moveTimer.Start();
+                addVisitorTimer.Start();
+                animationTimer.Start();
+            };
             menu.Controls.Add(startButton);
             Controls.Add(menu);
-
-            addVisitorButton = new Button()
-            {
-                Location = new Point(50, 50),
-                Size = new Size(120, 60),
-                Text = "Добавить посетителя",
-                BackColor = Color.Black,
-                ForeColor = Color.Azure,
-            };
+            
             addVisitorButton.Click += (_, _) =>
             {
-                game.Add(new Visitor(game, new Point(415, 685), 6, new Size(28, 20)));
+                var visitor = new Visitor(game, new Point(415, 685), 6, new Size(28, 20));
+                game.Add(visitor);
+                visitor.GoToBar();
             };
-            Controls.Add(addVisitorButton);
+            //Controls.Add(addVisitorButton);
             
-            deleteVisitorButton = new Button()
-            {
-                Location = new Point(220, 50),
-                Size = new Size(120, 60),
-                Text = "Удалить посетителя",
-                BackColor = Color.Black,
-                ForeColor = Color.Azure,
-            };
             deleteVisitorButton.Click += (_, _) =>
             {
                 game.Objects.Remove(game.Visitors.Dequeue());
             };
-            Controls.Add(deleteVisitorButton);
-            InitializateInterior();
+            //Controls.Add(deleteVisitorButton);
             
+            wayBackButton.Click += (_, _) =>
+            {
+                var visitor = game.Visitors.FirstOrDefault();
+                visitor.GoToExit();
+            };
+            //Controls.Add(wayBackButton);
+            Controls.Add(buttonE);
+            InitializateAnimation();
+            InitializateInterior();
         }
-
+        private void InitializateAnimation()
+        {
+            ImageAnimator.Animate(Sprites.Interior.FurnaceTypeOne, (_, _) => Invalidate());
+            ImageAnimator.Animate(Sprites.Interior.Clock, (_, _) => Invalidate());
+        }
         private void InitializateInterior()
         {
             game.Add(new Player(game, new Point(500, 230), 3, new Size(28, 20)));

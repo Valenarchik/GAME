@@ -1,48 +1,71 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Game.Model;
+using Game.Sprites;
 
 namespace Game
 {
-    public sealed partial class MyForm : Form
+    public sealed partial class MyForm
     {
         private Model.Game game;
-        private int time;
-        private Sprites.Chef chefSprites = new Sprites.Chef();
-        private Sprites.VisitorOne visitorOneSprites = new Sprites.VisitorOne();
-        private Sprites.VisitorTwo visitorTwoSprites = new Sprites.VisitorTwo();
-        
-        private Timer timer = new Timer() {Interval = 200};
-        
+        private int numberSprite;
+        private readonly ChefSprites chefSpritesSprites = new();
+        private readonly VisitorOneSprites visitorOneSpritesSprites = new();
+        private readonly VisitorTwoSprites visitorTwoSpritesSprites = new();
+        private readonly Timer animationTimer = new() {Interval = 200};
+        private readonly Timer moveTimer = new() {Interval = 100};
+        private readonly Timer addVisitorTimer = new() {Interval = 1000};
+
         public MyForm()
         {
+            
             InitializeComponent();
             DoubleBuffered = true;
-            timer.Tick += OnTick;
             Paint += OnPaint;
             KeyDown += OnPressDown;
             KeyUp += OnPressUp;
-            timer.Start();
-        }
-
-        private void OnTick(object sender, EventArgs args)
-        {
-            if (game.Player.IsMoving)
-                game.Player.Move(game.Player.Direction);
-            unchecked {time++;}
-
-            foreach (var visitor in game.Visitors)
+            animationTimer.Tick += (_, _) =>
             {
-                if(visitor.Way.Count != 0)
-                    visitor.Move(visitor.Way.First());
-                else
-                    visitor.StopMove();
-            }
-            Invalidate();
+                ImageAnimator.UpdateFrames();
+                unchecked {numberSprite++;}
+                Invalidate();
+            };
+
+            moveTimer.Tick += (_, _) =>
+            {
+                if (game.Player.IsMoving)
+                    game.Player.Move(game.Player.Direction);
+
+                foreach (var visitor in game.Visitors)
+                {
+                    if (visitor.IOut)
+                    {
+                        game.Objects.Remove(game.Visitors.Dequeue());
+                        break;
+                    }
+
+                    if (visitor.Track.Count != 0)
+                        visitor.Move(visitor.Track.First());
+                    else
+                        visitor.StopMove();
+                }
+                Invalidate();
+            };
+
+            addVisitorTimer.Tick += (_, _) =>
+            {
+                if (game.Visitors.Count >= Model.Game.MaxCountVisitors || game.Random.Next(0, 2) == 0) return;
+                var visitor = new Visitor(game, new Point(419, 684), 6, new Size(28, 20));
+                game.Add(visitor);
+                visitor.GoToBar();
+                Invalidate();
+            };
+            
         }
-        
+
         private void OnPressDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -59,6 +82,10 @@ namespace Game
                 case Keys.D:
                     game.Player.Move(Direction.Right);
                     break;
+                case Keys.E:
+                    game.Player.CompleteOrder();
+                    game.Player.AcceptOrder();
+                    break;
             }
             Invalidate();
         }
@@ -68,38 +95,56 @@ namespace Game
             game.Player.StopMove();
         }
         private void OnPaint(object sender, PaintEventArgs e)
-        { 
-            PaintClock(e.Graphics);
-            //PaintMatrix(e.Graphics);
-            foreach (var visitor in game.Visitors.Where(x=>x.Position.Y <= game.Player.Position.Y))
-                EntityAnimation(e.Graphics,visitor,visitorOneSprites);
-            EntityAnimation(e.Graphics,game.Player, chefSprites);
-            foreach (var visitor in game.Visitors.Where(x=>x.Position.Y > game.Player.Position.Y))
-                EntityAnimation(e.Graphics,visitor,visitorOneSprites);
-            PaintTabBar(e.Graphics);
-        }
-
-        private void PaintTabBar(Graphics g)
         {
-            g.DrawImage(Sprites.Other.TabBar,new Point(481,636));
+            //PaintMatrix(e.Graphics);
+            PaintFurnace(e.Graphics);
+            PaintClock(e.Graphics);
+            PaintVisitor(e.Graphics, game.Visitors.Where(x => x.Position.Y <= game.Player.Position.Y));
+            PaintPlayer(e.Graphics);
+            PaintVisitor(e.Graphics, game.Visitors.Where(x => x.Position.Y > game.Player.Position.Y));
+            PaintInterior(e.Graphics);
+            PaintTabBar(e.Graphics);
         }
 
         private void PaintClock(Graphics g)
         {
-            switch (time/3%4)
+            g.DrawImage(Sprites.Interior.Clock, new Point(62,94));
+        }
+
+        private void PaintFurnace(Graphics g)
+        {
+            g.DrawImage(Sprites.Interior.FurnaceTypeOne, new Point(789,60));
+            g.DrawImage(Sprites.Interior.FurnaceTypeOne, new Point(708,60));
+        }
+        
+        private void PaintTabBar(Graphics g)
+        {
+            g.DrawImage(Interface.TabBar,new Point(481,636));
+        }
+
+        private void PaintPlayer(Graphics g)
+        {
+            EntityAnimation(g, game.Player, chefSpritesSprites);
+            var visitor = game.Visitors.FirstOrDefault(x => !x.OrderAccepted || x.OrderAccepted && !x.OrderIsCompleted);
+            if (visitor is not null
+                && visitor.OrderIsActivated
+                && !visitor.OrderIsCompleted
+                && Model.Game.InZone(game.Player, visitor, Player.ActivationRadius))
             {
-                case 0:
-                    g.DrawImage(Sprites.Interior.Clock1,new Point(62,92));
-                    break;
-                case 1:
-                    g.DrawImage(Sprites.Interior.Clock2,new Point(62,92));
-                    break;
-                case 2:
-                    g.DrawImage(Sprites.Interior.Clock3,new Point(62,92));
-                    break;
-                case 3:
-                    g.DrawImage(Sprites.Interior.Clock2,new Point(62,92));
-                    break;
+                buttonE.Show();
+                buttonE.Location = game.Player.Position + new Size(30, -48);
+            }
+            else
+                buttonE.Hide();
+        }
+        private void PaintVisitor(Graphics g, IEnumerable<Visitor> visitors)
+        {
+            foreach (var visitor in visitors)
+            {
+                if(visitor.TypeVisitor == TypeVisitor.Green) 
+                    EntityAnimation(g, visitor, visitorOneSpritesSprites);
+                else
+                    EntityAnimation(g, visitor, visitorTwoSpritesSprites);
             }
         }
         private void PaintMatrix(Graphics g)
@@ -118,10 +163,6 @@ namespace Game
                 g.DrawImage(Sprites.Interior.Wardrobe,new Point(577,127));
             if(game.Player.Position.Y <=344)
                 g.DrawImage(Sprites.Interior.Cup,new Point(424,336));
-        }
-        private void OnStartButtonClick(object sender, EventArgs e)
-        {
-            menu.Hide();
         }
     }
 }

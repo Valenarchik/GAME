@@ -9,23 +9,7 @@ namespace Game.Model
         public Interior(Game game, Point position, Size size,TypeInterior type)
             : base(game, position, size)
         {
-            Sell = MapSell.Interior;
             Type = type;
         }
-
-    }
-
-    public enum TypeInterior
-    {
-        Furnace,
-        Table,
-        Chair,
-        Bench,
-        Wall,
-        Chest,
-        Piano,
-        Clock,
-        Barrels,
-        Wardrobe
     }
 }

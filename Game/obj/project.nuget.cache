@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "jsG64rFSviqHi7586eQorsC+tLw0H3qWVzjPD1MnYRcdht5p2aVmBZsISremmphxEll0UuHFEzbFW3uWQk16Bg==",
+  "dgSpecHash": "tZq4z53Hu1BVduTayT1p87mJdL1gU5Zdzz9JAV3WqJavpGaK91RqHsFIxkkDqQhDwbvEgHHIXPwMJ0JgKE1e3g==",
   "success": true,
   "projectFilePath": "C:\\Users\\pavel\\RiderProjects\\PizzaMaster\\Game\\Game.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\pavel\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.17\\microsoft.netcore.app.host.win-x64.5.0.17.nupkg.sha512"
+  ],
   "logs": []
 }

@@ -5,7 +5,7 @@ namespace Game.Model
 {
     public abstract class GameEntity : GameObject
     {
-        public int Speed { get; set; }
+        public readonly int Speed;
         public Direction Direction { get; private set; }
         public bool IsMoving { get; private set; }
 
