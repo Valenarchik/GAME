@@ -69,11 +69,9 @@ namespace Game
                 menu.Hide();
                 moveTimer.Start();
                 addVisitorTimer.Start();
-                animationTimer.Start();
             };
             menu.Controls.Add(startButton);
             Controls.Add(menu);
-            
             addVisitorButton.Click += (_, _) =>
             {
                 var visitor = new Visitor(game, new Point(415, 685), 6, new Size(28, 20));
@@ -102,6 +100,21 @@ namespace Game
         {
             ImageAnimator.Animate(Sprites.Interior.FurnaceTypeOne, (_, _) => Invalidate());
             ImageAnimator.Animate(Sprites.Interior.Clock, (_, _) => Invalidate());
+            
+            ImageAnimator.Animate(chefSprites.MoveDown, (_, _) => Invalidate());
+            ImageAnimator.Animate(chefSprites.MoveUp, (_, _) => Invalidate());
+            ImageAnimator.Animate(chefSprites.MoveLeft, (_, _) => Invalidate());
+            ImageAnimator.Animate(chefSprites.MoveRight, (_, _) => Invalidate());
+            
+            ImageAnimator.Animate(visitorOneSprites.MoveDown, (_, _) => Invalidate());
+            ImageAnimator.Animate(visitorOneSprites.MoveUp, (_, _) => Invalidate());
+            ImageAnimator.Animate(visitorOneSprites.MoveLeft, (_, _) => Invalidate());
+            ImageAnimator.Animate(visitorOneSprites.MoveRight, (_, _) => Invalidate());
+            
+            ImageAnimator.Animate(visitorTwoSprites.MoveDown, (_, _) => Invalidate());
+            ImageAnimator.Animate(visitorTwoSprites.MoveUp, (_, _) => Invalidate());
+            ImageAnimator.Animate(visitorTwoSprites.MoveLeft, (_, _) => Invalidate());
+            ImageAnimator.Animate(visitorTwoSprites.MoveRight, (_, _) => Invalidate());
         }
         private void InitializateInterior()
         {

@@ -14,7 +14,7 @@ namespace Game.Model
         public bool OrderIsCompleted { get; set; }
         private bool iGoToBar;
         private bool iGoToExit;
-        public bool IOut { get; set; }
+        public bool Out { get; set; }
 
         public readonly LinkedList<Direction> Track = new();
         public override void Move(Direction direction)
@@ -30,7 +30,7 @@ namespace Game.Model
             };
             if (iGoToExit)
             {
-                IOut = true;
+                Out = true;
                 iGoToExit = false;
             }
         }
@@ -95,6 +95,4 @@ namespace Game.Model
             }
         }
     }
-
-
 }

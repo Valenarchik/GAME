@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using Game.Model;
 
@@ -7,24 +6,25 @@ namespace Game
 {
     public partial class MyForm : Form
     {
-        private readonly Size mixingEntityAnimations = new(Sprites.Sprites.EntitySpriteSize.Width*10/45,
-            Sprites.Sprites.EntitySpriteSize.Height*7/10);
+        private readonly Size mixingEntityAnimations = new(Sprites.Sprites.EntitySpriteSize.Width * 10 / 45,
+            Sprites.Sprites.EntitySpriteSize.Height * 7 / 10);
+
         private void EntityAnimation(Graphics g, GameEntity entity, Sprites.EntitySprites sprites)
         {
             if (entity.IsMoving)
                 switch (entity.Direction)
                 {
                     case Direction.Up:
-                        DrawAnimation(g, entity, sprites.MoveUpAnimation);
+                        g.DrawImage(sprites.MoveUp, entity.Position - mixingEntityAnimations);
                         break;
                     case Direction.Right:
-                        DrawAnimation(g, entity, sprites.MoveRightAnimation);
+                        g.DrawImage(sprites.MoveRight, entity.Position - mixingEntityAnimations);
                         break;
                     case Direction.Down:
-                        DrawAnimation(g, entity, sprites.MoveDownAnimation);
+                        g.DrawImage(sprites.MoveDown, entity.Position - mixingEntityAnimations);
                         break;
                     case Direction.Left:
-                        DrawAnimation(g, entity, sprites.MoveLeftAnimation);
+                        g.DrawImage(sprites.MoveLeft, entity.Position - mixingEntityAnimations);
                         break;
                 }
             else
@@ -32,25 +32,19 @@ namespace Game
                 switch (entity.Direction)
                 {
                     case Direction.Up:
-                        DrawAnimation(g, entity, sprites.StandUpAnimation);
+                        g.DrawImage(sprites.StandUp, entity.Position - mixingEntityAnimations);
                         break;
                     case Direction.Right:
-                        DrawAnimation(g, entity, sprites.StandRightAnimation);
+                        g.DrawImage(sprites.StandRight, entity.Position - mixingEntityAnimations);
                         break;
                     case Direction.Down:
-                        DrawAnimation(g, entity, sprites.StandDownAnimation);
+                        g.DrawImage(sprites.StandDown, entity.Position - mixingEntityAnimations);
                         break;
                     case Direction.Left:
-                        DrawAnimation(g, entity, sprites.StandLeftAnimation);
+                        g.DrawImage(sprites.StandLeft, entity.Position - mixingEntityAnimations);
                         break;
                 }
             }
-        }
-        private void DrawAnimation (Graphics g, GameObject gameObject, params Image[] sprites)
-        {
-            if (sprites is null) return;
-            var currentSprite = sprites[numberSprite % sprites.Length];
-            g.DrawImage(currentSprite, gameObject.Position-mixingEntityAnimations);
         }
     }
 }

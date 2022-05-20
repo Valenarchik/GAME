@@ -11,11 +11,9 @@ namespace Game
     public sealed partial class MyForm
     {
         private Model.Game game;
-        private int numberSprite;
-        private readonly ChefSprites chefSpritesSprites = new();
-        private readonly VisitorOneSprites visitorOneSpritesSprites = new();
-        private readonly VisitorTwoSprites visitorTwoSpritesSprites = new();
-        private readonly Timer animationTimer = new() {Interval = 200};
+        private readonly ChefSprites chefSprites = new();
+        private readonly VisitorOneSprites visitorOneSprites = new();
+        private readonly VisitorTwoSprites visitorTwoSprites = new();
         private readonly Timer moveTimer = new() {Interval = 100};
         private readonly Timer addVisitorTimer = new() {Interval = 1000};
 
@@ -27,12 +25,6 @@ namespace Game
             Paint += OnPaint;
             KeyDown += OnPressDown;
             KeyUp += OnPressUp;
-            animationTimer.Tick += (_, _) =>
-            {
-                ImageAnimator.UpdateFrames();
-                unchecked {numberSprite++;}
-                Invalidate();
-            };
 
             moveTimer.Tick += (_, _) =>
             {
@@ -41,7 +33,7 @@ namespace Game
 
                 foreach (var visitor in game.Visitors)
                 {
-                    if (visitor.IOut)
+                    if (visitor.Out)
                     {
                         game.Objects.Remove(game.Visitors.Dequeue());
                         break;
@@ -96,6 +88,7 @@ namespace Game
         }
         private void OnPaint(object sender, PaintEventArgs e)
         {
+            ImageAnimator.UpdateFrames();
             //PaintMatrix(e.Graphics);
             PaintFurnace(e.Graphics);
             PaintClock(e.Graphics);
@@ -124,7 +117,7 @@ namespace Game
 
         private void PaintPlayer(Graphics g)
         {
-            EntityAnimation(g, game.Player, chefSpritesSprites);
+            EntityAnimation(g, game.Player, chefSprites);
             var visitor = game.Visitors.FirstOrDefault(x => !x.OrderAccepted || x.OrderAccepted && !x.OrderIsCompleted);
             if (visitor is not null
                 && visitor.OrderIsActivated
@@ -137,22 +130,18 @@ namespace Game
             else
                 buttonE.Hide();
         }
+
         private void PaintVisitor(Graphics g, IEnumerable<Visitor> visitors)
         {
             foreach (var visitor in visitors)
             {
                 if(visitor.TypeVisitor == TypeVisitor.Green) 
-                    EntityAnimation(g, visitor, visitorOneSpritesSprites);
+                    EntityAnimation(g, visitor, visitorOneSprites);
                 else
-                    EntityAnimation(g, visitor, visitorTwoSpritesSprites);
+                    EntityAnimation(g, visitor, visitorTwoSprites);
             }
         }
-        private void PaintMatrix(Graphics g)
-        {
-            foreach (var o in game.Objects)
-                g.FillRectangle(Brushes.Chartreuse, new Rectangle(o.Position,o.Size));
-        }
-
+        
         private void PaintInterior(Graphics g)
         {
             if(game.Player.Position.Y <=328)
@@ -163,6 +152,12 @@ namespace Game
                 g.DrawImage(Sprites.Interior.Wardrobe,new Point(577,127));
             if(game.Player.Position.Y <=344)
                 g.DrawImage(Sprites.Interior.Cup,new Point(424,336));
+        }
+        
+        private void PaintMatrix(Graphics g)
+        {
+            foreach (var o in game.Objects)
+                g.FillRectangle(Brushes.Chartreuse, new Rectangle(o.Position,o.Size));
         }
     }
 }
