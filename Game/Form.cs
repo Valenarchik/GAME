@@ -77,6 +77,7 @@ namespace Game
                 case Keys.E:
                     game.Player.CompleteOrder();
                     game.Player.AcceptOrder();
+                    OpenRifledBoard();
                     break;
             }
             Invalidate();
@@ -86,78 +87,14 @@ namespace Game
         {
             game.Player.StopMove();
         }
-        private void OnPaint(object sender, PaintEventArgs e)
-        {
-            ImageAnimator.UpdateFrames();
-            //PaintMatrix(e.Graphics);
-            PaintFurnace(e.Graphics);
-            PaintClock(e.Graphics);
-            PaintVisitor(e.Graphics, game.Visitors.Where(x => x.Position.Y <= game.Player.Position.Y));
-            PaintPlayer(e.Graphics);
-            PaintVisitor(e.Graphics, game.Visitors.Where(x => x.Position.Y > game.Player.Position.Y));
-            PaintInterior(e.Graphics);
-            PaintTabBar(e.Graphics);
-        }
-
-        private void PaintClock(Graphics g)
-        {
-            g.DrawImage(Sprites.Interior.Clock, new Point(62,94));
-        }
-
-        private void PaintFurnace(Graphics g)
-        {
-            g.DrawImage(Sprites.Interior.FurnaceTypeOne, new Point(789,60));
-            g.DrawImage(Sprites.Interior.FurnaceTypeOne, new Point(708,60));
-        }
         
-        private void PaintTabBar(Graphics g)
+        private void OpenRifledBoard()
         {
-            g.DrawImage(Interface.TabBar,new Point(481,636));
-        }
-
-        private void PaintPlayer(Graphics g)
-        {
-            EntityAnimation(g, game.Player, chefSprites);
-            var visitor = game.Visitors.FirstOrDefault(x => !x.OrderAccepted || x.OrderAccepted && !x.OrderIsCompleted);
-            if (visitor is not null
-                && visitor.OrderIsActivated
-                && !visitor.OrderIsCompleted
-                && Model.Game.InZone(game.Player, visitor, Player.ActivationRadius))
-            {
-                buttonE.Show();
-                buttonE.Location = game.Player.Position + new Size(30, -48);
-            }
-            else
-                buttonE.Hide();
-        }
-
-        private void PaintVisitor(Graphics g, IEnumerable<Visitor> visitors)
-        {
-            foreach (var visitor in visitors)
-            {
-                if(visitor.TypeVisitor == TypeVisitor.Green) 
-                    EntityAnimation(g, visitor, visitorOneSprites);
-                else
-                    EntityAnimation(g, visitor, visitorTwoSprites);
-            }
-        }
-        
-        private void PaintInterior(Graphics g)
-        {
-            if(game.Player.Position.Y <=328)
-                g.DrawImage(Sprites.Interior.Wall,new Point(611,278));
-            if(game.Player.Position.Y <=650)
-                g.DrawImage(Sprites.Interior.Barrels,new Point(40,608));
-            if(game.Player.Position.Y <=161)
-                g.DrawImage(Sprites.Interior.Wardrobe,new Point(577,127));
-            if(game.Player.Position.Y <=344)
-                g.DrawImage(Sprites.Interior.Cup,new Point(424,336));
-        }
-        
-        private void PaintMatrix(Graphics g)
-        {
-            foreach (var o in game.Objects)
-                g.FillRectangle(Brushes.Chartreuse, new Rectangle(o.Position,o.Size));
+            if (!Model.Game.InZone(game.Player, game.RifledBoard, 10))
+                return;
+            RifledBoard.Show();
+            Controls.Remove(buttonE);
+            game.Player.CanGo = false;
         }
     }
 }

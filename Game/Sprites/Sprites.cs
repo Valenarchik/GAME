@@ -89,11 +89,11 @@ namespace Game.Sprites
     {
         private static readonly string spritesFolder = Path.Combine(Sprites.SpritesFolder, "Background and Interface");
 
-        public static readonly Bitmap BackgroundImage =
-            new(Image.FromFile(Path.Combine(spritesFolder, "Background.png")));
-
+        public static readonly Bitmap BackgroundImage = new(Image.FromFile(Path.Combine(spritesFolder, "Background.png")));
+        public static readonly Bitmap RifledBoard = new (Image.FromFile(Path.Combine(spritesFolder, "RifledBoard.png")));
+        public static readonly Bitmap CloseButton = new (Image.FromFile(Path.Combine(spritesFolder, "closeButton.png")));
+        
         public static readonly Bitmap TabBar = new(Image.FromFile(Path.Combine(spritesFolder, "tabbar.png")));
-
         public static readonly Bitmap ButtonE = new(Path.Combine(spritesFolder, "buttonE.gif"));
     }
 
@@ -104,6 +104,15 @@ namespace Game.Sprites
         public static readonly Bitmap Dough = new(Image.FromFile(Path.Combine(spritesFolder, "dough.png")));
         public static readonly Bitmap Peperoni = new(Image.FromFile(Path.Combine(spritesFolder, "pepperoni.png")));
         public static readonly Bitmap Tomato = new(Image.FromFile(Path.Combine(spritesFolder, "tomato.png")));
+        public static readonly Bitmap TomatoSauce = new(Image.FromFile(Path.Combine(spritesFolder, "TomatoSauce.png")));
+        public static readonly Bitmap Basil = new(Image.FromFile(Path.Combine(spritesFolder, "basil.png")));
+        public static readonly Bitmap Mushroom = new(Image.FromFile(Path.Combine(spritesFolder, "Mushroom.png")));
+        public static readonly Bitmap Chicken = new(Image.FromFile(Path.Combine(spritesFolder, "Chicken.png")));
+        
+        public static readonly Bitmap PizzaDiabola = new(Image.FromFile(Path.Combine(spritesFolder, "PizzaDiabola.png")));
+        public static readonly Bitmap PizzaGreen = new(Image.FromFile(Path.Combine(spritesFolder, "PizzaGreens.png")));
+        public static readonly Bitmap PizzaMargaret = new(Image.FromFile(Path.Combine(spritesFolder, "PizzaMargaret.png")));
+        public static readonly Bitmap PizzaPepperoni = new(Image.FromFile(Path.Combine(spritesFolder, "PizzaPepperoni.png")));
     }
 
     public static class Interior
@@ -111,7 +120,7 @@ namespace Game.Sprites
         private static readonly string spritesFolder = Path.Combine(Sprites.SpritesFolder, "Interior");
 
         public static readonly Bitmap Clock = new(Path.Combine(spritesFolder, "clock.gif"));
-        public static readonly Bitmap FurnaceTypeOne = new(Path.Combine(spritesFolder, "furnaceTypeOne.gif"));
+        public static readonly Bitmap Furnace = new(Path.Combine(spritesFolder, "furnaceTypeOne.gif"));
         public static readonly Bitmap Flashlight = new(Path.Combine(spritesFolder, "flashlight.gif"));
 
         public static readonly Bitmap Wardrobe = new(Image.FromFile(Path.Combine(spritesFolder, "wardrobe.png")));

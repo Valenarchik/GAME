@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
@@ -6,30 +7,17 @@ namespace Game.Model
 {
     public class Player:GameEntity
     {
-        public readonly Pizza[] Inventory = new Pizza[10];
+        public readonly List<Pizza> Inventory = new();
         public const int ActivationRadius = 65;
+        public const int InventorySize = 10;
+        public bool CanGo = true;
+        public override void Move(Direction direction)
+        {
+            if(CanGo)base.Move(direction);
+        }
 
         public Player(Game game, Point position, int speed, Size size) : base(game, position, speed, size)
         {
-        }
-        
-
-        public GameObject GetNeighbourInRadius(double radius, params Type[] types)
-        {
-            if (types == null) return null;
-            var min = double.MaxValue;
-            GameObject result = null;
-            foreach (var type in types)
-            foreach (var obj in Game.Objects)
-            {
-                if(obj.GetType() != type) continue;
-                if (!Game.InZone(obj, this, radius)) continue;
-                var distance = Game.GetDistance(obj.Centre, Centre);
-                if (distance >= min) continue;
-                min = distance;
-                result = obj;
-            }
-            return result;
         }
         
         public void AcceptOrder()
@@ -44,18 +32,20 @@ namespace Game.Model
         {
             var visitor = Game.Visitors.FirstOrDefault(x => x.OrderAccepted && !x.OrderIsCompleted);
             if(visitor is null) return;
-            // for (int i = 0; i < Inventory.Length; i++)
-            // {
-            //     if(i==Inventory.Length - 1) return;
-            //     if(Inventory[i] != visitor.WantPizza) continue;
-            //     Inventory[i] = Pizza.Empty;
-            //     break;
-            // }
-            if (Game.InZone(this,visitor,ActivationRadius))
+
+            if (!Game.InZone(this, visitor, ActivationRadius)) return;
+            var pizzaNotFound = true;
+            for (var i = 0; i < Inventory.Count; i++)
             {
-                visitor.OrderIsCompleted = true;
-                visitor.GoToExit();
+                var pizza = Inventory[i];
+                if (pizza.Type != visitor.WantPizzaType || !pizza.IsCook || pizza.IsBurnedDown) continue;
+                Inventory[i] = null;
+                pizzaNotFound = false;
+                break;
             }
+            if (pizzaNotFound) return;
+            visitor.OrderIsCompleted = true;
+            visitor.GoToExit();
         }
     }
 }

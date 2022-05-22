@@ -1,15 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using Game.Sprites;
 
 namespace Game.Model
 {
     public class Game
     {
+        public int Money { get; set; }
         public readonly List<GameObject> Objects = new();
-        public readonly Dictionary<TypeInterior, List<Interior>> Interiors  = new();
-        public Player Player { get; private set; }
+
+        public readonly Dictionary<PizzaType, HashSet<Ingredient>> Recipes = new()
+        {
+            {PizzaType.Greens, new HashSet<Ingredient> {Ingredient.Dough, Ingredient.Cheese, Ingredient.Basil, Ingredient.ChickenFillet}},
+            {PizzaType.Pepperoni, new HashSet<Ingredient> {Ingredient.Dough, Ingredient.Cheese, Ingredient.Pepperoni, Ingredient.TomatoSauce}},
+            {PizzaType.Margaret, new HashSet<Ingredient> {Ingredient.Dough, Ingredient.Cheese, Ingredient.Tomato, Ingredient.ChickenFillet}},
+            {PizzaType.Diabola, new HashSet<Ingredient> {Ingredient.Dough, Ingredient.Cheese, Ingredient.Mushroom, Ingredient.TomatoSauce}},
+        };
+
+        public Player Player { get; set; }
+        public RifledBoard RifledBoard { get; set; }
         public readonly Queue<Visitor> Visitors = new();
+        public readonly List<Furnace> Furnaces = new();
+        
         public static readonly int MaxCountVisitors = 3;
         public readonly Size GameSize;
         public readonly Random Random = new();
@@ -26,19 +39,9 @@ namespace Game.Model
         {
             switch (gameObject)
             {
-                case Player player:
-                    Player = player;
-                    break;
                 case Visitor visitor:
                     Visitors.Enqueue(visitor);
                     break;
-                case Interior interior:
-                {
-                    if (!Interiors.ContainsKey(interior.Type))
-                        Interiors[interior.Type] = new List<Interior>();
-                    Interiors[interior.Type].Add(interior);
-                    break;
-                }
             }
 
             Objects.Add(gameObject);

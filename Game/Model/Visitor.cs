@@ -8,7 +8,7 @@ namespace Game.Model
     public class Visitor : GameEntity
     {
         public readonly TypeVisitor TypeVisitor;
-        public readonly Pizza WantPizza;
+        public readonly PizzaType WantPizzaType;
         public bool OrderIsActivated { get; private set; }
         public bool OrderAccepted { get; set; }
         public bool OrderIsCompleted { get; set; }
@@ -17,6 +17,12 @@ namespace Game.Model
         public bool Out { get; set; }
 
         public readonly LinkedList<Direction> Track = new();
+        
+        public Visitor(Game game, Point position, int speed, Size size) : base(game, position, speed, size)
+        {
+            TypeVisitor = (TypeVisitor) Game.Random.Next(0, 2);
+            WantPizzaType = (PizzaType) Game.Random.Next(0, 4);
+        }
         public override void Move(Direction direction)
         {
             base.Move(direction);
@@ -34,13 +40,6 @@ namespace Game.Model
                 iGoToExit = false;
             }
         }
-
-        public Visitor(Game game, Point position, int speed, Size size) : base(game, position, speed, size)
-        {
-            TypeVisitor = (TypeVisitor) Game.Random.Next(0, 2);
-            WantPizza = (Pizza) Game.Random.Next(0, 4);
-        }
-
         public void GoToBar()
         {
             FindTrack(Position, new Point(419, 460), new Point(515, 460), new Point(515, 380));

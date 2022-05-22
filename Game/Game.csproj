@@ -10,6 +10,9 @@
     <Compile Update="Animation.cs">
       <DependentUpon>Form.cs</DependentUpon>
     </Compile>
+    <Compile Update="Paint.cs">
+      <DependentUpon>Form.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
