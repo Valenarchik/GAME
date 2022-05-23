@@ -33,18 +33,4 @@
         Down = 2,
         Left = 3
     }
-    
-    public enum TypeInterior
-    {
-        Furnace = 0,
-        Table = 1,
-        Chair = 2,
-        Bench = 3,
-        Wall = 4,
-        Chest = 5,
-        Piano = 6,
-        Clock = 7,
-        Barrels = 8,
-        Wardrobe = 9
-    }
 }

@@ -10,12 +10,12 @@ namespace Game.Model
         public int Money { get; set; }
         public readonly List<GameObject> Objects = new();
 
-        public readonly Dictionary<PizzaType, HashSet<Ingredient>> Recipes = new()
+        public readonly Dictionary<PizzaType, List<Ingredient>> Recipes = new()
         {
-            {PizzaType.Greens, new HashSet<Ingredient> {Ingredient.Dough, Ingredient.Cheese, Ingredient.Basil, Ingredient.ChickenFillet}},
-            {PizzaType.Pepperoni, new HashSet<Ingredient> {Ingredient.Dough, Ingredient.Cheese, Ingredient.Pepperoni, Ingredient.TomatoSauce}},
-            {PizzaType.Margaret, new HashSet<Ingredient> {Ingredient.Dough, Ingredient.Cheese, Ingredient.Tomato, Ingredient.ChickenFillet}},
-            {PizzaType.Diabola, new HashSet<Ingredient> {Ingredient.Dough, Ingredient.Cheese, Ingredient.Mushroom, Ingredient.TomatoSauce}},
+            {PizzaType.Greens, new List<Ingredient> {Ingredient.Dough, Ingredient.Cheese, Ingredient.Basil, Ingredient.ChickenFillet}},
+            {PizzaType.Pepperoni, new List<Ingredient> {Ingredient.Dough, Ingredient.Cheese, Ingredient.Pepperoni, Ingredient.TomatoSauce}},
+            {PizzaType.Margaret, new List<Ingredient> {Ingredient.Dough, Ingredient.Cheese, Ingredient.Tomato, Ingredient.ChickenFillet}},
+            {PizzaType.Diabola, new List<Ingredient> {Ingredient.Dough, Ingredient.Cheese, Ingredient.Mushroom, Ingredient.TomatoSauce}},
         };
 
         public Player Player { get; set; }

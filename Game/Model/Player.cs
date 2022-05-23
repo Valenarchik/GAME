@@ -9,8 +9,10 @@ namespace Game.Model
     {
         public readonly List<Pizza> Inventory = new();
         public const int ActivationRadius = 65;
+        public const int LittleActivationRadius = 10;
         public const int InventorySize = 10;
-        public bool CanGo = true;
+        public Furnace NearestFurnace { get; set; }
+        public bool CanGo { get; set; } = true;
         public override void Move(Direction direction)
         {
             if(CanGo)base.Move(direction);
@@ -39,13 +41,34 @@ namespace Game.Model
             {
                 var pizza = Inventory[i];
                 if (pizza.Type != visitor.WantPizzaType || !pizza.IsCook || pizza.IsBurnedDown) continue;
-                Inventory[i] = null;
+                Inventory.Remove(pizza);
                 pizzaNotFound = false;
                 break;
             }
             if (pizzaNotFound) return;
             visitor.OrderIsCompleted = true;
             visitor.GoToExit();
+        }
+
+        public bool FindNearestFurnace()
+        {
+            var min = double.MaxValue;
+            var flag = false;
+            foreach (var gameFurnace in Game.Furnaces.Where(x=>Game.InZone(this,x,LittleActivationRadius)))
+            {
+                var dist = Game.GetDistance(Centre, gameFurnace.Centre);
+                if (dist < min)
+                {
+                    min = dist;
+                    NearestFurnace = gameFurnace;
+                    flag = true;
+                }
+            }
+
+            if (flag)
+                return true;
+            NearestFurnace = null;
+            return false;
         }
     }
 }

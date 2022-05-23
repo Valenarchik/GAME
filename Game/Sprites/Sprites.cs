@@ -100,19 +100,36 @@ namespace Game.Sprites
     public static class Meal
     {
         private static readonly string spritesFolder = Path.Combine(Sprites.SpritesFolder, "Meal");
-        public static readonly Bitmap Cheese = new(Image.FromFile(Path.Combine(spritesFolder, "cheese.png")));
-        public static readonly Bitmap Dough = new(Image.FromFile(Path.Combine(spritesFolder, "dough.png")));
-        public static readonly Bitmap Peperoni = new(Image.FromFile(Path.Combine(spritesFolder, "pepperoni.png")));
-        public static readonly Bitmap Tomato = new(Image.FromFile(Path.Combine(spritesFolder, "tomato.png")));
+        
+        public static readonly Bitmap Steam = new(Image.FromFile(Path.Combine(spritesFolder, "Steam.png")));
+        
+        public static readonly Bitmap Cheese = new(Image.FromFile(Path.Combine(spritesFolder, "Cheese.png")));
+        public static readonly Bitmap Dough = new(Image.FromFile(Path.Combine(spritesFolder, "Dough.png")));
+        public static readonly Bitmap Pepperoni = new(Image.FromFile(Path.Combine(spritesFolder, "Pepperoni.png")));
+        public static readonly Bitmap Tomato = new(Image.FromFile(Path.Combine(spritesFolder, "Tomato.png")));
         public static readonly Bitmap TomatoSauce = new(Image.FromFile(Path.Combine(spritesFolder, "TomatoSauce.png")));
-        public static readonly Bitmap Basil = new(Image.FromFile(Path.Combine(spritesFolder, "basil.png")));
+        public static readonly Bitmap Basil = new(Image.FromFile(Path.Combine(spritesFolder, "Basil.png")));
         public static readonly Bitmap Mushroom = new(Image.FromFile(Path.Combine(spritesFolder, "Mushroom.png")));
         public static readonly Bitmap Chicken = new(Image.FromFile(Path.Combine(spritesFolder, "Chicken.png")));
+        
+        public static readonly Bitmap BigCheese = new(Image.FromFile(Path.Combine(spritesFolder, "BigCheese.png")));
+        public static readonly Bitmap BigDough = new(Image.FromFile(Path.Combine(spritesFolder, "BigDough.png")));
+        public static readonly Bitmap BigPepperoni = new(Image.FromFile(Path.Combine(spritesFolder, "BigPepperoni.png")));
+        public static readonly Bitmap BigTomato = new(Image.FromFile(Path.Combine(spritesFolder, "BigTomato.png")));
+        public static readonly Bitmap BigTomatoSauce = new(Image.FromFile(Path.Combine(spritesFolder, "BigTomatoSauce.png")));
+        public static readonly Bitmap BigBasil = new(Image.FromFile(Path.Combine(spritesFolder, "BigBasil.png")));
+        public static readonly Bitmap BigMushroom = new(Image.FromFile(Path.Combine(spritesFolder, "BigMushroom.png")));
+        public static readonly Bitmap BigChicken = new(Image.FromFile(Path.Combine(spritesFolder, "BigChicken.png")));
         
         public static readonly Bitmap PizzaDiabola = new(Image.FromFile(Path.Combine(spritesFolder, "PizzaDiabola.png")));
         public static readonly Bitmap PizzaGreen = new(Image.FromFile(Path.Combine(spritesFolder, "PizzaGreens.png")));
         public static readonly Bitmap PizzaMargaret = new(Image.FromFile(Path.Combine(spritesFolder, "PizzaMargaret.png")));
         public static readonly Bitmap PizzaPepperoni = new(Image.FromFile(Path.Combine(spritesFolder, "PizzaPepperoni.png")));
+        
+        public static readonly Bitmap BigPizzaDiabola = new(Image.FromFile(Path.Combine(spritesFolder, "BigPizzaDiabola.png")));
+        public static readonly Bitmap BigPizzaGreen = new(Image.FromFile(Path.Combine(spritesFolder, "BigPizzaGreens.png")));
+        public static readonly Bitmap BigPizzaMargaret = new(Image.FromFile(Path.Combine(spritesFolder, "BigPizzaMargaret.png")));
+        public static readonly Bitmap BigPizzaPepperoni = new(Image.FromFile(Path.Combine(spritesFolder, "BigPizzaPepperoni.png")));
     }
 
     public static class Interior

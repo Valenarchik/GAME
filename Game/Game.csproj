@@ -13,10 +13,21 @@
     <Compile Update="Paint.cs">
       <DependentUpon>Form.cs</DependentUpon>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Sprites\Meal" />
+    <Compile Update="InitializationGameObjects.cs">
+      <DependentUpon>Form.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Initialization.cs">
+      <DependentUpon>Form.cs</DependentUpon>
+    </Compile>
+    <Compile Update="InitializationAnimation.cs">
+      <DependentUpon>Form.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Desiner.cs">
+      <DependentUpon>Form.cs</DependentUpon>
+    </Compile>
+    <Compile Update="InitializationRifledBoard.cs">
+      <DependentUpon>Form.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

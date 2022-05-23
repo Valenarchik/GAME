@@ -60,24 +60,45 @@ namespace Game
 
         private void OnPressDown(object sender, KeyEventArgs e)
         {
+            var player = game.Player;
             switch (e.KeyCode)
             {
                 case Keys.W:
-                    game.Player.Move(Direction.Up);
+                    player.Move(Direction.Up);
                     break;
                 case Keys.A:
-                    game.Player.Move(Direction.Left);
+                    player.Move(Direction.Left);
                     break;
                 case Keys.S:
-                    game.Player.Move(Direction.Down);
+                    player.Move(Direction.Down);
                     break;
                 case Keys.D:
-                    game.Player.Move(Direction.Right);
+                    player.Move(Direction.Right);
                     break;
                 case Keys.E:
-                    game.Player.CompleteOrder();
-                    game.Player.AcceptOrder();
+                    player.CompleteOrder();
+                    player.AcceptOrder();
                     OpenRifledBoard();
+                    if (game.Player.FindNearestFurnace())
+                    {
+                        var furnace =  player.NearestFurnace;
+                        if(!furnace.IsKindled)
+                        {
+                            if (player.Inventory.Count > 0)
+                            {
+                                furnace.Pizza = player.Inventory[0];
+                                furnace.IsKindled = true;
+                                player.Inventory.Remove(furnace.Pizza);
+                                furnace.Timer.Start();
+                            }
+                        }
+                        else if (furnace.Pizza.IsCook)
+                        {
+                            player.Inventory.Add(furnace.Pizza);
+                            furnace.Pizza = null;
+                            furnace.IsKindled = false;
+                        }
+                    }
                     break;
             }
             Invalidate();
@@ -90,9 +111,9 @@ namespace Game
         
         private void OpenRifledBoard()
         {
-            if (!Model.Game.InZone(game.Player, game.RifledBoard, 10))
+            if (!Model.Game.InZone(game.Player, game.RifledBoard, Player.LittleActivationRadius))
                 return;
-            RifledBoard.Show();
+            rifledBoard.Show();
             Controls.Remove(buttonE);
             game.Player.CanGo = false;
         }

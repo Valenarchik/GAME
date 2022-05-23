@@ -23,14 +23,12 @@ namespace Game
             PaintTabBar(e.Graphics);
         }
 
-        private void PaintClock(Graphics g)
-        {
-            g.DrawImage(Interior.Clock, new Point(62, 94));
-        }
+        private void PaintClock(Graphics g) => g.DrawImage(Interior.Clock, new Point(62, 94));
+        
 
         private void PaintFurnace(Graphics g)
         {
-            foreach (var furnace in game.Furnaces.Where(x => x.IsKindled))
+            foreach (var furnace in game.Furnaces.Where(furnace => furnace.IsKindled))
                 g.DrawImage(Interior.Furnace,furnace.Position);
         }
 
@@ -42,22 +40,10 @@ namespace Game
             foreach (var pizza in game.Player.Inventory)
             {
                 if(pizza is null) continue;
-                switch (pizza.Type)
-                {
-                    case PizzaType.Diabola:
-                        g.DrawImage(Meal.PizzaDiabola,currentPos);
-                        break;
-                    case PizzaType.Greens:
-                        g.DrawImage(Meal.PizzaGreen,currentPos);
-                        break;
-                    case PizzaType.Margaret:
-                        g.DrawImage(Meal.PizzaMargaret,currentPos);
-                        break;
-                    case PizzaType.Pepperoni:
-                        g.DrawImage(Meal.PizzaPepperoni,currentPos);
-                        break;
-                }
-
+                var pizzaSprite = DecodePizza(pizza.Type, false);
+                g.DrawImage(pizzaSprite,currentPos);
+                if(pizza.IsCook)
+                    g.DrawImage(Meal.Steam,currentPos);
                 currentPos += offset;
             }
         }
@@ -71,7 +57,7 @@ namespace Game
                 && !visitor.OrderIsCompleted
                 && Model.Game.InZone(game.Player, visitor, Player.ActivationRadius)
                 || Model.Game.InZone(game.Player, game.RifledBoard, 10)
-                || game.Furnaces.Any(interior => Model.Game.InZone(game.Player, interior, 10)))
+                || game.Furnaces.Any(interior => Model.Game.InZone(game.Player, interior, Player.LittleActivationRadius)))
             {
                 buttonE.Show();
                 buttonE.Location = game.Player.Position + new Size(30, -48);
@@ -88,6 +74,9 @@ namespace Game
                     EntityAnimation(g, visitor, visitorOneSprites);
                 else
                     EntityAnimation(g, visitor, visitorTwoSprites);
+                if(visitor.OrderIsActivated && !visitor.OrderAccepted)
+                    g.DrawImage(DecodePizza(visitor.WantPizzaType,false),
+                        visitor.Position + new Size(30, -48));
             }
         }
 

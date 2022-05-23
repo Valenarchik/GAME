@@ -40,11 +40,9 @@ namespace Game.Model
 
             Position += offset;
             IsMoving = true;
-            if (!IsInsideMap() || IsCollision())
-            {
-                Position -= offset;
-                IsMoving = false;
-            }
+            if (IsInsideMap() && !IsCollision()) return;
+            Position -= offset;
+            IsMoving = false;
         }
         public void StopMove() => IsMoving = false;
     }
