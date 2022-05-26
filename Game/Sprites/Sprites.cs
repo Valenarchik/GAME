@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 
 namespace Game.Sprites
@@ -88,13 +89,28 @@ namespace Game.Sprites
     public static class Interface
     {
         private static readonly string spritesFolder = Path.Combine(Sprites.SpritesFolder, "Background and Interface");
-
+        
+        public static readonly Bitmap Ok = new(Image.FromFile(Path.Combine(spritesFolder, "Ok.png")));
+        public static readonly Bitmap Dream = new(Image.FromFile(Path.Combine(spritesFolder, "Dream.png")));
         public static readonly Bitmap BackgroundImage = new(Image.FromFile(Path.Combine(spritesFolder, "Background.png")));
         public static readonly Bitmap RifledBoard = new (Image.FromFile(Path.Combine(spritesFolder, "RifledBoard.png")));
         public static readonly Bitmap CloseButton = new (Image.FromFile(Path.Combine(spritesFolder, "closeButton.png")));
-        
         public static readonly Bitmap TabBar = new(Image.FromFile(Path.Combine(spritesFolder, "tabbar.png")));
+        public static readonly Bitmap Coin = new(Image.FromFile(Path.Combine(spritesFolder, "Coin.png")));
+        
         public static readonly Bitmap ButtonE = new(Path.Combine(spritesFolder, "buttonE.gif"));
+
+        private static  readonly string loadSpritesFolder = Path.Combine(spritesFolder, "Load");
+        public static readonly List<Bitmap> Load = new()
+        {
+            new Bitmap(Image.FromFile(Path.Combine(loadSpritesFolder, "Load1.png"))),
+            new Bitmap(Image.FromFile(Path.Combine(loadSpritesFolder, "Load2.png"))),
+            new Bitmap(Image.FromFile(Path.Combine(loadSpritesFolder, "Load3.png"))),
+            new Bitmap(Image.FromFile(Path.Combine(loadSpritesFolder, "Load4.png"))),
+            new Bitmap(Image.FromFile(Path.Combine(loadSpritesFolder, "Load5.png"))),
+            new Bitmap(Image.FromFile(Path.Combine(loadSpritesFolder, "Load6.png"))),
+            new Bitmap(Image.FromFile(Path.Combine(loadSpritesFolder, "Load7.png")))
+        };
     }
 
     public static class Meal
@@ -125,6 +141,7 @@ namespace Game.Sprites
         public static readonly Bitmap PizzaGreen = new(Image.FromFile(Path.Combine(spritesFolder, "PizzaGreens.png")));
         public static readonly Bitmap PizzaMargaret = new(Image.FromFile(Path.Combine(spritesFolder, "PizzaMargaret.png")));
         public static readonly Bitmap PizzaPepperoni = new(Image.FromFile(Path.Combine(spritesFolder, "PizzaPepperoni.png")));
+        public static readonly Bitmap BurntPizza = new(Image.FromFile(Path.Combine(spritesFolder, "BurntPizza.png")));
         
         public static readonly Bitmap BigPizzaDiabola = new(Image.FromFile(Path.Combine(spritesFolder, "BigPizzaDiabola.png")));
         public static readonly Bitmap BigPizzaGreen = new(Image.FromFile(Path.Combine(spritesFolder, "BigPizzaGreens.png")));

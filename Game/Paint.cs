@@ -14,6 +14,7 @@ namespace Game
         {
             ImageAnimator.UpdateFrames();
             //PaintMatrix(e.Graphics);
+            PaintCoin(e.Graphics);
             PaintFurnace(e.Graphics);
             PaintClock(e.Graphics);
             PaintVisitor(e.Graphics, game.Visitors.Where(x => x.Position.Y <= game.Player.Position.Y));
@@ -23,14 +24,20 @@ namespace Game
             PaintTabBar(e.Graphics);
         }
 
+        private void PaintCoin(Graphics g) => g.DrawImage(Interface.Coin, new Point(18, 9));
         private void PaintClock(Graphics g) => g.DrawImage(Interior.Clock, new Point(62, 94));
         
 
         private void PaintFurnace(Graphics g)
         {
             foreach (var furnace in game.Furnaces.Where(furnace => furnace.IsKindled))
-                g.DrawImage(Interior.Furnace,furnace.Position);
+            {
+                g.DrawImage(Interior.Furnace, furnace.Position);
+                g.DrawImage(Interface.Load[furnace.Pizza.Progress],furnace.Position+new Size(5,60));
+            }
+            
         }
+        
 
         private void PaintTabBar(Graphics g)
         {
@@ -40,10 +47,15 @@ namespace Game
             foreach (var pizza in game.Player.Inventory)
             {
                 if(pizza is null) continue;
-                var pizzaSprite = DecodePizza(pizza.Type, false);
-                g.DrawImage(pizzaSprite,currentPos);
-                if(pizza.IsCook)
-                    g.DrawImage(Meal.Steam,currentPos);
+                if(pizza.IsBurnedDown)
+                    g.DrawImage(Meal.BurntPizza,currentPos);
+                else
+                {
+                    var pizzaSprite = DecodePizza(pizza.Type, false);
+                    g.DrawImage(pizzaSprite, currentPos);
+                    if (pizza.IsCook)
+                        g.DrawImage(Meal.Steam, currentPos);
+                }
                 currentPos += offset;
             }
         }
@@ -51,7 +63,7 @@ namespace Game
         private void PaintPlayer(Graphics g)
         {
             EntityAnimation(g, game.Player, chefSprites);
-            var visitor = game.Visitors.FirstOrDefault(x => !x.OrderAccepted || x.OrderAccepted && !x.OrderIsCompleted);
+            var visitor = game.Visitors.FirstOrDefault(x => !x.OrderIsCompleted);
             if (visitor is not null
                 && visitor.OrderIsActivated
                 && !visitor.OrderIsCompleted
@@ -74,22 +86,26 @@ namespace Game
                     EntityAnimation(g, visitor, visitorOneSprites);
                 else
                     EntityAnimation(g, visitor, visitorTwoSprites);
-                if(visitor.OrderIsActivated && !visitor.OrderAccepted)
-                    g.DrawImage(DecodePizza(visitor.WantPizzaType,false),
-                        visitor.Position + new Size(30, -48));
+                if(visitor.OrderIsActivated && !visitor.OrderIsCompleted)
+                {
+                    g.DrawImage(Interface.Dream,
+                        visitor.Position + new Size(15, -75));
+                    g.DrawImage(DecodePizza(visitor.WantPizzaType, false),
+                        visitor.Position + new Size(32, -68));
+                }
             }
         }
 
         private void PaintInterior(Graphics g)
         {
             if (game.Player.Position.Y <= 328)
-                g.DrawImage(Sprites.Interior.Wall, new Point(611, 278));
+                g.DrawImage(Interior.Wall, new Point(611, 278));
             if (game.Player.Position.Y <= 650)
-                g.DrawImage(Sprites.Interior.Barrels, new Point(40, 608));
+                g.DrawImage(Interior.Barrels, new Point(40, 608));
             if (game.Player.Position.Y <= 161)
-                g.DrawImage(Sprites.Interior.Wardrobe, new Point(577, 127));
+                g.DrawImage(Interior.Wardrobe, new Point(577, 127));
             if (game.Player.Position.Y <= 344)
-                g.DrawImage(Sprites.Interior.Cup, new Point(424, 336));
+                g.DrawImage(Interior.Cup, new Point(424, 336));
         }
 
         private void PaintMatrix(Graphics g)

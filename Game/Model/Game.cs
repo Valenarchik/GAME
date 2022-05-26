@@ -7,7 +7,19 @@ namespace Game.Model
 {
     public class Game
     {
-        public int Money { get; set; }
+        public bool GameOver => money < 0;
+        private int money;
+        public int Money
+        {
+            get => money;
+            set
+            {
+                money = value;
+                OnMoneyChange();
+            }
+        }
+
+        public event Action MoneyChange;
         public readonly List<GameObject> Objects = new();
 
         public readonly Dictionary<PizzaType, List<Ingredient>> Recipes = new()
@@ -26,7 +38,7 @@ namespace Game.Model
         public static readonly int MaxCountVisitors = 3;
         public readonly Size GameSize;
         public readonly Random Random = new();
-            
+        
         public int Width => GameSize.Width;
         public int Height => GameSize.Height;
 
@@ -73,5 +85,11 @@ namespace Game.Model
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
+
+        protected virtual void OnMoneyChange()
+        {
+            MoneyChange?.Invoke();
+        }
+        
     }
 }

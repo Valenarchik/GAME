@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Game.Sprites;
 
 namespace Game.Model
 {
@@ -28,9 +29,9 @@ namespace Game.Model
             foreach (var (pizza, ingredients) in Game.Recipes)
             {
                 var ing = new HashSet<Ingredient>(ingredients);
-                if (!IngredientsForCooking.All(x =>
-                    { 
-                        if (!ing.Contains(x)) return false; 
+                if (IngredientsForCooking.Count==0 || !IngredientsForCooking.All(x =>
+                    {
+                        if (!ing.Contains(x)) return false;
                         ing.Remove(x);
                         return true;
                     })) continue;
@@ -45,18 +46,35 @@ namespace Game.Model
 
     public class Furnace :Interior
     {
-        public readonly Timer Timer = new() {Interval = 5000};
+        private readonly Timer timer = new();
         public Pizza Pizza { get; set; }
-        public bool IsKindled { get; set; }
-        public Furnace(Game game, Point position, Size size) : base(game, position, size)
+        public bool IsKindled { get; private set; }
+        public Furnace(Game game, Point position, Size size,int timeCookInSecond) : base(game, position, size)
         {
-            Timer.Tick += (_, _) =>
+            timer.Interval = timeCookInSecond*1000;
+            timer.Tick += (_, _) =>
             {
                 if (Pizza == null) return;
-                if (Pizza.IsCook)
-                    Pizza.IsBurnedDown = true;
-                Pizza.IsCook = true;
+                Pizza.Progress++;
             };
+        }
+        
+        public void StartCooking()
+        { 
+            Pizza = Game.Player.Inventory.FirstOrDefault(pizza => !pizza.IsCook);
+            if (Pizza is null)
+                return;
+            IsKindled = true;
+            Game.Player.Inventory.Remove(Pizza);
+            timer.Start();
+        }
+
+        public void EndCooking()
+        {
+            IsKindled = false;
+            Game.Player.Inventory.Add(Pizza);
+            Pizza = null;
+            timer.Stop();
         }
     }
 }

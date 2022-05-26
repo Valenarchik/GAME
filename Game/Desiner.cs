@@ -27,7 +27,7 @@ namespace Game
             BackColor = Color.Transparent,
         };
 
-        private readonly List<PictureBox> ingredientsList = new List<PictureBox>()
+        private readonly List<PictureBox> ingredientButtons = new List<PictureBox>()
         {
             new() {Image = Meal.Dough,Name = "Dough"},
             new() {Image = Meal.Tomato,Name = "Tomato"},
@@ -61,12 +61,21 @@ namespace Game
             BackColor = Color.Transparent,
         };
         
-        private readonly List<PictureBox> ingredientsPictureBoxes = new ()
+        private readonly List<PictureBox> ingredientsOnTable = new ()
         {
             new PictureBox{Location =  new Point(54, 96),BackColor = Color.Transparent,Size = new Size(104,104)},
             new PictureBox{Location =  new Point(157, 18),BackColor = Color.Transparent,Size = new Size(104,104)},
             new PictureBox{Location =  new Point(157, 174),BackColor = Color.Transparent,Size = new Size(104,104)},
             new PictureBox{Location =  new Point(260, 96),BackColor = Color.Transparent,Size = new Size(104,104)},
+        };
+
+        private readonly PictureBox makePizzaPictureBox = new PictureBox()
+        {
+            BackColor = Color.Black,
+            Location = new Point(192,130),
+            Size = new Size(36,36),
+            Image = Interface.Ok,
+            SizeMode = PictureBoxSizeMode.CenterImage,
         };
 
         private readonly PictureBox pizzaPictureBox = new()
@@ -76,5 +85,13 @@ namespace Game
             Size = new Size(161,161)
         };
 
+        private readonly Label CountCoin = new Label()
+        {
+            Font = new Font(FontFamily.GenericMonospace, 20),
+            ForeColor = Color.Yellow,
+            BackColor = Color.Transparent,
+            Location = new Point(61,12),
+            Size = new Size(188,33)
+        };
     }
 }

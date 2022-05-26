@@ -11,46 +11,69 @@ namespace Game
     {
         private void InitializationRifledBoard()
         {
+            Controls.Add(rifledBoard);
+            rifledBoard.Hide();
+            rifledBoard.Controls.Add(makePizzaPictureBox);
+            makePizzaPictureBox.Hide();
             rifledBoard.Controls.Add(ingredients);
             rifledBoard.Controls.Add(closeRifledBoardButton);
+            rifledBoard.Controls.Add(pizzaPictureBox);
             rifledBoard.MouseDown += OnPanelMouseDown;
             rifledBoard.MouseUp += OnPanelMouseUp;
             rifledBoard.MouseMove += OnPanelMouseMove;
             pizzaPictureBox.Click += OnPizzaPictureBoxClick;
-            InitializationIngredientsList();
-            for(var i = 0; i< ingredientsPictureBoxes.Count;i++)
+            
+            makePizzaPictureBox.Click += (_, _) =>
             {
-                var pictureBox = ingredientsPictureBoxes[i];
+                game.RifledBoard.MakePizza();
+                makePizzaPictureBox.Hide();
+                RifledBoardPaint();
+            };
+            
+            InitializationIngredientButtons();
+            for(var i = 0; i< ingredientsOnTable.Count;i++)
+            {
+                var pictureBox = ingredientsOnTable[i];
                 rifledBoard.Controls.Add(pictureBox);
                 var i1 = i;
                 pictureBox.Click += (_, _) =>
                 {
                     var ing = game.RifledBoard.IngredientsForCooking;
                     if (ing.Count >= i1)
+                    {
                         ing.Remove(ing[i1]);
+                        game.Money++;
+                    }
                     RifledBoardPaint();
                 };
             }
-            rifledBoard.Controls.Add(pizzaPictureBox);
-            rifledBoard.Hide();
-            Controls.Add(rifledBoard);
+        
+
         }
 
-        private void InitializationIngredientsList()
+        private void InitializationIngredientButtons()
         {
-            foreach (var box in ingredientsList)
+            foreach (var box in ingredientButtons)
             {
                 box.BackColor = Color.Black;
-                box.Size = new Size(ingredients.Size.Width / ingredientsList.Count - 2, ingredients.Size.Height - 1);
+                box.Size = new Size(ingredients.Size.Width / ingredientButtons.Count - 2, ingredients.Size.Height - 1);
                 box.Margin = new Padding(1);
                 box.SizeMode = PictureBoxSizeMode.CenterImage;
                 var name = box.Name;
                 box.Click += (_, _) =>
                 {
                     var ing = game.RifledBoard.IngredientsForCooking;
+                    if(ing.Count == RifledBoard.MaxIngredientsCount)
+                        return;
                     if (Enum.TryParse<Ingredient>(name, out var ingredient))
-                       ing.Add(ingredient);
-                    if (ing.Count == RifledBoard.MaxIngredientsCount) game.RifledBoard.MakePizza();
+                        ing.Add(ingredient);
+                    if (ing.Count == RifledBoard.MaxIngredientsCount)
+                    {
+                        makePizzaPictureBox.Show();
+                    }
+                    else
+                        makePizzaPictureBox.Hide();
+                    game.Money--;
                     RifledBoardPaint();
                 };
                 ingredients.Controls.Add(box);
@@ -70,10 +93,10 @@ namespace Game
         private void RifledBoardPaint()
         {
             var ing = game.RifledBoard.IngredientsForCooking;
-            foreach (var pictureBox in ingredientsPictureBoxes)
+            foreach (var pictureBox in ingredientsOnTable)
                 pictureBox.Image = new Bitmap(1, 1);
             for (var i = 0; i < ing.Count; i++)
-                ingredientsPictureBoxes[i].Image = DecodeIngredients(ing[i]);
+                ingredientsOnTable[i].Image = DecodeIngredients(ing[i]);
             pizzaPictureBox.Image = game.RifledBoard.RawPizza is not null ?
                 DecodePizza(game.RifledBoard.RawPizza.Type,true) : new Bitmap(1, 1);
         }

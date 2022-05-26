@@ -22,17 +22,9 @@ namespace Game.Model
         {
         }
         
-        public void AcceptOrder()
-        {
-            var visitor = Game.Visitors.FirstOrDefault(x=>!x.OrderAccepted);
-            if(visitor is null || !visitor.OrderIsActivated) return;
-            if (Game.InZone(this,visitor,ActivationRadius))
-                visitor.OrderAccepted = true;
-        }
-
         public void CompleteOrder()
         {
-            var visitor = Game.Visitors.FirstOrDefault(x => x.OrderAccepted && !x.OrderIsCompleted);
+            var visitor = Game.Visitors.FirstOrDefault(x => !x.OrderIsCompleted);
             if(visitor is null) return;
 
             if (!Game.InZone(this, visitor, ActivationRadius)) return;
@@ -42,6 +34,7 @@ namespace Game.Model
                 var pizza = Inventory[i];
                 if (pizza.Type != visitor.WantPizzaType || !pizza.IsCook || pizza.IsBurnedDown) continue;
                 Inventory.Remove(pizza);
+                Game.Money += 7;
                 pizzaNotFound = false;
                 break;
             }

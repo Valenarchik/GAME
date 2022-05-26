@@ -13,10 +13,10 @@ namespace Game
             game.Add(game.RifledBoard);
             game.Furnaces.AddRange(new []
             { 
-                new Furnace(game, new Point(708, 60), new Size(32, 86)),
-                new Furnace(game, new Point(740, 60), new Size(32, 86)),
-                new Furnace(game, new Point(789, 60), new Size(32, 86)),
-                new Furnace(game, new Point(821, 60), new Size(32, 86))
+                new Furnace(game, new Point(708, 60), new Size(32, 86),2),
+                new Furnace(game, new Point(740, 60), new Size(32, 86),2),
+                new Furnace(game, new Point(789, 60), new Size(32, 86),2),
+                new Furnace(game, new Point(821, 60), new Size(32, 86),2)
             });
             game.AddRange(game.Furnaces);
             game.AddRange(new[]

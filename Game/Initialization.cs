@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Accessibility;
 using Game.Model;
 
 namespace Game
@@ -23,6 +24,9 @@ namespace Game
             menu.Controls.Add(startButton);
             Controls.Add(menu);
             Controls.Add(buttonE);
+            Controls.Add(CountCoin);
+            game.MoneyChange += () => CountCoin.Text = game.Money.ToString();
+            game.Money = 20;
             InitializationRifledBoard();
             InitializationAnimation();
             InitializationGameObjects();

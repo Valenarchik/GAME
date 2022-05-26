@@ -19,7 +19,6 @@ namespace Game
 
         public MyForm()
         {
-            
             InitializeComponent();
             DoubleBuffered = true;
             Paint += OnPaint;
@@ -77,33 +76,29 @@ namespace Game
                     break;
                 case Keys.E:
                     player.CompleteOrder();
-                    player.AcceptOrder();
                     OpenRifledBoard();
-                    if (game.Player.FindNearestFurnace())
-                    {
-                        var furnace =  player.NearestFurnace;
-                        if(!furnace.IsKindled)
-                        {
-                            if (player.Inventory.Count > 0)
-                            {
-                                furnace.Pizza = player.Inventory[0];
-                                furnace.IsKindled = true;
-                                player.Inventory.Remove(furnace.Pizza);
-                                furnace.Timer.Start();
-                            }
-                        }
-                        else if (furnace.Pizza.IsCook)
-                        {
-                            player.Inventory.Add(furnace.Pizza);
-                            furnace.Pizza = null;
-                            furnace.IsKindled = false;
-                        }
-                    }
+                    FurnaceInteraction();
                     break;
             }
             Invalidate();
         }
 
+        private void FurnaceInteraction()
+        {
+            var player = game.Player;
+            if (game.Player.FindNearestFurnace())
+            {
+                var furnace =  player.NearestFurnace;
+                if(!furnace.IsKindled)
+                {
+                    furnace.StartCooking();
+                }
+                else
+                {
+                    furnace.EndCooking();
+                }
+            }
+        }
         private void OnPressUp(object sender, KeyEventArgs e)
         {
             game.Player.StopMove();

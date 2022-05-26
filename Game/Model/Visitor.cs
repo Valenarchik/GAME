@@ -10,7 +10,6 @@ namespace Game.Model
         public readonly TypeVisitor TypeVisitor;
         public readonly PizzaType WantPizzaType;
         public bool OrderIsActivated { get; private set; }
-        public bool OrderAccepted { get; set; }
         public bool OrderIsCompleted { get; set; }
         private bool iGoToBar;
         private bool iGoToExit;
