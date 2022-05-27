@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Forms;
+using Game;
 
 namespace Game
 {
@@ -11,7 +12,7 @@ namespace Game
         [STAThread]
         static void Main()
         {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+           // Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MyForm());

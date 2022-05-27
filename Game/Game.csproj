@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <TargetFramework>net5.0-windows</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,9 +11,6 @@
       <DependentUpon>Form.cs</DependentUpon>
     </Compile>
     <Compile Update="Paint.cs">
-      <DependentUpon>Form.cs</DependentUpon>
-    </Compile>
-    <Compile Update="InitializationGameObjects.cs">
       <DependentUpon>Form.cs</DependentUpon>
     </Compile>
     <Compile Update="Initialization.cs">
@@ -28,6 +25,22 @@
     <Compile Update="InitializationRifledBoard.cs">
       <DependentUpon>Form.cs</DependentUpon>
     </Compile>
+    <Compile Update="Timers.cs">
+      <DependentUpon>Form.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HiNetCloud.AxInterop.WMPLib" Version="20.7.2.10" />
+    <PackageReference Include="HiNetCloud.Interop.WMPLib" Version="20.7.2.10" />
+    <PackageReference Include="WMPLib" Version="1.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>
 
 </Project>

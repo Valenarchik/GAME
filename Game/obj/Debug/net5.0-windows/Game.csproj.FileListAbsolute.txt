@@ -34,3 +34,8 @@ C:\Users\pavel\RiderProjects\PizzaMaster\Game\obj\Debug\net5.0-windows\Game.pdb
 C:\Users\pavel\RiderProjects\PizzaMaster\Game\obj\Debug\net5.0-windows\Game.genruntimeconfig.cache
 C:\Users\pavel\RiderProjects\PizzaMaster\Game\obj\Debug\net5.0-windows\Game.MyForm.resources
 C:\Users\pavel\RiderProjects\PizzaMaster\Game\obj\Debug\net5.0-windows\refint\Game.dll
+C:\Users\pavel\RiderProjects\PizzaMaster\Game\bin\Debug\net5.0-windows\AxInterop.WMPLib.dll
+C:\Users\pavel\RiderProjects\PizzaMaster\Game\bin\Debug\net5.0-windows\Interop.WMPLib.dll
+C:\Users\pavel\RiderProjects\PizzaMaster\Game\obj\Debug\net5.0-windows\Game.csproj.CopyComplete
+C:\Users\pavel\RiderProjects\PizzaMaster\Game\bin\Debug\net5.0-windows\Model.dll
+C:\Users\pavel\RiderProjects\PizzaMaster\Game\bin\Debug\net5.0-windows\Model.pdb

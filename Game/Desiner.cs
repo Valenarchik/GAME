@@ -1,18 +1,77 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using Game.Sprites;
+using Game.SpritesAndMusic;
 
 namespace Game
 {
     public partial class MyForm
     {
-        private readonly Panel menu = new Panel()
+        //Меню
+        private readonly Panel menu = new ()
         {
             Location = new Point(0, 0),
-            BackColor = Color.Black
+            BackgroundImage = Interface.Menu,
+            Size = Interface.Menu.Size
+        };
+        
+        private readonly Button startButton = new()
+        {
+            Text = "Старт",
+            Location = new Point(413,220),
+            BackColor = Color.FromArgb(141,111,27),
+            Size = new Size(214,67),
+            Font = new Font(FontFamily.GenericMonospace, 24),
+            FlatStyle = FlatStyle.Flat,
+        };
+        
+        private readonly Button learButton = new()
+        {
+            Text = "Обучение",
+            Location = new Point(413,303),
+            BackColor = Color.FromArgb(141,111,27),
+            Size = new Size(214,67),
+            Font = new Font(FontFamily.GenericMonospace, 24),
+            FlatStyle = FlatStyle.Flat,
+        };
+        
+        private readonly Button settingsButton = new()
+        {
+            Text = "Настройки",
+            Location = new Point(413,388),
+            BackColor = Color.FromArgb(141,111,27),
+            Size = new Size(214,67),
+            Font = new Font(FontFamily.GenericMonospace, 24),
+            FlatStyle = FlatStyle.Flat,
+        };
+        
+        private readonly Button exitButton = new()
+        {
+            Text = "Выход",
+            Location = new Point(413,472),
+            BackColor = Color.FromArgb(141,111,27),
+            Size = new Size(214,67),
+            Font = new Font(FontFamily.GenericMonospace, 24),
+            FlatStyle = FlatStyle.Flat,
+        };
+        //
+
+
+        private readonly Panel recipes = new()
+        {
+            BackgroundImage = Interface.Recipes,
+            Location = new Point(162,103),
+            Size = Interface.Recipes.Size,
         };
 
+        private readonly PictureBox bookButton = new()
+        {
+            BackgroundImage = Interface.Book,
+            Location = new Point(990,11),
+            Size = Interface.Book.Size,
+            BackColor = Color.Transparent,
+        };
+        
         private readonly Panel rifledBoard = new Panel()
         {
             Location = new Point(159, 194),
@@ -47,13 +106,7 @@ namespace Game
             BorderStyle = BorderStyle.None,
             Location = new Point(673,4)
         };
-        private readonly Button startButton = new Button()
-        {
-            Text = "Старт",
-            ForeColor = Color.White,
-            AutoSize = true,
-            Font = new Font(FontFamily.GenericMonospace, 20),
-        };
+
         private readonly PictureBox buttonE = new PictureBox()
         {
             Image = Interface.ButtonE,
@@ -85,7 +138,7 @@ namespace Game
             Size = new Size(161,161)
         };
 
-        private readonly Label CountCoin = new Label()
+        private readonly Label countCoin = new()
         {
             Font = new Font(FontFamily.GenericMonospace, 20),
             ForeColor = Color.Yellow,

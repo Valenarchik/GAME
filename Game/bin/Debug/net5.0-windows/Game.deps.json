@@ -7,14 +7,68 @@
   "targets": {
     ".NETCoreApp,Version=v5.0": {
       "Game/1.0.0": {
+        "dependencies": {
+          "HiNetCloud.AxInterop.WMPLib": "20.7.2.10",
+          "HiNetCloud.Interop.WMPLib": "20.7.2.10",
+          "Model": "1.0.0",
+          "WMPLib": "1.0.0"
+        },
         "runtime": {
           "Game.dll": {}
+        }
+      },
+      "HiNetCloud.AxInterop.WMPLib/20.7.2.10": {
+        "runtime": {
+          "lib/net46/AxInterop.WMPLib.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "HiNetCloud.Interop.WMPLib/20.7.2.10": {
+        "runtime": {
+          "lib/net46/Interop.WMPLib.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "WMPLib/1.0.0": {},
+      "Model/1.0.0": {
+        "runtime": {
+          "Model.dll": {}
         }
       }
     }
   },
   "libraries": {
     "Game/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "HiNetCloud.AxInterop.WMPLib/20.7.2.10": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-VOmxsgTgleCZgOdpmSoNZTvSsiifX3T3yY7cZUCqlnMnAbx/M5WbyNfNI4dXT619ln4n9/lMtFxAC5L8AHxYRw==",
+      "path": "hinetcloud.axinterop.wmplib/20.7.2.10",
+      "hashPath": "hinetcloud.axinterop.wmplib.20.7.2.10.nupkg.sha512"
+    },
+    "HiNetCloud.Interop.WMPLib/20.7.2.10": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-No2mPKa8b6f+MAsOz52pMdu16Yuaq30ogTmoH/jjuVjGzNB2J8DpkxOkJgYBf8Sy6V3ZkfqXAI8d0T3w0Zh/WA==",
+      "path": "hinetcloud.interop.wmplib/20.7.2.10",
+      "hashPath": "hinetcloud.interop.wmplib.20.7.2.10.nupkg.sha512"
+    },
+    "WMPLib/1.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-hhTCfENN7xrSfUG7hrd/A9YiXVMVGHAc3Hv0USe6SvpacIDxVwiBb1X3nVzELpLtewjqqFy5dsWHwImpUy3vyw==",
+      "path": "wmplib/1.0.0",
+      "hashPath": "wmplib.1.0.0.nupkg.sha512"
+    },
+    "Model/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

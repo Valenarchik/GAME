@@ -1,15 +1,16 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using Game.Model;
+using Model;
+using Game.SpritesAndMusic;
 
 namespace Game
 {
     public partial class MyForm : Form
     {
-        private readonly Size mixingEntityAnimations = new(Sprites.Sprites.EntitySpriteSize.Width * 10 / 45,
-            Sprites.Sprites.EntitySpriteSize.Height * 7 / 10);
+        private readonly Size mixingEntityAnimations = new(Sprites.EntitySpriteSize.Width * 10 / 45,
+            Sprites.EntitySpriteSize.Height * 7 / 10);
 
-        private void EntityAnimation(Graphics g, GameEntity entity, Sprites.EntitySprites sprites)
+        private void EntityAnimation(Graphics g, GameEntity entity, EntitySprites sprites)
         {
             if (entity.IsMoving)
                 switch (entity.Direction)

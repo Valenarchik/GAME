@@ -4,7 +4,25 @@
     <Compile Update="Animation.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Desiner.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Initialization.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="InitializationAnimation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="InitializationGameObjects.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="InitializationRifledBoard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Paint.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

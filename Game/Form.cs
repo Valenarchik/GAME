@@ -1,61 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Game.Model;
-using Game.Sprites;
+using Game.SpritesAndMusic;
+using Model;
 
 namespace Game
 {
     public sealed partial class MyForm
     {
-        private Model.Game game;
+        private readonly global::Model.Game game = new(1040, 704);
         private readonly ChefSprites chefSprites = new();
         private readonly VisitorOneSprites visitorOneSprites = new();
         private readonly VisitorTwoSprites visitorTwoSprites = new();
-        private readonly Timer moveTimer = new() {Interval = 100};
-        private readonly Timer addVisitorTimer = new() {Interval = 1000};
-
+        
         public MyForm()
         {
             InitializeComponent();
-            DoubleBuffered = true;
             Paint += OnPaint;
             KeyDown += OnPressDown;
             KeyUp += OnPressUp;
-
-            moveTimer.Tick += (_, _) =>
-            {
-                if (game.Player.IsMoving)
-                    game.Player.Move(game.Player.Direction);
-
-                foreach (var visitor in game.Visitors)
-                {
-                    if (visitor.Out)
-                    {
-                        game.Objects.Remove(game.Visitors.Dequeue());
-                        break;
-                    }
-
-                    if (visitor.Track.Count != 0)
-                        visitor.Move(visitor.Track.First());
-                    else
-                        visitor.StopMove();
-                }
-                Invalidate();
-            };
-
-            addVisitorTimer.Tick += (_, _) =>
-            {
-                if (game.Visitors.Count >= Model.Game.MaxCountVisitors || game.Random.Next(0, 2) == 0) return;
-                var visitor = new Visitor(game, new Point(419, 684), 6, new Size(28, 20));
-                game.Add(visitor);
-                visitor.GoToBar();
-                Invalidate();
-            };
-            
         }
+        
 
         private void OnPressDown(object sender, KeyEventArgs e)
         {
@@ -75,14 +41,18 @@ namespace Game
                     player.Move(Direction.Right);
                     break;
                 case Keys.E:
-                    player.CompleteOrder();
+                    player.OnCompleteOrder();
+                    game.TrashBox.OnThrowOutTrash();
                     OpenRifledBoard();
                     FurnaceInteraction();
+                    break;
+                case Keys.Escape:
+                    OpenMenu();
                     break;
             }
             Invalidate();
         }
-
+        
         private void FurnaceInteraction()
         {
             var player = game.Player;
@@ -91,14 +61,25 @@ namespace Game
                 var furnace =  player.NearestFurnace;
                 if(!furnace.IsKindled)
                 {
+                    if(game.Player.Inventory.Count!=0)
+                    {
+                        Music.FireSoundPlayer.controls.play();
+                        Music.IronDoor.controls.play();
+                    }
                     furnace.StartCooking();
                 }
                 else
                 {
+                    Music.FireSoundPlayer.controls.stop();
+                    if(furnace.Pizza is not null)
+                    {
+                        Music.IronDoor.controls.play();
+                    }
                     furnace.EndCooking();
                 }
             }
         }
+        
         private void OnPressUp(object sender, KeyEventArgs e)
         {
             game.Player.StopMove();
@@ -106,11 +87,44 @@ namespace Game
         
         private void OpenRifledBoard()
         {
-            if (!Model.Game.InZone(game.Player, game.RifledBoard, Player.LittleActivationRadius))
+            if (!global::Model.Game.InZone(game.Player, game.RifledBoard, Player.LittleActivationRadius))
                 return;
             rifledBoard.Show();
             Controls.Remove(buttonE);
             game.Player.CanGo = false;
         }
+
+        private void PlayWalkSound()
+        {
+            var player = game.Player;
+            if (player.IsMoving)
+            {
+                if (player.Position.X > 675 && player.Position.Y < 421)
+                {
+                    Music.WalkingOnConcrete.controls.play();
+                    Music.WalkingOnWood.controls.stop();
+                }
+                else
+                {
+                    Music.WalkingOnConcrete.controls.stop();
+                    Music.WalkingOnWood.controls.play();
+                }
+            }
+            else
+            {
+                Music.WalkingOnConcrete.controls.stop();
+                Music.WalkingOnWood.controls.stop();
+            }
+        }
+        
+        private void OnStartButtonClick(object sender, EventArgs args)
+        {
+            menu.Hide();
+            moveTimer.Start();
+            addVisitorTimer.Start();
+        }
+
+        private void OpenMenu()=>menu.Show();
+        
     }
 }

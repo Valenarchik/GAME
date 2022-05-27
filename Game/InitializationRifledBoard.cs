@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using Game.Model;
-using Game.Sprites;
+using Game.SpritesAndMusic;
+using Model;
 
 namespace Game
 {
@@ -11,26 +10,21 @@ namespace Game
     {
         private void InitializationRifledBoard()
         {
-            Controls.Add(rifledBoard);
-            rifledBoard.Hide();
-            rifledBoard.Controls.Add(makePizzaPictureBox);
             makePizzaPictureBox.Hide();
+            rifledBoard.Hide();
+            Controls.Add(rifledBoard);
+            rifledBoard.Controls.Add(makePizzaPictureBox);
             rifledBoard.Controls.Add(ingredients);
             rifledBoard.Controls.Add(closeRifledBoardButton);
             rifledBoard.Controls.Add(pizzaPictureBox);
-            rifledBoard.MouseDown += OnPanelMouseDown;
-            rifledBoard.MouseUp += OnPanelMouseUp;
-            rifledBoard.MouseMove += OnPanelMouseMove;
             pizzaPictureBox.Click += OnPizzaPictureBoxClick;
-            
-            makePizzaPictureBox.Click += (_, _) =>
-            {
-                game.RifledBoard.MakePizza();
-                makePizzaPictureBox.Hide();
-                RifledBoardPaint();
-            };
-            
+            makePizzaPictureBox.Click += OnMakePizzaPictureBoxClick;
             InitializationIngredientButtons();
+            InitializationIngredientsOnTable();
+        }
+
+        private void InitializationIngredientsOnTable()
+        {
             for(var i = 0; i< ingredientsOnTable.Count;i++)
             {
                 var pictureBox = ingredientsOnTable[i];
@@ -39,7 +33,7 @@ namespace Game
                 pictureBox.Click += (_, _) =>
                 {
                     var ing = game.RifledBoard.IngredientsForCooking;
-                    if (ing.Count >= i1)
+                    if (ing.Count > i1)
                     {
                         ing.Remove(ing[i1]);
                         game.Money++;
@@ -47,10 +41,7 @@ namespace Game
                     RifledBoardPaint();
                 };
             }
-        
-
         }
-
         private void InitializationIngredientButtons()
         {
             foreach (var box in ingredientButtons)
@@ -90,6 +81,21 @@ namespace Game
             }
             RifledBoardPaint();
         }
+
+        private void OnMakePizzaPictureBoxClick(object sender, EventArgs e)
+        {
+            game.RifledBoard.MakePizza();
+            ((PictureBox)sender).Hide();
+            RifledBoardPaint();
+        }
+        
+        private void OnCloseRifledBoardButtonClick(object sender, EventArgs args)
+        {
+            rifledBoard.Hide();
+            game.Player.CanGo = true;
+            Controls.Add(buttonE);
+        }
+
         private void RifledBoardPaint()
         {
             var ing = game.RifledBoard.IngredientsForCooking;
@@ -100,33 +106,6 @@ namespace Game
             pizzaPictureBox.Image = game.RifledBoard.RawPizza is not null ?
                 DecodePizza(game.RifledBoard.RawPizza.Type,true) : new Bitmap(1, 1);
         }
-        
-        private bool a = true;
-        private int x, y;
-
-        private void OnPanelMouseDown(object sender, MouseEventArgs e)
-        {
-            x = e.X;
-            y = e.Y;
-            a = false;
-        }
-
-        private void OnPanelMouseUp(object sender, MouseEventArgs e)
-        {
-            a = true;
-        }
-
-        private void OnPanelMouseMove(object sender, MouseEventArgs e)
-        {
-            if (a) return;
-            var mPanel = (Panel) sender;
-            if (!game.IsInsideMap(new PointF(mPanel.Left + e.X - x, mPanel.Top + e.Y - y))
-                || !game.IsInsideMap(new PointF(mPanel.Right + e.X - x, mPanel.Bottom + e.Y - y)))
-                return;
-            mPanel.Left += e.X - x;
-            mPanel.Top += e.Y - y;
-        }
-
         private static Bitmap DecodePizza(PizzaType pizza, bool isBig)
         {
             if (isBig)
