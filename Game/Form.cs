@@ -20,9 +20,20 @@ namespace Game
             Paint += OnPaint;
             KeyDown += OnPressDown;
             KeyUp += OnPressUp;
+            Furnace.OnStartCoking += () =>
+            {
+                Music.FireSoundPlayer.controls.play();
+                Music.IronDoor.controls.play();
+            };
+            Furnace.OnEndCoking += () =>
+            {
+                Music.IronDoor.controls.play();
+                Music.FireSoundPlayer.controls.stop();
+            };
+
+            DayTimer.Tick += UpdateDayTimer;
         }
         
-
         private void OnPressDown(object sender, KeyEventArgs e)
         {
             var player = game.Player;
@@ -41,10 +52,13 @@ namespace Game
                     player.Move(Direction.Right);
                     break;
                 case Keys.E:
-                    player.OnCompleteOrder();
-                    game.TrashBox.OnThrowOutTrash();
-                    OpenRifledBoard();
-                    FurnaceInteraction();
+                    if (!rifledBoard.Visible && !rentMenu.Visible)
+                    {
+                        player.OnCompleteOrder();
+                        game.TrashBox.OnThrowOutTrash();
+                        OpenRifledBoard();
+                        FurnaceInteraction();
+                    }
                     break;
                 case Keys.Escape:
                     OpenMenu();
@@ -60,23 +74,9 @@ namespace Game
             {
                 var furnace =  player.NearestFurnace;
                 if(!furnace.IsKindled)
-                {
-                    if(game.Player.Inventory.Count!=0)
-                    {
-                        Music.FireSoundPlayer.controls.play();
-                        Music.IronDoor.controls.play();
-                    }
                     furnace.StartCooking();
-                }
                 else
-                {
-                    Music.FireSoundPlayer.controls.stop();
-                    if(furnace.Pizza is not null)
-                    {
-                        Music.IronDoor.controls.play();
-                    }
                     furnace.EndCooking();
-                }
             }
         }
         
@@ -120,6 +120,7 @@ namespace Game
         private void OnStartButtonClick(object sender, EventArgs args)
         {
             menu.Hide();
+            DayTimer.Start();
             moveTimer.Start();
             addVisitorTimer.Start();
         }

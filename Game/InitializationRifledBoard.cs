@@ -92,8 +92,11 @@ namespace Game
         private void OnCloseRifledBoardButtonClick(object sender, EventArgs args)
         {
             rifledBoard.Hide();
-            game.Player.CanGo = true;
-            Controls.Add(buttonE);
+            if(!rentMenu.Visible)
+            {
+                game.Player.CanGo = true;
+                Controls.Add(buttonE);
+            }
         }
 
         private void RifledBoardPaint()

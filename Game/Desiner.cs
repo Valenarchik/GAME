@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using Game.SpritesAndMusic;
+using Interior = Model.Interior;
 
 namespace Game
 {
@@ -145,6 +146,47 @@ namespace Game
             BackColor = Color.Transparent,
             Location = new Point(61,12),
             Size = new Size(188,33)
+        };
+
+        private readonly Panel rentMenu = new()
+        {
+            BackgroundImage = Interface.RentMenu,
+            Size = Interface.RentMenu.Size,
+            Location = new Point(417,228),
+        };
+        
+        
+        //
+        private readonly Label rentText = new ()
+        {
+            Text = "Аренда:",
+            BackColor = Color.Transparent,
+            ForeColor = Color.FromArgb(233,177,20),
+            Font = new Font(FontFamily.GenericMonospace, 24),
+            Location = new Point(15,15),
+            Size = new Size(176,55),
+            TextAlign = ContentAlignment.MiddleCenter,
+        };
+        
+        private readonly Label rentMoneyText = new ()
+        {
+            BackColor = Color.Transparent,
+            ForeColor = Color.FromArgb(233,177,20),
+            Font = new Font(FontFamily.GenericMonospace, 24),
+            Location = new Point(46,95),
+            Size = new Size(114,50),
+            TextAlign = ContentAlignment.MiddleCenter,
+        };
+        
+        private readonly Button rentOkButton = new ()
+        {
+            Text = "Ок",
+            ForeColor = Color.FromArgb(233,177,20),
+            Font = new Font(FontFamily.GenericMonospace, 16),
+            Location = new Point(43,200),
+            Size = new Size(120,31),
+            FlatStyle = FlatStyle.Flat,
+            BackColor = Color.FromArgb(141,111,27),
         };
     }
 }

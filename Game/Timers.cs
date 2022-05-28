@@ -3,13 +3,15 @@ using System.Drawing;
 using System.Linq;
 using Model;
 using System.Windows.Forms;
+using Game.SpritesAndMusic;
 
 namespace Game
 {
     public partial class MyForm
     {
+        public readonly Timer DayTimer = new(){Interval = 120000};
         private readonly Timer moveTimer = new() {Interval = 100};
-        private readonly Timer addVisitorTimer = new() {Interval = 2000};
+        private readonly Timer addVisitorTimer = new() {Interval = 5000};
         private void UpdateAddVisitorTimer(object sender, EventArgs e)
         {
             if (game.Visitors.Count >= global::Model.Game.MaxCountVisitors || game.Random.Next(0, 2) == 0) return;
@@ -38,6 +40,17 @@ namespace Game
                     visitor.StopMove();
             }
             Invalidate();
+        }
+        
+        private void UpdateDayTimer(object sender, EventArgs e)
+        {
+            rentMenu.Show();
+            game.Money -= game.Rent;
+            rentMoneyText.Text = "-" + game.Rent;
+            game.Player.CanGo = false;
+            Controls.Remove(buttonE);
+            Music.WastingCoins.controls.play();
+            ((Timer)sender).Stop();
         }
     }
 }

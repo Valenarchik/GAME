@@ -50,7 +50,9 @@ namespace Model
         private readonly Timer timer = new();
         public Pizza Pizza { get; set; }
         public bool IsKindled { get; private set; }
-        public Furnace(Game game, Point position, Size size,int timeCookInSecond) : base(game, position, size)
+        public static event Action OnStartCoking;
+        public static event Action OnEndCoking;
+            public Furnace(Game game, Point position, Size size,int timeCookInSecond = 4) : base(game, position, size)
         {
             timer.Interval = timeCookInSecond*1000;
             timer.Elapsed += (_, _) =>
@@ -68,6 +70,7 @@ namespace Model
             IsKindled = true;
             Game.Player.Inventory.Remove(Pizza);
             timer.Start();
+            OnStartCoking?.Invoke();
         }
 
         public void EndCooking()
@@ -76,6 +79,7 @@ namespace Model
             Game.Player.Inventory.Add(Pizza);
             Pizza = null;
             timer.Stop();
+            OnEndCoking?.Invoke();
         }
     }
 

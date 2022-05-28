@@ -28,13 +28,13 @@ namespace Game.SpritesAndMusic
         {
             URL = Path.Combine(musicFolder, "Madness.wav"),
             uiMode = "invisible",
-            volume = 20,
+            volume = 10,
         };
         public static readonly WindowsMediaPlayer FingersnapBar = new WindowsMediaPlayerClass()
         {
             URL = Path.Combine(musicFolder,"Fingersnap bar.mp3"),
             uiMode = "invisible",
-            volume = 20,
+            volume = 10
         };
 
         public static readonly WindowsMediaPlayer WalkingOnConcrete = new WindowsMediaPlayerClass()
@@ -89,6 +89,12 @@ namespace Game.SpritesAndMusic
             uiMode = "invisible",
             volume = 15,
         };
+        public static readonly WindowsMediaPlayer WastingCoins = new WindowsMediaPlayerClass()
+        {
+            URL = Path.Combine(musicFolder,"wasting coins.mp3"),
+            uiMode = "invisible",
+            volume = 50,
+        };
 
 
         public static List<WindowsMediaPlayer> SoundsEffect = new()
@@ -101,7 +107,8 @@ namespace Game.SpritesAndMusic
             TurnPage,
             CloseBook,
             FingersnapBar,
-            IronDoor
+            IronDoor,
+            WastingCoins
         };
     }
 
@@ -186,6 +193,7 @@ namespace Game.SpritesAndMusic
         public static readonly Bitmap Menu = new(Image.FromFile(Path.Combine(spritesFolder, "Menu.png")));
         public static readonly Bitmap Book = new(Image.FromFile(Path.Combine(spritesFolder, "Book.png")));
         public static readonly Bitmap Recipes = new(Image.FromFile(Path.Combine(spritesFolder, "Recipes.png")));
+        public static readonly Bitmap RentMenu = new(Image.FromFile(Path.Combine(spritesFolder, "RentMenu.png")));
         
         public static readonly Bitmap ButtonE = new(Path.Combine(spritesFolder, "buttonE.gif"));
 

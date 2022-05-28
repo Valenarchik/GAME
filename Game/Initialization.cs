@@ -25,13 +25,20 @@ namespace Game
             menu.Controls.Add(settingsButton);
             menu.Controls.Add(exitButton);
             
-            
             Controls.Add(menu);
             Controls.Add(buttonE);
             Controls.Add(countCoin);
             Controls.Add(bookButton);
             Controls.Add(recipes);
             recipes.Hide();
+            
+            Controls.Add(rentMenu);
+            rentMenu.Controls.Add(rentText);
+            rentMenu.Controls.Add(rentMoneyText);
+            rentMenu.Controls.Add(rentOkButton);
+            rentMenu.Hide();
+
+
             //
             //Music.MadnessPlayer.controls.stop();
             Music.FireSoundPlayer.controls.stop();
@@ -43,6 +50,7 @@ namespace Game
             Music.CloseBook.controls.stop();
             Music.Madness.controls.stop();
             Music.IronDoor.controls.stop();
+            Music.WastingCoins.controls.stop();
             //Music.FingersnapBar.controls.stop();
             
             Music.Madness.PlayStateChange += OnMadnessPlayStateChange;
@@ -60,7 +68,20 @@ namespace Game
             addVisitorTimer.Tick += UpdateAddVisitorTimer;
             exitButton.Click += (_, _) => Close();
             bookButton.Click += OnBookButtonClick;
+            rentOkButton.Click += OnRentOkButtonClick;
         }
+
+        private void OnRentOkButtonClick(object sender, EventArgs e)
+        {
+            rentMenu.Hide();
+            if(!rifledBoard.Visible)
+            {
+                Controls.Add(buttonE);
+                game.Player.CanGo = true;
+            }
+            DayTimer.Start();
+        }
+        
         private void OnFingersnapBarStateChange(int newState)
         {
             if (newState == (int)WMPLib.WMPPlayState.wmppsMediaEnded)
@@ -77,7 +98,7 @@ namespace Game
             if(recipes.Visible)
             {
                 Music.CloseBook.controls.play();
-                Controls.Add(buttonE);
+                if(!rifledBoard.Visible)Controls.Add(buttonE);
                 recipes.Hide();
             }
             else
