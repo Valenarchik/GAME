@@ -9,7 +9,7 @@ namespace Game
 {
     public sealed partial class MyForm
     {
-        private readonly global::Model.Game game = new(1040, 704);
+        private readonly Model.Game game = new(1040, 704);
         private readonly ChefSprites chefSprites = new();
         private readonly VisitorOneSprites visitorOneSprites = new();
         private readonly VisitorTwoSprites visitorTwoSprites = new();
