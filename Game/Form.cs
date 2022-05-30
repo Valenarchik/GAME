@@ -119,13 +119,19 @@ namespace Game
         
         private void OnStartButtonClick(object sender, EventArgs args)
         {
-            menu.Hide();
+            menuBackground.Hide();
             DayTimer.Start();
             moveTimer.Start();
             addVisitorTimer.Start();
         }
 
-        private void OpenMenu()=>menu.Show();
+        private void OpenMenu()
+        {
+            DayTimer.Stop();
+            moveTimer.Stop();
+            addVisitorTimer.Stop();
+            menuBackground.Show();
+        }
         
     }
 }

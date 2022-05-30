@@ -17,15 +17,19 @@ namespace Game
             MaximizeBox = false;
             BackgroundImage = Interface.BackgroundImage;
             FormBorderStyle = FormBorderStyle.FixedDialog;
-            ClientSize = menu.Size = new Size(game.Width, game.Height);
+            ClientSize = menuBackground.Size = new Size(game.Width, game.Height);
             startButton.Click += OnStartButtonClick;
             closeRifledBoardButton.Click += OnCloseRifledBoardButtonClick;
+            
+            menuBackground.Controls.Add(menu);
+            menuBackground.Controls.Add(pizzaMaster);
+            
             menu.Controls.Add(startButton);
             menu.Controls.Add(learButton);
             menu.Controls.Add(settingsButton);
             menu.Controls.Add(exitButton);
-            
-            Controls.Add(menu);
+
+            Controls.Add(menuBackground);
             Controls.Add(buttonE);
             Controls.Add(countCoin);
             Controls.Add(bookButton);
@@ -38,6 +42,12 @@ namespace Game
             rentMenu.Controls.Add(rentOkButton);
             rentMenu.Hide();
 
+            menuBackground.Controls.Add(guide);
+            guide.Controls.Add(closeGuideButton);
+            guide.Controls.Add(nextPageGuideButton);
+            guide.Controls.Add(previousPageGuideButton);
+            guide.Hide();
+            previousPageGuideButton.Hide();
 
             //
             //Music.MadnessPlayer.controls.stop();
@@ -69,6 +79,43 @@ namespace Game
             exitButton.Click += (_, _) => Close();
             bookButton.Click += OnBookButtonClick;
             rentOkButton.Click += OnRentOkButtonClick;
+            
+            learButton.Click+= LearButtonOnClick;
+            closeGuideButton.Click+= CloseGuideButtonOnClick; 
+            nextPageGuideButton.Click += NextPageGuideButtonOnClick;   
+            previousPageGuideButton.Click += PreviousPageGuideButtonOnClick;
+        }
+
+        private void PreviousPageGuideButtonOnClick(object sender, EventArgs e)
+        {
+            nextPageGuideButton.Show();
+            previousPageGuideButton.Hide();
+            guide.Image = Interface.Guide1;
+            Music.TurnPage.controls.play();
+        }
+
+        private void NextPageGuideButtonOnClick(object sender, EventArgs e)
+        {
+            nextPageGuideButton.Hide();
+            previousPageGuideButton.Show();
+            guide.Image = Interface.Guide2;
+            Music.TurnPage.controls.play();
+        }
+
+        private void CloseGuideButtonOnClick(object sender, EventArgs e)
+        {
+            menu.Show();
+            pizzaMaster.Show();
+            guide.Hide();
+            Music.CloseBook.controls.play();
+        }
+
+        private void LearButtonOnClick(object sender, EventArgs e)
+        {
+            menu.Hide();
+            pizzaMaster.Hide();
+            guide.Show();
+            Music.TurnPage.controls.play();
         }
 
         private void OnRentOkButtonClick(object sender, EventArgs e)
@@ -80,6 +127,7 @@ namespace Game
                 game.Player.CanGo = true;
             }
             DayTimer.Start();
+            addVisitorTimer.Start();
         }
         
         private void OnFingersnapBarStateChange(int newState)

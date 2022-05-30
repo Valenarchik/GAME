@@ -75,7 +75,7 @@ namespace Game.SpritesAndMusic
         {
             URL = Path.Combine(musicFolder,"turn_page.wav"),
             uiMode = "invisible",
-            volume = 50,
+            volume = 30,
         };
         public static readonly WindowsMediaPlayer CloseBook = new WindowsMediaPlayerClass()
         {
@@ -190,12 +190,24 @@ namespace Game.SpritesAndMusic
         public static readonly Bitmap CloseButton = new (Image.FromFile(Path.Combine(spritesFolder, "closeButton.png")));
         public static readonly Bitmap TabBar = new(Image.FromFile(Path.Combine(spritesFolder, "tabbar.png")));
         public static readonly Bitmap Coin = new(Image.FromFile(Path.Combine(spritesFolder, "Coin.png")));
-        public static readonly Bitmap Menu = new(Image.FromFile(Path.Combine(spritesFolder, "Menu.png")));
+        
+        public static readonly Bitmap MenuBackground = new(Image.FromFile(Path.Combine(spritesFolder, "MenuBackground.png")));
+        public static readonly Bitmap MenuTab = new(Image.FromFile(Path.Combine(spritesFolder, "MenuTab.png")));
+        public static readonly Bitmap PizzaMaster = new(Image.FromFile(Path.Combine(spritesFolder, "PizzaMaster.png")));
+        
         public static readonly Bitmap Book = new(Image.FromFile(Path.Combine(spritesFolder, "Book.png")));
         public static readonly Bitmap Recipes = new(Image.FromFile(Path.Combine(spritesFolder, "Recipes.png")));
         public static readonly Bitmap RentMenu = new(Image.FromFile(Path.Combine(spritesFolder, "RentMenu.png")));
         
+        public static readonly Bitmap ArrowBack = new(Image.FromFile(Path.Combine(spritesFolder, "ArrowBack.png")));
+        public static readonly Bitmap CloseGuide = new(Image.FromFile(Path.Combine(spritesFolder, "CloseGuide.png")));
+        public static readonly Bitmap ForwardArrow = new(Image.FromFile(Path.Combine(spritesFolder, "ForwardArrow.png")));
+        public static readonly Bitmap Guide1 = new(Image.FromFile(Path.Combine(spritesFolder, "Guide1.png")));
+        public static readonly Bitmap Guide2 = new(Image.FromFile(Path.Combine(spritesFolder, "Guide2.png")));
+        
         public static readonly Bitmap ButtonE = new(Path.Combine(spritesFolder, "buttonE.gif"));
+        public static readonly Bitmap BookAnimation = new(Path.Combine(spritesFolder, "BookAnimation.gif"));
+
 
         private static  readonly string loadSpritesFolder = Path.Combine(spritesFolder, "Load");
         public static readonly List<Bitmap> Load = new()
