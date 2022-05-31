@@ -225,7 +225,7 @@ namespace Game
             new PictureBox{Location =  new Point(260, 96),BackColor = Color.Transparent,Size = new Size(104,104)},
         };
 
-        private readonly PictureBox makePizzaPictureBox = new ()
+        private readonly PictureBox cookPizzaPictureBox = new ()
         {
             BackColor = Color.Black,
             Location = new Point(192,130),

@@ -9,9 +9,17 @@ namespace Game
 {
     public partial class MyForm
     {
-        public readonly Timer DayTimer = new(){Interval = 90000};
+        public readonly Timer DayTimer = new(){Interval = 6000};
         private readonly Timer moveTimer = new() {Interval = 100};
         private readonly Timer addVisitorTimer = new() {Interval = 5000};
+
+        private void InitializationTimers()
+        {
+            moveTimer.Tick += UpdateMoveTimer;
+            addVisitorTimer.Tick += UpdateAddVisitorTimer;
+            DayTimer.Tick += UpdateDayTimer;
+            game.RifledBoard.Timer.SynchronizingObject = this;
+        }
         private void UpdateAddVisitorTimer(object sender, EventArgs e)
         {
             if (game.Visitors.Count >= Model.Game.MaxCountVisitors || game.Random.Next(0, 2) == 0) return;
@@ -47,29 +55,45 @@ namespace Game
         {
             game.Money -= game.Rent;
             game.Player.CanGo = false;
-            Controls.Remove(buttonE);
+            
             if (game.IsOver)
             {
                 foreach (var music in Music.SoundsEffect.Concat(Music.MusicInCafe))
                     music.controls.stop();
                 Music.GameOver.controls.play();
-                menuBackground.Show();
-                gameOver.Show();
+                
                 pizzaMaster.Hide();
                 continueButton.Hide();
+                
+                menuBackground.Show();
+                gameOver.Show();
                 newGameButton.Show();
             }
             else
             {
                 rentMenu.Show();
+                Controls.Remove(buttonE);
                 rentMoneyText.Text = "-" + game.Rent;
                 Music.WastingCoins.controls.play();
             }
-            
+            StopGame();
+        }
+
+
+        private void StopGame()
+        {
             DayTimer.Stop();
             addVisitorTimer.Stop();
             moveTimer.Stop();
             game.Stop();
+        }
+        
+        private void StartGame()
+        {
+            DayTimer.Start();
+            addVisitorTimer.Start();
+            moveTimer.Start();
+            game.Start();
         }
     }
 }

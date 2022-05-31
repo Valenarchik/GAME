@@ -10,40 +10,46 @@ namespace Game
     {
         private void InitializationRifledBoard()
         {
-            makePizzaPictureBox.Hide();
-            rifledBoard.Hide();
+            //
             Controls.Add(rifledBoard);
-            rifledBoard.Controls.Add(makePizzaPictureBox);
+            rifledBoard.Controls.Add(cookPizzaPictureBox);
             rifledBoard.Controls.Add(ingredients);
             rifledBoard.Controls.Add(closeRifledBoardButton);
             rifledBoard.Controls.Add(pizzaPictureBox);
+            //
+            rifledBoard.Hide();
+            cookPizzaPictureBox.Hide();
+            //
             pizzaPictureBox.Click += OnPizzaPictureBoxClick;
-            makePizzaPictureBox.Click += OnMakePizzaPictureBoxClick;
+            cookPizzaPictureBox.Click += OnMakePizzaPictureBoxClick;
             game.RifledBoard.OnMakePizzaSuccess += () =>
             {
                 Music.CookingPizza.controls.play();
                 closeRifledBoardButton.Hide();
             };
+            game.RifledBoard.OnMakePizzaFailure += () => Music.Sell.controls.play();
 
-            game.RifledBoard.OnMakePizzaFailure += () =>
+            game.RifledBoard.OnEndMakePizza += () =>
             {
-                Music.Sell.controls.play();
+                RifledBoardPaint();
+                closeRifledBoardButton.Show();
             };
-            
-            Music.CookingPizza.PlayStateChange += state =>
-            {
-                if (state == (int)WMPLib.WMPPlayState.wmppsMediaEnded)
-                {
-                    pizzaPictureBox.Image = DecodePizza(game.RifledBoard.RawPizza.Type, true);
-                    pizzaPictureBox.Show();
-                    closeRifledBoardButton.Show();
-                }
-            };
-            
+
             InitializationIngredientButtons();
             InitializationIngredientsOnTable();
         }
 
+        private void RifledBoardPaint()
+        {
+            var ing = game.RifledBoard.IngredientsForCooking;
+            foreach (var pictureBox in ingredientsOnTable)
+                pictureBox.Image = new Bitmap(1, 1);
+            for (var i = 0; i < ing.Count; i++)
+                ingredientsOnTable[i].Image = DecodeIngredients(ing[i]);
+            pizzaPictureBox.Image = game.RifledBoard.RawPizza is {IsMake: true} ?
+                DecodePizza(game.RifledBoard.RawPizza.Type,true) : new Bitmap(1, 1);
+        }
+        
         private void InitializationIngredientsOnTable()
         {
             for(var i = 0; i< ingredientsOnTable.Count;i++)
@@ -57,13 +63,14 @@ namespace Game
                     if (ing.Count > i1)
                     {
                         ing.Remove(ing[i1]);
-                        game.Money+=Model.Game.PriceIngredients;
+                        game.Money += Model.Game.PriceIngredients;
                     }
-                    makePizzaPictureBox.Hide();
+                    cookPizzaPictureBox.Hide();
                     RifledBoardPaint();
                 };
             }
         }
+        
         private void InitializationIngredientButtons()
         {
             foreach (var box in ingredientButtons)
@@ -72,19 +79,25 @@ namespace Game
                 box.Size = new Size(ingredients.Size.Width / ingredientButtons.Count - 2, ingredients.Size.Height - 1);
                 box.Margin = new Padding(1);
                 box.SizeMode = PictureBoxSizeMode.CenterImage;
-                var name = box.Name;
+
                 box.Click += (_, _) =>
                 {
-                    var ing = game.RifledBoard.IngredientsForCooking;
-                    if(ing.Count == RifledBoard.MaxIngredientsCount || game.Money<=0)
+                    var board = game.RifledBoard;
+                    var ing = board.IngredientsForCooking;
+
+                    if (board.EnoughIngredients || game.Money <= 0)
                         return;
-                    if (Enum.TryParse<Ingredient>(name, out var ingredient))
+                    
+                    if (Enum.TryParse<Ingredient>(box.Name, out var ingredient))
                         ing.Add(ingredient);
-                    if (ing.Count == RifledBoard.MaxIngredientsCount)
-                        makePizzaPictureBox.Show();
+                    
+                    if (board.EnoughIngredients)
+                        cookPizzaPictureBox.Show();
                     else
-                        makePizzaPictureBox.Hide();
+                        cookPizzaPictureBox.Hide();
+                    
                     game.Money -= Model.Game.PriceIngredients;
+                    
                     RifledBoardPaint();
                 };
                 ingredients.Controls.Add(box);
@@ -94,19 +107,18 @@ namespace Game
         private void OnPizzaPictureBoxClick(object sender, EventArgs e)
         {
             if(game.RifledBoard.RawPizza is null) return;
-            if(game.Player.Inventory.Count!=Player.InventorySize)
+            if(game.Player.Inventory.Count!=Player.InventorySize && game.RifledBoard.RawPizza.IsMake)
             {
                 game.Player.Inventory.Add(game.RifledBoard.RawPizza);
                 game.RifledBoard.RawPizza = null;
-                pizzaPictureBox.Hide();
             }
             RifledBoardPaint();
         }
 
         private void OnMakePizzaPictureBoxClick(object sender, EventArgs e)
         {
-            game.RifledBoard.MakePizza();
-             ((PictureBox)sender).Hide();
+            game.RifledBoard.StartMakePizza();
+            cookPizzaPictureBox.Hide();
             RifledBoardPaint();
         }
         
@@ -119,15 +131,7 @@ namespace Game
                 Controls.Add(buttonE);
             }
         }
-
-        private void RifledBoardPaint()
-        {
-            var ing = game.RifledBoard.IngredientsForCooking;
-            foreach (var pictureBox in ingredientsOnTable)
-                pictureBox.Image = new Bitmap(1, 1);
-            for (var i = 0; i < ing.Count; i++)
-                ingredientsOnTable[i].Image = DecodeIngredients(ing[i]);
-        }
+        
         private static Bitmap DecodePizza(PizzaType pizza, bool isBig)
         {
             if (isBig)

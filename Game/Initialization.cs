@@ -22,14 +22,14 @@ namespace Game
             InitializationMusic();
             InitializationAnimation();
             InitializeDesign();
+            InitializationTimers();
             
             countCoin.Text = game.Money.ToString();
             
             game.MoneyChange += () => countCoin.Text = game.Money.ToString();
             game.Player.CompleteOrder += () => Music.Sell.controls.play();
             game.TrashBox.ThrowOutTrash += () => Music.TrashBox.controls.play();
-            moveTimer.Tick += UpdateMoveTimer;
-            addVisitorTimer.Tick += UpdateAddVisitorTimer;
+
             exitButton.Click += (_, _) => Close();
             bookButton.Click += OnBookButtonClick;
             rentOkButton.Click += OnRentOkButtonClick;
@@ -47,23 +47,19 @@ namespace Game
             continueButton.Show();
             newGameButton.Hide();
             menuBackground.Hide();
-            DayTimer.Start();
-            moveTimer.Start();
-            addVisitorTimer.Start();
             if(game.IsOver)
             {
                 Music.RestaurantMusic.controls.play();
                 game.Restart();
             }
             
+            StartGame();
         }
 
         private void ContinueButtonOnClick(object sender, EventArgs args)
         {
             menuBackground.Hide();
-            DayTimer.Start();
-            moveTimer.Start();
-            addVisitorTimer.Start();
+            StartGame();
         }
 
         private void PreviousPageGuideButtonOnClick(object sender, EventArgs e)
@@ -110,10 +106,7 @@ namespace Game
                 Controls.Add(buttonE);
                 game.Player.CanGo = true;
             }
-            DayTimer.Start();
-            addVisitorTimer.Start();
-            moveTimer.Start();
-            game.Start();
+            StartGame();
         }
         private void OnBookButtonClick(object sender, EventArgs e)
         {

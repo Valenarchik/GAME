@@ -7,6 +7,8 @@ namespace Model
         public PizzaType Type { get; set; }
         public bool IsCook => progress >= 4;
 
+        public bool IsMake;
+
         private int progress;
 
         public int Progress

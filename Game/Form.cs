@@ -30,8 +30,6 @@ namespace Game
                 Music.IronDoor.controls.play();
                 Music.FireSoundPlayer.controls.stop();
             };
-
-            DayTimer.Tick += UpdateDayTimer;
         }
         
         private void OnPressDown(object sender, KeyEventArgs e)
@@ -119,12 +117,8 @@ namespace Game
         
         private void OpenMenu()
         {
-            DayTimer.Stop();
-            moveTimer.Stop();
-            addVisitorTimer.Stop();
             menuBackground.Show();
-            game.Stop();
+            StopGame();
         }
-        
     }
 }
