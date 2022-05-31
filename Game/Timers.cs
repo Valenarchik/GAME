@@ -10,7 +10,7 @@ namespace Game
     public partial class MyForm
     {
         public readonly Timer DayTimer = new(){Interval = 60000};
-        private readonly Timer moveTimer = new() {Interval = 100};
+        private readonly Timer moveTimer = new() {Interval = 50};
         private readonly Timer addVisitorTimer = new() {Interval = 5000};
 
         private void InitializationTimers()
@@ -23,7 +23,7 @@ namespace Game
         private void UpdateAddVisitorTimer(object sender, EventArgs e)
         {
             if (game.Visitors.Count >= Model.Game.MaxCountVisitors || game.Random.Next(0, 2) == 0) return;
-            var visitor = new Visitor(game, new Point(419, 684), 6, new Size(28, 20));
+            var visitor = new Visitor(game, new Point(419, 684), 5, new Size(28, 20));
             game.Objects.Add(visitor);
             game.Visitors.Enqueue(visitor);
             visitor.GoToBar();
