@@ -7,9 +7,13 @@ namespace Model
 {
     public class Game
     {
-        public bool GameOver => money < 0;
+        public bool IsOver => money < 0;
         public int Rent { get; private set; } = 3;
-        private int money = 20;
+        public const int PricePizza = 7;
+        public const int PriceIngredients = 1;
+        private const int StartMoneyCount = 20;
+        public readonly Point StartPlayerPosition = new Point(500, 230);
+        private int money;
         public int Money
         {
             get => money;
@@ -37,34 +41,12 @@ namespace Model
         public readonly Queue<Visitor> Visitors = new();
         public readonly List<Furnace> Furnaces = new();
         
-        public static readonly int MaxCountVisitors = 3;
+        public const int MaxCountVisitors = 3;
         public readonly Size GameSize;
         public readonly Random Random = new();
         public int Width => GameSize.Width;
         public int Height => GameSize.Height;
-
-        public Game(int width = 1000, int height = 500)
-        {
-            GameSize = new Size(width,height);
-        }
-
-        public void Add(GameObject gameObject)
-        {
-            switch (gameObject)
-            {
-                case Visitor visitor:
-                    Visitors.Enqueue(visitor);
-                    break;
-            }
-
-            Objects.Add(gameObject);
-         
-        }
-        public void AddRange(IEnumerable<GameObject> enumerable)
-        {
-            foreach (var o in enumerable) Add(o);
-        }
-
+        
         public bool IsInsideMap(PointF p) => p.X >= 0 && p.Y >= 0 && p.X <= Width && p.Y <= Height;
 
         public static bool InZone(GameObject gameObject1, GameObject gameObject2, double radius) =>
@@ -86,15 +68,40 @@ namespace Model
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
-        
+
+        public void Restart()
+        {
+            Player.ToDefault();
+            foreach (var visitor in Visitors)
+                Objects.Remove(visitor);
+            Visitors.Clear();
+            foreach (var furnace in Furnaces)
+                furnace.ToDefault();
+            Money = StartMoneyCount;
+        }
+
+        public void Stop()
+        {
+            foreach (var furnace in Furnaces)
+                furnace.Timer.Stop();
+        }
+
         public void Start()
         {
-            Player = new Player(this, new Point(500, 230), 4, new Size(28, 20));
+            foreach (var furnace in Furnaces)
+                furnace.Timer.Start();
+        }
+
+        public Game(int width = 1000, int height = 500)
+        {
+            GameSize = new Size(width, height);
+            Money = StartMoneyCount;
+            Player = new Player(this, StartPlayerPosition, 4, new Size(28, 20));
             Objects.Add(Player);
             RifledBoard = new RifledBoard(this, new Point(933, 112), new Size(31, 33));
             Objects.Add(RifledBoard);
-            Furnaces.AddRange(new []
-            { 
+            Furnaces.AddRange(new[]
+            {
                 new Furnace(this, new Point(708, 60), new Size(32, 86)),
                 new Furnace(this, new Point(740, 60), new Size(32, 86)),
                 new Furnace(this, new Point(789, 60), new Size(32, 86)),
@@ -103,8 +110,7 @@ namespace Model
             Objects.AddRange(Furnaces);
             TrashBox = new TrashBox(this, new Point(840, 227), new Size(26, 16));
             Objects.Add(TrashBox);
-            
-            AddRange(new[]
+            Objects.AddRange(new[]
             {
                 //квадратные столы
                 new Interior(this, new Point(94, 168), new Size(96, 32)),

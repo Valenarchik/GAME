@@ -9,14 +9,15 @@ namespace Game
 {
     public partial class MyForm
     {
-        public readonly Timer DayTimer = new(){Interval = 60000};
+        public readonly Timer DayTimer = new(){Interval = 90000};
         private readonly Timer moveTimer = new() {Interval = 100};
         private readonly Timer addVisitorTimer = new() {Interval = 5000};
         private void UpdateAddVisitorTimer(object sender, EventArgs e)
         {
-            if (game.Visitors.Count >= global::Model.Game.MaxCountVisitors || game.Random.Next(0, 2) == 0) return;
+            if (game.Visitors.Count >= Model.Game.MaxCountVisitors || game.Random.Next(0, 2) == 0) return;
             var visitor = new Visitor(game, new Point(419, 684), 6, new Size(28, 20));
-            game.Add(visitor);
+            game.Objects.Add(visitor);
+            game.Visitors.Enqueue(visitor);
             visitor.GoToBar();
             Invalidate();
         }
@@ -44,14 +45,31 @@ namespace Game
         
         private void UpdateDayTimer(object sender, EventArgs e)
         {
-            rentMenu.Show();
             game.Money -= game.Rent;
-            rentMoneyText.Text = "-" + game.Rent;
             game.Player.CanGo = false;
             Controls.Remove(buttonE);
-            Music.WastingCoins.controls.play();
-            ((Timer)sender).Stop();
+            if (game.IsOver)
+            {
+                foreach (var music in Music.SoundsEffect.Concat(Music.MusicInCafe))
+                    music.controls.stop();
+                Music.GameOver.controls.play();
+                menuBackground.Show();
+                gameOver.Show();
+                pizzaMaster.Hide();
+                continueButton.Hide();
+                newGameButton.Show();
+            }
+            else
+            {
+                rentMenu.Show();
+                rentMoneyText.Text = "-" + game.Rent;
+                Music.WastingCoins.controls.play();
+            }
+            
+            DayTimer.Stop();
             addVisitorTimer.Stop();
+            moveTimer.Stop();
+            game.Stop();
         }
     }
 }

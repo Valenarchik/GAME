@@ -28,6 +28,9 @@
     <Compile Update="Timers.cs">
       <DependentUpon>Form.cs</DependentUpon>
     </Compile>
+    <Compile Update="Player.cs">
+      <DependentUpon>Form.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

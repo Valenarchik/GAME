@@ -18,60 +18,14 @@ namespace Game
             BackgroundImage = Interface.BackgroundImage;
             FormBorderStyle = FormBorderStyle.FixedDialog;
             ClientSize = menuBackground.Size = new Size(game.Width, game.Height);
-            startButton.Click += OnStartButtonClick;
-            closeRifledBoardButton.Click += OnCloseRifledBoardButtonClick;
             
-            menuBackground.Controls.Add(menu);
-            menuBackground.Controls.Add(pizzaMaster);
-            
-            menu.Controls.Add(startButton);
-            menu.Controls.Add(learButton);
-            menu.Controls.Add(settingsButton);
-            menu.Controls.Add(exitButton);
-
-            Controls.Add(menuBackground);
-            Controls.Add(buttonE);
-            Controls.Add(countCoin);
-            Controls.Add(bookButton);
-            Controls.Add(recipes);
-            recipes.Hide();
-            
-            Controls.Add(rentMenu);
-            rentMenu.Controls.Add(rentText);
-            rentMenu.Controls.Add(rentMoneyText);
-            rentMenu.Controls.Add(rentOkButton);
-            rentMenu.Hide();
-
-            menuBackground.Controls.Add(guide);
-            guide.Controls.Add(closeGuideButton);
-            guide.Controls.Add(nextPageGuideButton);
-            guide.Controls.Add(previousPageGuideButton);
-            guide.Hide();
-            previousPageGuideButton.Hide();
-
-            //
-            //Music.MadnessPlayer.controls.stop();
-            Music.FireSoundPlayer.controls.stop();
-            Music.WalkingOnWood.controls.stop();
-            Music.WalkingOnConcrete.controls.stop();
-            Music.TrashBox.controls.stop();
-            Music.Sell.controls.stop();
-            Music.TurnPage.controls.stop();
-            Music.CloseBook.controls.stop();
-            Music.Madness.controls.stop();
-            Music.IronDoor.controls.stop();
-            Music.WastingCoins.controls.stop();
-            //Music.FingersnapBar.controls.stop();
-            
-            Music.Madness.PlayStateChange += OnMadnessPlayStateChange;
-            Music.FingersnapBar.PlayStateChange += OnFingersnapBarStateChange;
-
-            //
-            InitializationRifledBoard();
+            InitializationMusic();
             InitializationAnimation();
-            game.Start();
-            game.MoneyChange += () => countCoin.Text = game.Money.ToString();
+            InitializeDesign();
+            
             countCoin.Text = game.Money.ToString();
+            
+            game.MoneyChange += () => countCoin.Text = game.Money.ToString();
             game.Player.CompleteOrder += () => Music.Sell.controls.play();
             game.TrashBox.ThrowOutTrash += () => Music.TrashBox.controls.play();
             moveTimer.Tick += UpdateMoveTimer;
@@ -79,11 +33,37 @@ namespace Game
             exitButton.Click += (_, _) => Close();
             bookButton.Click += OnBookButtonClick;
             rentOkButton.Click += OnRentOkButtonClick;
-            
+            closeRifledBoardButton.Click += OnCloseRifledBoardButtonClick;
             learButton.Click+= LearButtonOnClick;
             closeGuideButton.Click+= CloseGuideButtonOnClick; 
             nextPageGuideButton.Click += NextPageGuideButtonOnClick;   
             previousPageGuideButton.Click += PreviousPageGuideButtonOnClick;
+            continueButton.Click += ContinueButtonOnClick;
+            newGameButton.Click += NewGameButtonOnClick;
+        }
+
+        private void NewGameButtonOnClick(object sender, EventArgs e)
+        {
+            continueButton.Show();
+            newGameButton.Hide();
+            menuBackground.Hide();
+            DayTimer.Start();
+            moveTimer.Start();
+            addVisitorTimer.Start();
+            if(game.IsOver)
+            {
+                Music.RestaurantMusic.controls.play();
+                game.Restart();
+            }
+            
+        }
+
+        private void ContinueButtonOnClick(object sender, EventArgs args)
+        {
+            menuBackground.Hide();
+            DayTimer.Start();
+            moveTimer.Start();
+            addVisitorTimer.Start();
         }
 
         private void PreviousPageGuideButtonOnClick(object sender, EventArgs e)
@@ -105,7 +85,10 @@ namespace Game
         private void CloseGuideButtonOnClick(object sender, EventArgs e)
         {
             menu.Show();
-            pizzaMaster.Show();
+            if(game.IsOver)
+                gameOver.Show();
+            else 
+                pizzaMaster.Show();
             guide.Hide();
             Music.CloseBook.controls.play();
         }
@@ -114,6 +97,7 @@ namespace Game
         {
             menu.Hide();
             pizzaMaster.Hide();
+            gameOver.Hide();
             guide.Show();
             Music.TurnPage.controls.play();
         }
@@ -128,18 +112,8 @@ namespace Game
             }
             DayTimer.Start();
             addVisitorTimer.Start();
-        }
-        
-        private void OnFingersnapBarStateChange(int newState)
-        {
-            if (newState == (int)WMPLib.WMPPlayState.wmppsMediaEnded)
-                Music.Madness.controls.play();
-        }
-        
-        private void OnMadnessPlayStateChange(int newState)
-        {
-            if (newState == (int)WMPLib.WMPPlayState.wmppsMediaEnded)
-                Music.FingersnapBar.controls.play();
+            moveTimer.Start();
+            game.Start();
         }
         private void OnBookButtonClick(object sender, EventArgs e)
         {

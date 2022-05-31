@@ -19,23 +19,29 @@ namespace Model
             if(CanGo)base.Move(direction);
         }
 
-        public Player(global::Model.Game game, Point position, int speed, Size size) : base(game, position, speed, size)
+        public Player(Game game, Point position, int speed, Size size) : base(game, position, speed, size)
         {
         }
-        
+
+        public void ToDefault()
+        {
+            Inventory.Clear();
+            CanGo = true;
+            Position = Game.StartPlayerPosition;
+        }
         public void OnCompleteOrder()
         {
             var visitor = Game.Visitors.FirstOrDefault(x => !x.OrderIsCompleted);
             if(visitor is null) return;
 
-            if (!global::Model.Game.InZone(this, visitor, ActivationRadius)) return;
+            if (!Game.InZone(this, visitor, ActivationRadius)) return;
             var pizzaNotFound = true;
             for (var i = 0; i < Inventory.Count; i++)
             {
                 var pizza = Inventory[i];
                 if (pizza.Type != visitor.WantPizzaType || !pizza.IsCook || pizza.IsBurnedDown) continue;
                 Inventory.Remove(pizza);
-                Game.Money += 7;
+                Game.Money += Model.Game.PricePizza;
                 CompleteOrder?.Invoke();
                 pizzaNotFound = false;
                 break;
@@ -51,7 +57,7 @@ namespace Model
             var flag = false;
             foreach (var gameFurnace in Game.Furnaces.Where(x=>global::Model.Game.InZone(this,x,LittleActivationRadius)))
             {
-                var dist = global::Model.Game.GetDistance(Centre, gameFurnace.Centre);
+                var dist = Game.GetDistance(Centre, gameFurnace.Centre);
                 if (dist < min)
                 {
                     min = dist;

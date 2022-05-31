@@ -117,20 +117,13 @@ namespace Game
             }
         }
         
-        private void OnStartButtonClick(object sender, EventArgs args)
-        {
-            menuBackground.Hide();
-            DayTimer.Start();
-            moveTimer.Start();
-            addVisitorTimer.Start();
-        }
-
         private void OpenMenu()
         {
             DayTimer.Stop();
             moveTimer.Stop();
             addVisitorTimer.Stop();
             menuBackground.Show();
+            game.Stop();
         }
         
     }

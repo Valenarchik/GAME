@@ -24,80 +24,125 @@ namespace Game.SpritesAndMusic
     {
         private static readonly string musicFolder = Path.Combine(Sprites.SpritesFolder, "Music");
 
+        private static int musicVolume = 10;
+        private static int soundEffectVolume = 50;
+        public static int MusicVolume
+        {
+            get => musicVolume;
+            set
+            {
+                musicVolume = value;
+                foreach (var e in MusicInCafe)
+                    e.settings.volume = value;
+            }
+        }
+
+        private static int SoundEffectVolume
+        {
+            get => soundEffectVolume;
+            set
+            {
+                soundEffectVolume = value;
+                foreach (var e in SoundsEffect)
+                    e.settings.volume = value;
+            }
+        }
+
         public static readonly WindowsMediaPlayer Madness = new WindowsMediaPlayerClass()
         {
             URL = Path.Combine(musicFolder, "Madness.wav"),
             uiMode = "invisible",
-            volume = 10,
+            volume = MusicVolume,
         };
-        public static readonly WindowsMediaPlayer FingersnapBar = new WindowsMediaPlayerClass()
+
+        public static readonly WindowsMediaPlayer JazzCafe = new WindowsMediaPlayerClass()
         {
-            URL = Path.Combine(musicFolder,"Fingersnap bar.mp3"),
+            URL = Path.Combine(musicFolder,"jazz-cafe.mp3"),
             uiMode = "invisible",
-            volume = 10
+            volume = MusicVolume
+        };
+        
+        public static readonly WindowsMediaPlayer RestaurantMusic = new WindowsMediaPlayerClass()
+        {
+            URL = Path.Combine(musicFolder,"restaurant-music.mp3"),
+            uiMode = "invisible",
+            volume = MusicVolume
         };
 
         public static readonly WindowsMediaPlayer WalkingOnConcrete = new WindowsMediaPlayerClass()
         {
             URL = Path.Combine(musicFolder, "WalkingOnConcrete.mp3"),
             uiMode = "invisible",
-            volume = 50,
+            volume = SoundEffectVolume,
         };
         
         public static readonly WindowsMediaPlayer WalkingOnWood = new WindowsMediaPlayerClass()
         {
             URL = Path.Combine(musicFolder, "WalkingOnWood.mp3"),
             uiMode = "invisible",
-            volume = 50,
+            volume = SoundEffectVolume,
         };
         
         public static readonly WindowsMediaPlayer FireSoundPlayer = new WindowsMediaPlayerClass()
         {
             URL = Path.Combine(musicFolder, "FireSound.wav"),
             uiMode = "invisible",
-            volume = 50,
+            volume = SoundEffectVolume,
         };
         
         public static readonly WindowsMediaPlayer TrashBox = new WindowsMediaPlayerClass()
         {
             URL = Path.Combine(musicFolder, "TrashBox.wav"),
             uiMode = "invisible",
-            volume = 50,
+            volume = SoundEffectVolume,
         };
 
         public static readonly WindowsMediaPlayer Sell = new WindowsMediaPlayerClass()
         {
             URL = Path.Combine(musicFolder,"sell_buy_item.wav"),
             uiMode = "invisible",
-            volume = 50,
+            volume = SoundEffectVolume,
         };
         public static readonly WindowsMediaPlayer TurnPage = new WindowsMediaPlayerClass()
         {
             URL = Path.Combine(musicFolder,"turn_page.wav"),
             uiMode = "invisible",
-            volume = 30,
+            volume = SoundEffectVolume,
         };
         public static readonly WindowsMediaPlayer CloseBook = new WindowsMediaPlayerClass()
         {
             URL = Path.Combine(musicFolder,"bookClosing.wav"),
             uiMode = "invisible",
-            volume = 50,
+            volume = SoundEffectVolume,
         };
         public static readonly WindowsMediaPlayer IronDoor = new WindowsMediaPlayerClass()
         {
-            URL = Path.Combine(musicFolder,"iron_door.wav"),
+            URL = Path.Combine(musicFolder,"IronDoor.mp3"),
             uiMode = "invisible",
-            volume = 15,
+            volume = SoundEffectVolume,
         };
         public static readonly WindowsMediaPlayer WastingCoins = new WindowsMediaPlayerClass()
         {
             URL = Path.Combine(musicFolder,"wasting coins.mp3"),
             uiMode = "invisible",
-            volume = 50,
+            volume = SoundEffectVolume,
         };
-
-
-        public static List<WindowsMediaPlayer> SoundsEffect = new()
+        
+        public static readonly WindowsMediaPlayer GameOver = new WindowsMediaPlayerClass()
+        {
+            URL = Path.Combine(musicFolder,"GameOver.mp3"),
+            uiMode = "invisible",
+            volume = SoundEffectVolume,
+        };
+        
+        public static readonly WindowsMediaPlayer CookingPizza = new WindowsMediaPlayerClass()
+        {
+            URL = Path.Combine(musicFolder,"CookingPizza.mp3"),
+            uiMode = "invisible",
+            volume = SoundEffectVolume,
+        };
+        
+        public static readonly List<WindowsMediaPlayer> SoundsEffect = new()
         {
             WalkingOnConcrete,
             WalkingOnWood,
@@ -106,10 +151,20 @@ namespace Game.SpritesAndMusic
             Sell,
             TurnPage,
             CloseBook,
-            FingersnapBar,
             IronDoor,
-            WastingCoins
+            WastingCoins,
+            CookingPizza,
+            GameOver
         };
+
+        public static readonly List<WindowsMediaPlayer> MusicInCafe = new()
+        {
+            Madness,
+            JazzCafe,
+            RestaurantMusic,
+        };
+
+
     }
 
     public abstract class EntitySprites
@@ -204,6 +259,8 @@ namespace Game.SpritesAndMusic
         public static readonly Bitmap ForwardArrow = new(Image.FromFile(Path.Combine(spritesFolder, "ForwardArrow.png")));
         public static readonly Bitmap Guide1 = new(Image.FromFile(Path.Combine(spritesFolder, "Guide1.png")));
         public static readonly Bitmap Guide2 = new(Image.FromFile(Path.Combine(spritesFolder, "Guide2.png")));
+        
+        public static readonly Bitmap GameOver = new(Image.FromFile(Path.Combine(spritesFolder, "GameOver.png")));
         
         public static readonly Bitmap ButtonE = new(Path.Combine(spritesFolder, "buttonE.gif"));
         public static readonly Bitmap BookAnimation = new(Path.Combine(spritesFolder, "BookAnimation.gif"));

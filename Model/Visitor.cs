@@ -16,7 +16,7 @@ namespace Model
 
         public readonly LinkedList<Direction> Track = new();
         
-        public Visitor(global::Model.Game game, Point position, int speed, Size size) : base(game, position, speed, size)
+        public Visitor(Game game, Point position, int speed, Size size) : base(game, position, speed, size)
         {
             TypeVisitor = (TypeVisitor) Game.Random.Next(0, 2);
             WantPizzaType = (PizzaType) Game.Random.Next(0, 4);

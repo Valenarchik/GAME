@@ -19,6 +19,27 @@ namespace Game
             rifledBoard.Controls.Add(pizzaPictureBox);
             pizzaPictureBox.Click += OnPizzaPictureBoxClick;
             makePizzaPictureBox.Click += OnMakePizzaPictureBoxClick;
+            game.RifledBoard.OnMakePizzaSuccess += () =>
+            {
+                Music.CookingPizza.controls.play();
+                closeRifledBoardButton.Hide();
+            };
+
+            game.RifledBoard.OnMakePizzaFailure += () =>
+            {
+                Music.Sell.controls.play();
+            };
+            
+            Music.CookingPizza.PlayStateChange += state =>
+            {
+                if (state == (int)WMPLib.WMPPlayState.wmppsMediaEnded)
+                {
+                    pizzaPictureBox.Image = DecodePizza(game.RifledBoard.RawPizza.Type, true);
+                    pizzaPictureBox.Show();
+                    closeRifledBoardButton.Show();
+                }
+            };
+            
             InitializationIngredientButtons();
             InitializationIngredientsOnTable();
         }
@@ -36,8 +57,9 @@ namespace Game
                     if (ing.Count > i1)
                     {
                         ing.Remove(ing[i1]);
-                        game.Money++;
+                        game.Money+=Model.Game.PriceIngredients;
                     }
+                    makePizzaPictureBox.Hide();
                     RifledBoardPaint();
                 };
             }
@@ -54,17 +76,15 @@ namespace Game
                 box.Click += (_, _) =>
                 {
                     var ing = game.RifledBoard.IngredientsForCooking;
-                    if(ing.Count == RifledBoard.MaxIngredientsCount)
+                    if(ing.Count == RifledBoard.MaxIngredientsCount || game.Money<=0)
                         return;
                     if (Enum.TryParse<Ingredient>(name, out var ingredient))
                         ing.Add(ingredient);
                     if (ing.Count == RifledBoard.MaxIngredientsCount)
-                    {
                         makePizzaPictureBox.Show();
-                    }
                     else
                         makePizzaPictureBox.Hide();
-                    game.Money--;
+                    game.Money -= Model.Game.PriceIngredients;
                     RifledBoardPaint();
                 };
                 ingredients.Controls.Add(box);
@@ -78,6 +98,7 @@ namespace Game
             {
                 game.Player.Inventory.Add(game.RifledBoard.RawPizza);
                 game.RifledBoard.RawPizza = null;
+                pizzaPictureBox.Hide();
             }
             RifledBoardPaint();
         }
@@ -85,7 +106,7 @@ namespace Game
         private void OnMakePizzaPictureBoxClick(object sender, EventArgs e)
         {
             game.RifledBoard.MakePizza();
-            ((PictureBox)sender).Hide();
+             ((PictureBox)sender).Hide();
             RifledBoardPaint();
         }
         
@@ -106,8 +127,6 @@ namespace Game
                 pictureBox.Image = new Bitmap(1, 1);
             for (var i = 0; i < ing.Count; i++)
                 ingredientsOnTable[i].Image = DecodeIngredients(ing[i]);
-            pizzaPictureBox.Image = game.RifledBoard.RawPizza is not null ?
-                DecodePizza(game.RifledBoard.RawPizza.Type,true) : new Bitmap(1, 1);
         }
         private static Bitmap DecodePizza(PizzaType pizza, bool isBig)
         {

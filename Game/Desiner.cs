@@ -2,12 +2,48 @@
 using System.Drawing;
 using System.Windows.Forms;
 using Game.SpritesAndMusic;
-using Interior = Model.Interior;
 
 namespace Game
 {
     public partial class MyForm
     {
+
+        private void InitializeDesign()
+        {
+            menuBackground.Controls.Add(menu);
+            menuBackground.Controls.Add(pizzaMaster);
+            menuBackground.Controls.Add(gameOver);
+            gameOver.Hide();
+            
+            menu.Controls.Add(newGameButton);
+            menu.Controls.Add(continueButton);
+            menu.Controls.Add(learButton);
+            menu.Controls.Add(settingsButton);
+            menu.Controls.Add(exitButton);
+            continueButton.Hide();
+
+            Controls.Add(menuBackground);
+            Controls.Add(buttonE);
+            Controls.Add(countCoin);
+            Controls.Add(bookButton);
+            Controls.Add(recipes);
+            recipes.Hide();
+            
+            Controls.Add(rentMenu);
+            rentMenu.Controls.Add(rentText);
+            rentMenu.Controls.Add(rentMoneyText);
+            rentMenu.Controls.Add(rentOkButton);
+            rentMenu.Hide();
+
+            menuBackground.Controls.Add(guide);
+            guide.Controls.Add(closeGuideButton);
+            guide.Controls.Add(nextPageGuideButton);
+            guide.Controls.Add(previousPageGuideButton);
+            guide.Hide();
+            previousPageGuideButton.Hide();
+            
+            InitializationRifledBoard();
+        }
         //Меню
         private readonly PictureBox menuBackground = new ()
         {
@@ -20,7 +56,7 @@ namespace Game
         {
             BackgroundImage = Interface.MenuTab,
             Size = Interface.MenuTab.Size,
-            Location = new Point(365,161),
+            Location = new Point(365,171),
             BackColor = Color.Transparent
         };
         
@@ -28,17 +64,34 @@ namespace Game
         {
             BackgroundImage = Interface.PizzaMaster,
             Size = Interface.PizzaMaster.Size,
-            Location = new Point(208,4),
+            Location = new Point(208,0),
             BackColor = Color.Transparent
         };
         
-        private readonly Button startButton = new()
+        private readonly PictureBox gameOver = new()
         {
-            Text = "Старт",
+            Location = new Point(206,3),
+            BackgroundImage = Interface.GameOver,
+            Size = Interface.GameOver.Size,
+            BackColor = Color.Transparent,
+        };
+
+        private readonly Button continueButton = new()
+        {
+            Text = "Продолжить",
             Location = new Point(50,59),
             BackColor = Color.FromArgb(141,111,27),
             Size = new Size(214,67),
-            Font = new Font(FontFamily.GenericMonospace, 24),
+            Font = new Font(FontFamily.GenericMonospace, 22),
+            FlatStyle = FlatStyle.Flat,
+        };
+        private readonly Button newGameButton = new()
+        {
+            Text = "Новая игра",
+            Location = new Point(50,59),
+            BackColor = Color.FromArgb(141,111,27),
+            Size = new Size(214,67),
+            Font = new Font(FontFamily.GenericMonospace, 22),
             FlatStyle = FlatStyle.Flat,
         };
         
@@ -105,6 +158,7 @@ namespace Game
             Size = Interface.ArrowBack.Size,
         };
         //
+
         private readonly PictureBox recipes = new()
         {
             BackgroundImage = Interface.Recipes,
@@ -121,7 +175,7 @@ namespace Game
             BackColor = Color.Transparent,
         };
         
-        private readonly Panel rifledBoard = new ()
+        private readonly PictureBox rifledBoard = new ()
         {
             Location = new Point(159, 194),
             BackgroundImage = Interface.RifledBoard,
