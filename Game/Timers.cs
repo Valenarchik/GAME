@@ -64,6 +64,9 @@ namespace Game
                 
                 pizzaMaster.Hide();
                 continueButton.Hide();
+                recipes.Hide();
+                rentMenu.Hide();
+                rifledBoard.Hide();
                 
                 menuBackground.Show();
                 gameOver.Show();
