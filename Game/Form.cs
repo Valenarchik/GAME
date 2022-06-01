@@ -85,11 +85,12 @@ namespace Game
         
         private void OpenRifledBoard()
         {
-            if (!global::Model.Game.InZone(game.Player, game.RifledBoard, Player.LittleActivationRadius))
+            if (!Model.Game.InZone(game.Player, game.RifledBoard, Player.LittleActivationRadius))
                 return;
             rifledBoard.Show();
             Controls.Remove(buttonE);
             game.Player.CanGo = false;
+            RifledBoardPaint();
         }
 
         private void PlayWalkSound()
