@@ -37,7 +37,7 @@ namespace Game.SpritesAndMusic
             }
         }
 
-        private static int SoundEffectVolume
+        public static int SoundEffectVolume
         {
             get => soundEffectVolume;
             set
