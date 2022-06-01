@@ -23,7 +23,7 @@ namespace Game
         private void UpdateAddVisitorTimer(object sender, EventArgs e)
         {
             if (game.Visitors.Count >= Model.Game.MaxCountVisitors || game.Random.Next(0, 2) == 0) return;
-            var visitor = new Visitor(game, new Point(419, 684), 5, new Size(28, 20));
+            var visitor = new Visitor(game, new Point(419, 684), 4, new Size(28, 20));
             game.Objects.Add(visitor);
             game.Visitors.Enqueue(visitor);
             visitor.GoToBar();

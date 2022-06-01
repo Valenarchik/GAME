@@ -35,6 +35,12 @@ namespace Model
             };
         }
 
+        public void ToDefault()
+        {
+            IngredientsForCooking.Clear();
+            RawPizza = null;
+            Timer.Stop();
+        }
         public void StartMakePizza()
         {
             MakePizza();

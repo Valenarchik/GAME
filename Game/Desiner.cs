@@ -7,7 +7,8 @@ namespace Game
 {
     public partial class MyForm
     {
-
+        private static readonly Color backColor = Color.FromArgb(141, 111, 27);
+        private static readonly Color foreColor = Color.FromArgb(233,177,20);
         private void InitializeDesign()
         {
             menuBackground.Controls.Add(menu);
@@ -17,10 +18,21 @@ namespace Game
             
             menu.Controls.Add(newGameButton);
             menu.Controls.Add(continueButton);
+            continueButton.Hide();
             menu.Controls.Add(learButton);
             menu.Controls.Add(settingsButton);
             menu.Controls.Add(exitButton);
-            continueButton.Hide();
+            menu.Controls.Add(musicBar);
+            menu.Controls.Add(musicBarText);
+            musicBarText.Hide();
+            musicBar.Hide();
+            menu.Controls.Add(soundEffectBar);
+            menu.Controls.Add(soundEffectBarText);
+            soundEffectBar.Hide();
+            soundEffectBarText.Hide();
+            menu.Controls.Add(backToMenu);
+            backToMenu.Hide();
+       
 
             Controls.Add(menuBackground);
             Controls.Add(buttonE);
@@ -80,7 +92,7 @@ namespace Game
         {
             Text = "Продолжить",
             Location = new Point(50,59),
-            BackColor = Color.FromArgb(141,111,27),
+            BackColor = backColor,
             Size = new Size(214,67),
             Font = new Font(FontFamily.GenericMonospace, 22),
             FlatStyle = FlatStyle.Flat,
@@ -89,7 +101,7 @@ namespace Game
         {
             Text = "Новая игра",
             Location = new Point(50,59),
-            BackColor = Color.FromArgb(141,111,27),
+            BackColor = backColor,
             Size = new Size(214,67),
             Font = new Font(FontFamily.GenericMonospace, 22),
             FlatStyle = FlatStyle.Flat,
@@ -99,7 +111,7 @@ namespace Game
         {
             Text = "Обучение",
             Location = new Point(50,151),
-            BackColor = Color.FromArgb(141,111,27),
+            BackColor = backColor,
             Size = new Size(214,67),
             Font = new Font(FontFamily.GenericMonospace, 24),
             FlatStyle = FlatStyle.Flat,
@@ -109,7 +121,7 @@ namespace Game
         {
             Text = "Настройки",
             Location = new Point(50,243),
-            BackColor = Color.FromArgb(141,111,27),
+            BackColor = backColor,
             Size = new Size(214,67),
             Font = new Font(FontFamily.GenericMonospace, 24),
             FlatStyle = FlatStyle.Flat,
@@ -119,12 +131,58 @@ namespace Game
         {
             Text = "Выход",
             Location = new Point(50,334),
-            BackColor = Color.FromArgb(141,111,27),
+            BackColor = backColor,
             Size = new Size(214,67),
             Font = new Font(FontFamily.GenericMonospace, 24),
             FlatStyle = FlatStyle.Flat,
         };
-        //
+        //Настройки
+        private readonly Label musicBarText = new()
+        {
+            Location = new Point(50,59),
+            Text = $@"Громкость музыки:{Music.MusicVolume}",
+            Size = new Size(214,20),
+            BackColor = backColor,
+            Font = new Font(FontFamily.GenericMonospace, 12),
+        };
+        private readonly TrackBar musicBar = new()
+        {
+            Location = new Point(50,79),
+            BackColor = backColor,
+            Size = new Size(214,47),
+            Maximum = 100,
+            Value = Music.MusicVolume,
+            TickFrequency = 5,
+        };
+        
+        private readonly Label soundEffectBarText = new()
+        {
+            Location = new Point(50,151),
+            Text = $@"Громкость звуков:{Music.SoundEffectVolume}",
+            Size = new Size(214,20),
+            BackColor = backColor,
+            Font = new Font(FontFamily.GenericMonospace, 12),
+        };
+        private readonly TrackBar soundEffectBar = new()
+        {
+            Location = new Point(50,171),
+            BackColor = backColor,
+            Size = new Size(214,47),
+            Maximum = 100,
+            Value = Music.SoundEffectVolume,
+            TickFrequency = 5,
+        };
+
+        private readonly Button backToMenu = new()
+        {
+            Text = "Назад",
+            Location = new Point(50,334),
+            BackColor = backColor,
+            Size = new Size(214,67),
+            Font = new Font(FontFamily.GenericMonospace, 24),
+            FlatStyle = FlatStyle.Flat,
+        };
+
         //Обучение 
         private readonly PictureBox guide = new()
         {
@@ -263,7 +321,7 @@ namespace Game
         {
             Text = "Аренда:",
             BackColor = Color.Transparent,
-            ForeColor = Color.FromArgb(233,177,20),
+            ForeColor = foreColor,
             Font = new Font(FontFamily.GenericMonospace, 24),
             Location = new Point(15,15),
             Size = new Size(176,55),
@@ -273,7 +331,7 @@ namespace Game
         private readonly Label rentMoneyText = new ()
         {
             BackColor = Color.Transparent,
-            ForeColor = Color.FromArgb(233,177,20),
+            ForeColor = foreColor,
             Font = new Font(FontFamily.GenericMonospace, 24),
             Location = new Point(46,95),
             Size = new Size(114,50),
@@ -283,12 +341,12 @@ namespace Game
         private readonly Button rentOkButton = new ()
         {
             Text = "Ок",
-            ForeColor = Color.FromArgb(233,177,20),
+            ForeColor = foreColor,
             Font = new Font(FontFamily.GenericMonospace, 16),
             Location = new Point(43,200),
             Size = new Size(120,31),
             FlatStyle = FlatStyle.Flat,
-            BackColor = Color.FromArgb(141,111,27),
+            BackColor = backColor,
         };
         //
     }

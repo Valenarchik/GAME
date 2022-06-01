@@ -62,6 +62,8 @@ namespace Model
         {
             if (!Game.IsInsideMap(end)) return;
             var currentY = start.Y;
+            var currentX = start.X;
+            
             while (Math.Abs(currentY - end.Y) > Speed)
             {
                 if(currentY > end.Y)
@@ -75,8 +77,7 @@ namespace Model
                     currentY += Speed;
                 }
             }
-            
-            var currentX = start.X;
+
             while (Math.Abs(currentX - end.X) > Speed)
             {
                 if(currentX > end.X)

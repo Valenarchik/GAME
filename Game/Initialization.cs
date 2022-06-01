@@ -40,6 +40,55 @@ namespace Game
             previousPageGuideButton.Click += PreviousPageGuideButtonOnClick;
             continueButton.Click += ContinueButtonOnClick;
             newGameButton.Click += NewGameButtonOnClick;
+            settingsButton.Click += SettingsButtonOnClick;
+            musicBar.Scroll+= MusicBarOnScroll;
+            soundEffectBar.Scroll += SoundEffectBarOnScroll;
+            backToMenu.Click += BackToMenuOnClick;
+        }
+
+        private void BackToMenuOnClick(object sender, EventArgs e)
+        {
+            musicBar.Hide();
+            musicBarText.Hide();
+            soundEffectBar.Hide();
+            soundEffectBarText.Hide();
+            backToMenu.Hide();
+
+            if (game.IsOver)
+                newGameButton.Show();
+            else
+                continueButton.Show();
+            
+            learButton.Show();
+            settingsButton.Show();
+            exitButton.Show();
+        }
+
+        private void SoundEffectBarOnScroll(object sender, EventArgs e)
+        {
+            Music.SoundEffectVolume = ((TrackBar)sender).Value;
+            soundEffectBarText.Text = $@"Громкость звуков:{Music.SoundEffectVolume}";
+        }
+
+        private void MusicBarOnScroll(object sender, EventArgs e)
+        {
+            Music.MusicVolume = ((TrackBar)sender).Value;
+            musicBarText.Text = $@"Громкость музыки:{Music.MusicVolume}";
+        }
+
+        private void SettingsButtonOnClick(object sender, EventArgs e)
+        {
+            continueButton.Hide();
+            newGameButton.Hide();
+            learButton.Hide();
+            settingsButton.Hide();
+            exitButton.Hide();
+            
+            musicBar.Show();
+            musicBarText.Show();
+            soundEffectBar.Show();
+            soundEffectBarText.Show();
+            backToMenu.Show();
         }
 
         private void NewGameButtonOnClick(object sender, EventArgs e)

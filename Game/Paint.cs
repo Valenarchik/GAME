@@ -13,9 +13,7 @@ namespace Game
         private void OnPaint(object sender, PaintEventArgs e)
         {
             PlayWalkSound();
-            
             ImageAnimator.UpdateFrames();
-            
             PaintTrashBox(e.Graphics);
             PaintCoin(e.Graphics);
             PaintFurnace(e.Graphics);
