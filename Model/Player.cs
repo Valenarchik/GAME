@@ -18,7 +18,8 @@ namespace Model
         {
             if(CanGo)base.Move(direction);
         }
-
+        
+        
         public Player(Game game, Point position, int speed, Size size) : base(game, position, speed, size)
         {
         }

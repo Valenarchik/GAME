@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace Model
 {
@@ -38,6 +39,12 @@ namespace Model
                 iGoToExit = false;
             }
         }
+
+        protected override bool IsCollision() => new[] { Game.Player }
+            .Concat<GameObject>(Game.Visitors)
+            .Where(x => !x.Equals(this))
+            .Any(IsCollision);
+
         public void GoToBar()
         {
             FindTrack(Position, new Point(419, 460), new Point(515, 460), new Point(515, 380));

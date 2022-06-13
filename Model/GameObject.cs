@@ -20,19 +20,7 @@ namespace Model
             Position = position;
             Size = size;
         }
-
-        protected bool IsCollision() => Game.Objects
-            .Where(x => !x.Equals(this))
-            .Any(IsCollision);
-
-        private bool IsCollision(GameObject o)
-        {
-            return Game.SegmentsIntersected(Position.X, Position.X + Size.Width,
-                       o.Position.X, o.Position.X + o.Size.Width)
-                   && Game.SegmentsIntersected(Position.Y, Position.Y + Size.Height,
-                       o.Position.Y, o.Position.Y + o.Size.Height);
-        }
-
+        
         protected bool IsInsideMap() => Game.IsInsideMap(Position) && Game.IsInsideMap(ButtonRight);
     }
 }

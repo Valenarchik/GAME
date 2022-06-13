@@ -99,6 +99,8 @@ namespace Game
             if(game.IsOver)
             {
                 Music.RestaurantMusic.controls.play();
+                gameOver.Hide();
+                pizzaMaster.Show();
                 game.Restart();
             }
             

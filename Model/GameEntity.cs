@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.Linq;
 
 namespace Model
 {
@@ -16,26 +18,15 @@ namespace Model
 
         public virtual void Move(Direction direction)
         {
-            var offset = new Size(0, 0);
-            switch (direction)
+            Direction = direction;
+            var offset = direction switch
             {
-                case Direction.Up:
-                    offset = new Size(0, -Speed);
-                    Direction = Direction.Up;
-                    break;
-                case Direction.Down:
-                    offset = new Size(0, Speed);
-                    Direction = Direction.Down;
-                    break;
-                case Direction.Right:
-                    offset = new Size(Speed, 0);
-                    Direction = Direction.Right;
-                    break;
-                case Direction.Left:
-                    offset = new Size(-Speed, 0);
-                    Direction = Direction.Left;
-                    break;
-            }
+                Direction.Up => new Size(0, -Speed),
+                Direction.Down => new Size(0, Speed),
+                Direction.Right => new Size(Speed, 0),
+                Direction.Left => new Size(-Speed, 0),
+                _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
+            };
 
             Position += offset;
             IsMoving = true;
@@ -43,6 +34,19 @@ namespace Model
             Position -= offset;
             IsMoving = false;
         }
+        
+        protected virtual bool IsCollision() => Game.Objects
+            .Where(x => !x.Equals(this))
+            .Any(IsCollision);
+        
+        protected bool IsCollision(GameObject o)
+        {
+            return Game.SegmentsIntersected(Position.X, Position.X + Size.Width,
+                       o.Position.X, o.Position.X + o.Size.Width)
+                   && Game.SegmentsIntersected(Position.Y, Position.Y + Size.Height,
+                       o.Position.Y, o.Position.Y + o.Size.Height);
+        }
+
         public void StopMove() => IsMoving = false;
     }
 }
