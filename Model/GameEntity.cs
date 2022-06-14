@@ -7,8 +7,8 @@ namespace Model
     public abstract class GameEntity : GameObject
     {
         public readonly int Speed;
-        public Direction Direction { get; private set; }
-        public bool IsMoving { get; private set; }
+        public Direction Direction { get; protected set; }
+        public bool IsMoving { get; protected set; }
 
         protected GameEntity(Game game, Point position, int speed, Size size)
             : base(game, position, size)
