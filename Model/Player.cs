@@ -72,11 +72,5 @@ namespace Model
             NearestFurnace = null;
             return false;
         }
-
-        public void Go(Direction dir)
-        {
-            Direction = dir;
-            IsMoving = true;
-        }
     }
 }

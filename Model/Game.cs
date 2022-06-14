@@ -35,9 +35,9 @@ namespace Model
             {PizzaType.Diabola, new List<Ingredient> {Ingredient.Dough, Ingredient.Cheese, Ingredient.Mushroom, Ingredient.TomatoSauce}},
         };
 
-        public Player Player { get; set; }
-        public RifledBoard RifledBoard { get; set; }
-        public TrashBox TrashBox { get; set; }
+        public Player Player { get; private set; }
+        public RifledBoard RifledBoard { get; private set; }
+        public TrashBox TrashBox { get; private set; }
         public readonly Queue<Visitor> Visitors = new();
         public readonly List<Furnace> Furnaces = new();
         

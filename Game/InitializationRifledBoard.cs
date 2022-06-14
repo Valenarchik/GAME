@@ -10,16 +10,16 @@ namespace Game
     {
         private void InitializationRifledBoard()
         {
-            //
+            
             Controls.Add(rifledBoard);
             rifledBoard.Controls.Add(cookPizzaPictureBox);
             rifledBoard.Controls.Add(ingredients);
             rifledBoard.Controls.Add(closeRifledBoardButton);
             rifledBoard.Controls.Add(pizzaPictureBox);
-            //
+            
             rifledBoard.Hide();
             cookPizzaPictureBox.Hide();
-            //
+            
             pizzaPictureBox.Click += OnPizzaPictureBoxClick;
             cookPizzaPictureBox.Click += OnMakePizzaPictureBoxClick;
             game.RifledBoard.OnMakePizzaSuccess += () =>

@@ -21,8 +21,7 @@ namespace Game
             
             Music.Madness.controls.stop();
             Music.JazzCafe.controls.stop();
-            //Music.RestaurantMusic.controls.stop();
-            
+
             Music.RestaurantMusic.PlayStateChange += RestaurantMusicOnPlayStateChange;
             Music.JazzCafe.PlayStateChange += JazzCafeOnPlayStateChange;
             Music.Madness.PlayStateChange += MadnessOnPlayStateChange;

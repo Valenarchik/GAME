@@ -112,11 +112,5 @@ namespace Game
             if (game.Player.Position.Y <= game.TrashBox.Position.Y)
                 g.DrawImage(Interior.TrashBox, new Point(837, 198));
         }
-
-        private void PaintMatrix(Graphics g)
-        {
-            foreach (var o in game.Objects)
-                g.FillRectangle(Brushes.Chartreuse, new Rectangle(o.Position, o.Size));
-        }
     }
 }

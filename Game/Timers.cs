@@ -9,7 +9,7 @@ namespace Game
 {
     public partial class MyForm
     {
-        public readonly Timer DayTimer = new(){Interval = 60000};
+        private readonly Timer DayTimer = new(){Interval = 60000};
         private readonly Timer moveTimer = new() {Interval = 50};
         private readonly Timer addVisitorTimer = new() {Interval = 5000};
 
